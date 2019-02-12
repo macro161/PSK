@@ -1,6 +1,6 @@
 # PSK
 The best project ever
-PSK MIF 2019
+PSK MIF VU 2019
 Created by:
 Matas Savickis
 Justas Tvarijonas
