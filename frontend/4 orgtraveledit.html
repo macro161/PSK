@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-4.3.1-dist/css/orgscreenstyle.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-4.3.1-dist/css/bootstrap.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <button type="button" class="btn btn-primary btn-style">Darbuotojai</button>
+            <button type="button" class="btn btn-primary btn-style">Kelionių sąrašas</button>
+            <button type="button" class="btn btn-primary btn-style">Statistika</button>
+        </div>
+        <div class="table-style">   <!--Table-->
+            <style>
+                .aligned-table {
+                    text-align: center;
+                }
+                .aligned-table tbody tr td {
+                    vertical-align: middle;
+                }
+                .name {
+                    font-weight: bold
+                }
+            </style>
+
+            <div class="alert alert-info">Travel information for <span class="name">Andrius Bentkus</span></div>
+
+            <table class="table table-striped w-auto aligned-table">
+                <!--Table head-->
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Departure time</th>
+                        <th>Plain tickets</th>
+                        <th>Accomodation</th>
+                        <th>Status</th>
+                        <th>Redaguoti</th>
+                    </tr>
+                </thead>
+                <!--Table head-->
+
+                <!--Table body-->
+                <tbody>
+                    <tr>
+                        <td scope="row">1</th>
+                        <td style="align: center">2019-03-15</td>
+                        <td><button class="btn btn-light">View</button></td>
+                        <td>Devbridge apartments, Vilniaus g. 10, Vilnius</td>
+                        <td><button class="btn btn-success">Approved</button></td>
+                        <td><button class="btn btn-danger">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td scope="row">2</th>
+                        <td>2019-03-14</td>
+                        <td><button class="btn btn-light">View</button></td>
+                        <td>Devbridge apartments, Vilniaus g. 10, Vilnius</td>
+                        <td><button class="btn btn-light">Approve</button></td>
+                        <td><button class="btn btn-danger">Edit</button></td>
+                    </tr>
+                    <tr>
+                        <td scope="row">3</td>
+                        <td>2019-03-16</td>
+                        <td><button class="btn btn-light">View</button></td>
+                        <td>Devbridge apartments, Vilniaus g. 10, Vilnius</td>
+                        <td><button class="btn btn-light">Approve</button></td>
+                        <td><button class="btn btn-danger">Edit</button></td>
+                    </tr>
+                </tbody>
+                <!--Table body-->
+            </table>
+        </div>
+    </body>
+</html>
