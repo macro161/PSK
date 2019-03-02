@@ -3,7 +3,7 @@
 Šiame protokole aprašoma kaip bus dirbama 
 
 Dirbam pagal agile principą, mažom savaitinėm iteracijom.
-Nusprendėm per primes iteracijas padaryti mockupus su html, 
+Nusprendėm padaryti pirmas iteracijas tokias:
 1. Sukurti mockupus, HTML ir CSS naudojant bootstrap
 2. Didžiają dalį perašyti į reaktą, padaryti, integruoti sukurtus mockupus taip, kad visas puslapis atrodytu gerai ir autenticai, pamockinti backendo api callus, kuriuos naudosim
 3. Backendo implementacija
