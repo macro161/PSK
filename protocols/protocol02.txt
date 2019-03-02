@@ -1,0 +1,24 @@
+2. Protokolas
+
+Šiame protokole aprašoma kaip bus dirbama 
+
+Dirbam pagal agile principą, mažom savaitinėm iteracijom.
+Nusprendėm padaryti pirmas iteracijas tokias:
+1. Sukurti mockupus, HTML ir CSS naudojant bootstrap
+2. Didžiają dalį perašyti į Reaktą, padaryti, integruoti sukurtus mockupus taip, kad visas puslapis atrodytu gerai ir autentiškai, pamockinti backendo api callus, kuriuos naudosim
+3. Backendo implementacija
+4. Negalim numatyti taip ilgainiui į ateitį, nes neturim patirties, čia prasidės visokios komplikacijos, su technologijom, nes reikės sukurti duomenų bazę, visus controllerius, kurie pakolkas atrodo, kad būs lengvai įgyvendinami, tačiau su spring gali atsirasti daug skirtingu konfiguracijų, kuriom reikia laiko įgyvendinti.
+
+Backendes matyt trūks du sprintus įgyvendinti mvp funkcionalumą, o poto bus vykdomi darbai, pasinaudojant kiekviena use case ir pagražinant visą jo flowsą.
+
+Naudojam Trello užduočių sekimui, užduotis sukuria mūsų gerbiamas komandos lyderis Matas Savickis.
+
+Matas Savickis - Komandos lyderis
+Andrius Bentkus - Kūrimo vadovas
+Justas Tvarijonas - Planavimo vadovas
+Džiugas Mažulis - Kokybės/proceso vadovas
+Greta Pirantaitė - Palaikymo vadovas
+
+Kai visos užduotis sukurtos, visa komanda nubalsuoja užduočių sunkumą agile poker paglba, tai yra, sursirinkus komandai perskaitoma užduotis visiem ir tada kiekvienas komandos narys nusprendžia kiek valandų reikės įgyvendinti užduociai ir tada kartu visa komanda vienu metu parodo nuspręsta valandų kiekį.
+
+Kiekviena savaite daromas sprintas 36 valandų, tai yra 7 valandos dalbo kiekvienam komandos nariui, suplanuoti taskai pasiemami pagal pradžioj savanoriškai, jeigu niekas nepasirenka tasko, tai komandos lyderis padalina taskus.
