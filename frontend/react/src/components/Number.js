@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import * as actions from '../actions/index';
 
 class Number extends Component {
-
-  increment = () => {
-    this.props.dispatch({type: 'INC_NUMB'});
+  constructor(props) {
+    super(props);
+    this.increment = this.increment.bind(this);
   }
 
+  increment() {
+    this.props.dispatchIncrement(this.props.count);
+  }
   render() {
     return(
       <div>
@@ -20,10 +26,15 @@ class Number extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    count: state.count
-  };
-}
+export default connect(
+  (state) => ({
+    count: state.number.count,
+  }),
+  (dispatch) => bindActionCreators({
+    dispatchIncrement: actions.incNumber,
+  }, dispatch))(Number);
 
-export default connect(mapStateToProps)(Number);
+Number.propTypes = {
+  count: PropTypes.any,
+  dispatchIncrement: PropTypes.func,
+};

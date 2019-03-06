@@ -1,4 +1,6 @@
-export const incNumber = number => ({
+export const incNumber = (number) => {
+  return{
     type: 'INC_NUMB',
     number
-  })
+  }
+};
