@@ -1,9 +1,28 @@
 header a, header .header-image {
-  height: 15%;
-  width: 15%;
+  height: 30%;
+  width: 30%;
+}
+header {
+  margin-bottom: 2%;
+}
+Button .button-size-header {
+  width: 10vw
+}
+.exit-icon {
+  margin-left: 1vw;
 }
 header .logo{
   
   margin-top: 1%;
   margin-left: 1%;
+}
+header .logout {
+  margin-top: 1%;
+  margin-right: 1%;
+}
+.float-left{
+  float: left;
+}
+.float-rigt{
+  float: right;
 }
