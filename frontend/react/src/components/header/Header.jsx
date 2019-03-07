@@ -9,12 +9,13 @@ import Exit from '@material-ui/icons/exitToApp';
 const Header = () => {
   return <header className="main-header">
     <Link className="float-left" to="/">
-    <img className="header-image logo" src={logo} />
+      <img className="header-image logo" src={logo} />
     </Link>
     <Button variant="contained" color="primary" className="float-right button-size-header">
       Logout
       <Exit className="float-right exit-icon">send</Exit>
     </Button>
+    <hr className="grey-line"/>
   </header>;  
 };
 
