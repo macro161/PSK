@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/index';
 
-class Number extends Component {
+class Number extends React.Component {
   constructor(props) {
     super(props);
     this.increment = this.increment.bind(this);
