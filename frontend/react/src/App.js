@@ -1,17 +1,24 @@
 import { hot } from 'react-hot-loader';
 import React from 'react';
 import './styles.css';
-import { Router, Route } from 'react-router';
+import { Router, Route, Switch } from 'react-router';
 import { Provider } from 'react-redux';
 import store, { history } from './store';
 import Number from './components/Number'
-import PublicLayoutRoute from './Layouts/PublicLayout';
+import Header from './components/header/Header';
+import UserManager from './components/adminPage/UserManager';
+import Error from './components/Error';
+
 
 const App = () => (
   <Provider store={store}>
-      <Router history={history}>
-        <PublicLayoutRoute path="/" component={Number}/>
-      </Router>
+    <Router history={history}>
+      <Switch>
+        <Route exact path="/" render={() => { return (<div> <Header /> <Number /> </div>) }} />
+        <Route exact path="/usermanager" render={() => { return (<div> <Header /> <UserManager /> </div>) }} />
+        <Route path="*" component={Error}/>
+      </Switch>
+    </Router>
   </Provider>
 );
 

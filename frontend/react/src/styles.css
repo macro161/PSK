@@ -30,3 +30,40 @@ header .grey-line{
 .float-rigt{
   float: right;
 }
+table {
+  margin: auto;
+  text-align: left;
+  table-layout: fixed;
+  font-size: 1.125vw;
+  width: 100%;
+}
+th, td {
+  border-bottom: 1px solid #ddd;
+  height: 3vw;
+  text-align: center;
+}
+
+table .surname {
+  width: 20%;
+  text-align: center;
+}
+table .name {
+  width: 15%;
+}
+table .city {
+  width: 15%;
+  text-align: center;
+}
+table .email {
+  width: 30%;
+  text-align: center;
+}
+table .action {
+  width: 20%;
+  text-align: center;
+}
+.page-frame{
+  margin: 1vh 2.5vw 0 2.5vw;
+  font-family: 'Open Sans Condensed', sans-serif;
+  color: #1c2e36;
+}
