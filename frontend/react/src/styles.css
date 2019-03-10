@@ -67,3 +67,11 @@ table .action {
   font-family: 'Open Sans Condensed', sans-serif;
   color: #1c2e36;
 }
+
+.stat-lent-title{
+  text-align: center;
+}
+
+.table-pad{
+  padding:100px;
+}

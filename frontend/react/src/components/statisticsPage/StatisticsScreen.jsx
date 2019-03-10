@@ -4,6 +4,7 @@ import * as actions from '../../actions/StatisticsScreen';
 import Stats from './Stats';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import Test from '../../components/statisticsPage/Test';
 
 
 
@@ -19,8 +20,9 @@ class StatisticsScreen extends React.Component {
     const { stats } = this.props;
     return (
       <div className='page-frame'>
+            <Test/>
             <p>Testas</p>
-            <Stats stats={stats} />
+          
       </div>
     );
   } 
