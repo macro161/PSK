@@ -1,4 +1,4 @@
-import {FETCH_STATS_STARTS, RECEIVE_STATS} from '../actions/statisticsActions';
+import {FETCH_STATS_STARTS, RECEIVE_STATS} from '../actions/StatisticsScreen';
 
 const initialState = {
     fetching: false,

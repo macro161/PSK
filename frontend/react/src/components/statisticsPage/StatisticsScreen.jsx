@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getStats } from '../../actions/statisticsActions';
+import * as actions from '../../actions/StatisticsScreen';
 import Stats from './Stats';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 
 
 
@@ -9,16 +11,18 @@ class StatisticsScreen extends React.Component {
 
   constructor(props){
     super(props);
-
   }
 
   componentWillMount() {
-    this.props.getStats();
     console.log("nig")
+    this.props.getStats();
   }
 
   render() {
     const { stats } = this.props;
+
+    console.log('test')
+    console.log(stats)
     return (
       <div className='page-frame'>
             <p>Testas</p>
@@ -27,13 +31,16 @@ class StatisticsScreen extends React.Component {
     );
   } 
 }
-const mapStateToProps = state => {
-    return {
-      stats: state.stats,
-      fetching: state.fetching,
-      error: state.error,
-      fetched: state.fetched
-    };
-  };
-export default connect(mapStateToProps, { getStats })(StatisticsScreen);
+export default connect(
+  (state) => ({
+    stats: state.StatisticScreen.stats,
+  }),
+  (dispatch) => bindActionCreators({
+    getStats: actions.getStats,
+  }, dispatch))(StatisticsScreen);
 
+
+  StatisticsScreen.propTypes =  {
+    stats: PropTypes.any,
+    getStats: PropTypes.func,
+  };
