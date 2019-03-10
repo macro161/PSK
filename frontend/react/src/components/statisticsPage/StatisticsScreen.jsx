@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getStats } from '../../actions/statisticsActions';
+import Stats from './Stats';
 
-const initialState = {
-    fetching: false,
-    fetched: false,
-    stats: [],
-    error: null
- };
+
 
 class StatisticsScreen extends React.Component {
 
-
-  constructor(props) {
+  constructor(props){
     super(props);
-    this.state = initialState;
+
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getStats();
     console.log("nig")
   }
 
-
   render() {
+    const { stats } = this.props;
     return (
       <div className='page-frame'>
             <p>Testas</p>
+            <Stats stats={stats} />
       </div>
     );
   } 

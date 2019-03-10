@@ -60,12 +60,8 @@ class UserManager extends React.Component {
 }
 
 export default connect(
-  (state) => ({
-    employees: state.UserManager.employees
-  }),
-  (dispatch) => bindActionCreators({
-    getAllEmployees: actions.getAllEmployees,
-    removeUser: actions.removeUser,
+  (state) => ({employees: state.UserManager.employees}),
+  (dispatch) => bindActionCreators({getAllEmployees: actions.getAllEmployees,removeUser: actions.removeUser,
   }, dispatch))(UserManager);
 
 UserManager.propTypes = {

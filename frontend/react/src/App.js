@@ -8,7 +8,7 @@ import Number from './components/Number'
 import Header from './components/header/Header';
 import UserManager from './components/adminPage/UserManager';
 import Error from './components/Error';
-import Stats from './components/statisticsPage/statisticsPage';
+import Stats from './components/statisticsPage/StatisticsScreen';
 
 
 
