@@ -11,18 +11,12 @@ class StatisticsScreen extends React.Component {
 
   constructor(props){
     super(props);
-  }
-
-  componentWillMount() {
-    console.log("nig")
     this.props.getStats();
   }
 
+
   render() {
     const { stats } = this.props;
-
-    console.log('test')
-    console.log(stats)
     return (
       <div className='page-frame'>
             <p>Testas</p>

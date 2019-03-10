@@ -3,7 +3,7 @@ import {FETCH_STATS_STARTS, RECEIVE_STATS} from '../actions/StatisticsScreen';
 const initialState = {
     fetching: false,
     fetched: false,
-    stats: [],
+    stats: ['Hello'],
     error: null
  };
  
@@ -17,7 +17,7 @@ const initialState = {
                 ...state,
                 fetching: false,
                 fetched: true,
-                stats: action.payload
+                stats: Object.keys(action.payload)
             }
         
         }
