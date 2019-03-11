@@ -160,7 +160,13 @@ class Test extends React.Component {
             <Paper className={classes.paper}>25 travels</Paper>
           </Grid>
         </Grid>
-
+        <Button variant="contained" color="primary"size="large" className={classes.button}>
+        Export as PDF
+      </Button>      <Button variant="contained" color="primary"size="large" className={classes.button}>
+        Export as PNG
+      </Button>      <Button variant="contained" color="primary" size="large"className={classes.button}>
+        Export as CSV
+      </Button>
       </div>
     );
   }
