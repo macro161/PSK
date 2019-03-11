@@ -7,6 +7,7 @@ import store, { history } from './store';
 import Number from './components/Number'
 import Header from './components/header/Header';
 import UserManager from './components/adminPage/UserManager';
+import Offices from './components/officePage/offices';
 import Error from './components/Error';
 import Stats from './components/statisticsPage/StatisticsScreen';
 
@@ -19,6 +20,7 @@ const App = () => (
         <Route exact path="/" render={() => { return (<div> <Header /> <Number /> </div>) }} />
         <Route exact path="/usermanager" render={() => { return (<div> <Header /> <UserManager /> </div>) }} />
         <Route exact path="/stats" render={() => { return (<div> <Header /> <Stats /> </div>) }} />
+        <Route exact path="/offices" render={() => { return (<div> <Header /> <Offices /> </div>) }} />
         <Route path="*" component={Error}/>
       </Switch>
     </Router>
