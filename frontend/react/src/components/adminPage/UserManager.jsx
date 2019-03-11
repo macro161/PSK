@@ -46,8 +46,34 @@ class UserManager extends React.Component {
       editSite: true,
     });
   }
-  onSubmit() {
-    
+  onSubmit(name, surname, city, email, password) {
+    const userExists = () => {
+      const { employees } = this.props;
+      for (const employee of employees) {
+        if (employee.email.localeCompare( email )) {
+          return true;
+        }
+      }
+      return false;
+    }
+    this.setState({
+      email: email,
+      name: name,
+      surname: surname,
+      city: city,
+    });
+    const { employees } = this.props;
+    if (this.state.changeUserInformation) {
+      this.props.updateUser(name);
+    }
+    else {
+      if (userExists()) {
+        alert('That employee is already registered');
+      } else {
+        this.props.registerUser(name, surname, city, email, password);
+      }
+    }
+    this.setState(initialState);
   }
 
   render() {
@@ -75,7 +101,12 @@ class UserManager extends React.Component {
 
 export default connect(
   (state) => ({employees: state.UserManager.employees}),
-  (dispatch) => bindActionCreators({getAllEmployees: actions.getAllEmployees,removeUser: actions.removeUser,
+  (dispatch) => bindActionCreators(
+    {
+      getAllEmployees: actions.getAllEmployees,
+      removeUser: actions.removeUser,
+      updateUser: actions.updateUser,
+      registerUser: actions.registerUser,
   }, dispatch))(UserManager);
 
 UserManager.propTypes = {
@@ -88,4 +119,6 @@ UserManager.propTypes = {
   })),
   getAllEmployees: PropTypes.func,
   removeUser: PropTypes.func,
+  updateUser: PropTypes.func,
+  registerUser: PropTypes.func,
 };

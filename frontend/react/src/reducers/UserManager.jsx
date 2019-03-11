@@ -12,6 +12,10 @@ export default (state = initialState, action) => {
       return {
         ...state, employees: state.employees.filter(employee => employee.id != action.Id)
       };
+    case 'ADD_USER':
+      return {
+        ...state, employees: [...state.employees, action.user],
+      }
     default:
       return state;
   }

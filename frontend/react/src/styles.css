@@ -94,9 +94,11 @@ table .actions {
   left: 30%; 
   right: 30%; 
   top: 5%; 
-  bottom: 5%; 
+  bottom: 15%; 
   margin: auto; 
   background: white; 
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 } 
 .form-header-close{ 
   margin-right: 0.2cm; 
@@ -125,4 +127,29 @@ table .actions {
 } 
 .register-user-button {
   justify-self: right;
+}
+.form-text-field{
+  width: 40%;
+  margin-top: 6%;
+}
+.form-text-field-city{
+  width: 50%;
+  margin-top: 6%;
+}
+.form-text-field-email{
+  width: 70%;
+  margin-top: 6%;
+}
+.form-container{
+  margin-left: 6%;
+}
+.small-icon{
+  font-size: 20;
+}
+.register-form-buttons{
+  margin-top: 10%;
+  margin-right: 6%;
+}
+.cancel-button{
+  float: right;
 }
