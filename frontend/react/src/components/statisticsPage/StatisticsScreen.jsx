@@ -4,7 +4,7 @@ import * as actions from '../../actions/StatisticsScreen';
 import Stats from './Stats';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import Test from '../../components/statisticsPage/Test';
+import Test from './Data';
 
 
 
