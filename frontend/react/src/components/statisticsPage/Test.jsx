@@ -54,15 +54,16 @@ class Test extends React.Component {
 
   handleChangeOne(e){
     console.log(e.target.value);
-    this.setState({dateOne: e.traget.value})
+    this.setState({dateOne: e.target.value,});
   }
 
   handleChangeTwo(e){
-    this.setState({dateTwo: e.traget.value})
+    this.setState({dateTwo: e.target.value})
   }
 
   handleDate(e) {
       console.log(this.state.dateOne);
+      console.log(this.state.dateTwo);
   }
   render() {
     const { classes } = this.props;
@@ -138,7 +139,7 @@ class Test extends React.Component {
               }}
             /></Paper>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <Paper className={classes.paper}>to &nbsp;&nbsp;&nbsp;&nbsp;<TextField
               id="date2"
               label="Date"
@@ -155,7 +156,7 @@ class Test extends React.Component {
   </Button></Paper>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <Paper className={classes.paper}>25 travels</Paper>
           </Grid>
         </Grid>
