@@ -1,8 +1,13 @@
 import Office from '../officePage/Office';
+import React from 'react';
 
-export const OfficeList = (props) => (
+const OfficeList = (props) => {
+  return (
     <div>
-      {props.offices.map(office => <Office office={office}/>)}
+      {props.offices.map(office => <Office office={office} />)}
     </div>
-    );
+  );
+};
+
+export default OfficeList;
     
