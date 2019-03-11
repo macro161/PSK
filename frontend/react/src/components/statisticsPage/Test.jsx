@@ -50,9 +50,6 @@ class Test extends React.Component {
     var objectone = this.refs.date1;
     var objecttwo = this.refs.date1;
     console.log(objectone)
-    console.log("objecttwo")
-
-
   }
   render() {
     const { classes } = this.props;
@@ -99,6 +96,7 @@ class Test extends React.Component {
               label="Name"
               className="text"
               margin="normal"
+              onBlur={(e) => this.handle(e)}
               inputProps={{
                 style: { fontSize: 22 }
               }}
