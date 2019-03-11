@@ -50,7 +50,7 @@ class UserManager extends React.Component {
     const userExists = () => {
       const { employees } = this.props;
       for (const employee of employees) {
-        if (employee.email.localeCompare( email )) {
+        if (employee.email == email) {
           return true;
         }
       }
