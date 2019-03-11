@@ -35,7 +35,7 @@ class StatisticsScreen extends React.Component {
               shortest={stat.shortest}
               longest={stat.shortest}
               getStatsByName={this.props.getStatsByName}
-              travelCount={this.props.traveldata.travelCount}/>);
+              travelCount={this.props.traveldata.map(data => {return(data.travelCount)})}/>);
       })}
             
       </div>)
