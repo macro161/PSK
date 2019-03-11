@@ -9,7 +9,9 @@ export default (state = initialState, action) => {
         ...state, employees: action.employees,
       };
     case 'REMOVE_USER':
-      return state;
+      return {
+        ...state, employees: state.employees.filter(employee => employee.id != action.Id)
+      };
     default:
       return state;
   }

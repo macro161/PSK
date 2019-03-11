@@ -35,8 +35,9 @@ header .header-button{
   float: right;
 }
 table {
+  margin-top: 2%;
   margin: auto;
-  text-align: left;
+  text-align: center;
   table-layout: fixed;
   font-size: 1.125vw;
   width: 100%;
@@ -49,25 +50,22 @@ th, td {
 
 table .surname {
   width: 20%;
-  text-align: center;
 }
 table .name {
   width: 15%;
 }
 table .city {
   width: 15%;
-  text-align: center;
 }
 table .email {
-  width: 30%;
-  text-align: center;
-}
-table .action {
   width: 20%;
-  text-align: center;
+}
+table .actions {
+  width: 20%;
+  
 }
 .page-frame{
-  margin: 1vh 2.5vw 0 2.5vw;
+  margin: 2vh 4vw 0 4vw;
   font-family: 'Open Sans Condensed', sans-serif;
   color: #1c2e36;
 }
@@ -78,4 +76,53 @@ table .action {
 
 .table-pad{
   padding:100px;
+}
+
+.popup { 
+  position: fixed; 
+  width: 100%; 
+  height: 100%; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  background-color: rgba(0,0,0, 0.5); 
+} 
+.popup_inner { 
+  position: absolute; 
+  left: 30%; 
+  right: 30%; 
+  top: 5%; 
+  bottom: 5%; 
+  margin: auto; 
+  background: white; 
+} 
+.form-header-close{ 
+  margin-right: 0.2cm; 
+  margin-top: 0.2cm; 
+  font-size: 2.5vw; 
+  cursor: pointer; 
+  position: absolute; 
+  right: 0; 
+  top: 0; 
+   
+} 
+ 
+.form-header-text{ 
+  margin-left: 3%; 
+  margin-top: 4%;
+  margin-bottom : 3%; 
+  font-size: 2.5vw;
+  font-weight: bold; 
+  float:left; 
+  vertical-align: middle;
+} 
+.form-header{ 
+  border-bottom: 1px solid rgb(168, 153, 153); 
+  margin-bottom: 5px; 
+  overflow:hidden;
+} 
+.register-user-button {
+  justify-self: right;
 }
