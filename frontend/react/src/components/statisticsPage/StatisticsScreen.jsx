@@ -12,9 +12,11 @@ class StatisticsScreen extends React.Component {
 
   constructor(props){
     super(props);
+    
+  }
+  componentDidMount() {
     this.props.getStats();
   }
-
 
   render() {
     const { stats } = this.props;
