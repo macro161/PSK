@@ -28,3 +28,21 @@ export const removeUser = (Id) => {
     Id: Id,
   }
 };
+export const updateUser = (Id) => {
+  return {
+    type: 'REMOVE_USER',
+    Id: Id,
+  }
+};
+export const registerUser = (name, surname, city, email, password) => dispatch =>{
+  dispatch({
+    type: 'ADD_USER',
+    user: {
+      id: email,
+      name: name,
+      surname: surname,
+      city: city,
+      email: email,
+    }
+  });
+};
