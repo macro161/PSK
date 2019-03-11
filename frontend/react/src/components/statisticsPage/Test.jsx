@@ -1,97 +1,145 @@
 import React from 'react';
-import '../../css/bootstrap.css';
-import Button from 'react-bootstrap/Button';
-import Table from 'react-bootstrap/Table';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 
-const Stats = () => {
 
-    return (
-        <div>
-            <Button/>
-            <h1>STATISTIKA</h1>
-            <table className="table table-bordered table-pad">
-            <tbody>
-                <tr>
-                    <td>Daugiausiai kelionių buvo į</td>
-                    <td>Vilnius</td>
-                </tr>
-                <tr>
-                    <td>Brangiausia kelionė buvo į</td>
-                    <td>Vilnius</td>
-                </tr>
-                <tr>
-                    <td>Pigiausia kelionė buvo į</td>
-                    <td>Vilnius</td>
-                </tr>
-                <tr>
-                    <td>Trumpiausė kelionė buvo į</td>
-                    <td>Vilnius</td>
-                </tr>
-                <tr>
-                    <td>Ilgiausia kelionė buvo</td>
-                    <td>Vilnius</td>
-                </tr>
-                <tr>
-                    <td>Kiek kartu keliavo <input type="text" name="vardas" /></td>
-                    <td>Vilnius</td>
-                </tr>
-                </tbody>
-            </table>
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.primary,
+    fontSize: 25
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+  dense: {
+    marginTop: 16,
+  },
+  menu: {
+    width: 200,
+  },
+});
 
-            <Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td colSpan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</Table>;
-            
-            
+class Test extends React.Component {
 
-            <table className="table table-bordered table-pad">
-                <tr>
-                    <td>Kiek kelionių įvyko nuo: </td>
-                    <td>
-                        <input type="date" id="start" name="trip-start" value="2018-07-22"min="2018-01-01" max="2018-12-31"/>
-                    </td>
-                    <td>Iki </td>
-                    <td><input type="date" id="start" name="trip-start" value="2018-07-22"min="2018-01-01" max="2018-12-31"/></td>
-                    <td>100</td>
+  constructor(props){
+    super(props);
+  }
 
+  handle(e){
+    console.log(e.target.value);
+    this.props.getStatsByName(e.target.value);
+  }
+render(){
+  const { classes } = this.props;
+  return (
+  <div className={classes.root}>
+    <Grid container spacing={24}>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>Most trips were to</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>{this.props.cheapest}</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>The most expensive trip was</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>{this.props.mostExpensive}</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>The cheapest trip was</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>{this.props.cheapest}</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>The shortest trip was</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>{this.props.shortest}</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>The longest trip was</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>{this.props.longest}</Paper>
+      </Grid>
+      <Grid item xs={3}>
+        <Paper className={classes.paper}>How many times did</Paper>
+      </Grid>
+      <Grid item xs={3}>
+        <Paper className={classes.paper}>        
+        <TextField
+        id="outlined-bare"
+        className={classes.textField}
+        defaultValue="Name"
+        margin="normal"
+        variant="outlined"
+        onBlur={(e) => this.handle(e)}
+      /></Paper>
+      </Grid>
+      <Grid item xs={3}>
+        <Paper className={classes.paper}>traveled</Paper>
+      </Grid>
+      <Grid item xs={3}>
+        <Paper className={classes.paper}>{this.props.travelCount}</Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>Travels from<form className={classes.container} noValidate>
+    <TextField
+      id="date"
+      label="Date"
+      type="date"
+      defaultValue="2017-05-24"
+      className={classes.textField}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    />
+  </form></Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>to<TextField
+      id="date"
+      label="Date"
+      type="date"
+      defaultValue="2017-05-24"
+      className={classes.textField}
+      InputLabelProps={{
+        shrink: true,
+      }}
+    /></Paper>
+      </Grid>
+    </Grid>
+    
+  </div>
+);}
+  
+}
 
-                </tr>
-            </table>
-            <div class="container">        
-                    <button type="button" class="btn btn-primary btn-info">Export as PDF</button>
-                    <button type="button" class="btn btn-primary btn-info">Export as JPG</button>
-                    <button type="button" class="btn btn-primary btn-info">Visualize statistics</button>
-            </div>
-
-        </div>
-    );
+Test.propTypes = {
+  classes: PropTypes.object.isRequired,
+  mostTrips: PropTypes.string,
+  mostExpensive: PropTypes.string,
+  cheapest: PropTypes.string,
+  shortest: PropTypes.string,
+  longest: PropTypes.string,
+  getStatsByName: PropTypes.func,
+  travelCount: PropTypes.number
 };
 
-export default Stats;
+export default withStyles(styles)(Test);
