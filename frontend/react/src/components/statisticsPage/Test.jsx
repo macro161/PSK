@@ -39,17 +39,30 @@ class Test extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      dateOne: "2000-01-01",
+      dateTwo: "2000-01-01"
+   }
   }
+
+
 
   handle(e) {
     console.log(e.target.value);
     this.props.getStatsByName(e.target.value);
   }
 
+  handleChangeOne(e){
+    console.log(e.target.value);
+    this.setState({dateOne: e.traget.value})
+  }
+
+  handleChangeTwo(e){
+    this.setState({dateTwo: e.traget.value})
+  }
+
   handleDate(e) {
-    var objectone = this.refs.date1;
-    var objecttwo = this.refs.date1;
-    console.log(objectone)
+      console.log(this.state.dateOne);
   }
   render() {
     const { classes } = this.props;
@@ -117,6 +130,7 @@ class Test extends React.Component {
               label="Date"
               type="date"
               ref="date1"
+              onChange={(e) => this.handleChangeOne(e)}
               defaultValue="2017-05-24"
               className={classes.textField}
               InputLabelProps={{
@@ -131,6 +145,7 @@ class Test extends React.Component {
               type="date"
               ref="date2"
               defaultValue="2017-05-24"
+              onChange={(e) => this.handleChangeTwo(e)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
