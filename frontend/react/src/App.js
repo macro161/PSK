@@ -7,9 +7,9 @@ import store, { history } from './store';
 import Number from './components/Number'
 import Header from './components/header/Header';
 import UserManager from './components/adminPage/UserManager';
-import Offices from './components/officePage/offices';
 import Error from './components/Error';
 import Stats from './components/statisticsPage/StatisticsScreen';
+import Offices from './components/officePage/Offices';
 
 
 

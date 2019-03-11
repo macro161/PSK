@@ -1,4 +1,5 @@
 import React from 'react';
+import OfficeList from '../officePage/OfficeList';
 
 const testData = [
     {city:"Vilnius", address:"135 Zalgirio g., Vilnius, LT-08217, Lithuania"},
@@ -6,9 +7,14 @@ const testData = [
   ];
 
 export default class Offices extends React.Component {
-    state = {
-      offices: testData,
-    };
+    
+    constructor(props){
+      super(props)
+      this.state = {
+        offices: testData,
+      };
+    }
+
     
     render() {
       return (
@@ -17,6 +23,6 @@ export default class Offices extends React.Component {
           
           <OfficeList offices={this.state.offices} />
         </div>
-      );
-    }	
+    );
+  }	
 }

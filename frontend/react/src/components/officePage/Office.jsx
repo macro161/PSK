@@ -1,8 +1,13 @@
 import React from 'react';
 
 export default class Office extends React.Component {
+    constructor(props){
+        super(props);
+
+    }
     render() {
-      const office = this.props;
+    
+      const {office} = this.props;
       return (
         <div className="github-profile">
           <div className="info">
