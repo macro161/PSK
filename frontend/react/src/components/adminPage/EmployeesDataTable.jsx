@@ -28,6 +28,7 @@ export default class EmployeesDataTable extends React.Component {
                 surname={employee.surname}
                 email={employee.email}
                 city={employee.city}
+                disableButtons={this.props.disableButtons}
                 editEmployee={this.props.editEmployee}
                 removeUser={this.props.removeUser}
               />);
@@ -48,4 +49,5 @@ EmployeesDataTable.propTypes = {
   })),
   editEmployee: PropTypes.func.isRequired,
   removeUser: PropTypes.func.isRequired,
+  disableButtons: PropTypes.any,
 };
