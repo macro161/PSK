@@ -17,8 +17,7 @@ module.exports = {
   },
   plugins: [new HtmlWebpackPlugin({
     template: appDir + 'index.html',
-    chunks: ['vendor', 'app'],
-    favicon: './public/favicon.ico'
+    chunks: ['vendor', 'app']
   })],
   devtool: 'cheap-module-source-map',
   devServer: {
