@@ -1,5 +1,5 @@
 let HtmlWebpackPlugin = require('html-webpack-plugin');
-
+let CopyWebpackPlugin = require('copy-webpack-plugin');
 let appDir = __dirname + '/src/';
 let buildDir = __dirname + '/src/dist/';
 
@@ -17,7 +17,8 @@ module.exports = {
   },
   plugins: [new HtmlWebpackPlugin({
     template: appDir + 'index.html',
-    chunks: ['vendor', 'app']
+    chunks: ['vendor', 'app'],
+    favicon: './public/favicon.ico'
   })],
   devtool: 'cheap-module-source-map',
   devServer: {
@@ -40,15 +41,9 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|jpg|gif)$/i,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192
-            }
-          }
-        ]
+        test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+        exclude: /node_modules/,
+        use: ['file-loader?name=[name].[ext]'] // ?name=[name].[ext] is only necessary to preserve the original file name
       },
       {
         test: /\.css$/,
