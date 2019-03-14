@@ -7,6 +7,9 @@ export default class EmployeeDataTable extends React.Component {
     super(props);
     console.log("Tablee");
     this.props.approveTravel(1);
+    this.state = {
+      showInfo: false
+    }
   }
 
   render(){
