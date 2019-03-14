@@ -4,12 +4,15 @@ export const getAllTravels = (userId) => dispatch => {
             id: '1',
             departureTime: '2018-01-01',
             accomodation: 'Vilnius chata',
-            city: 'Vilnius'},
+            city: 'Vilnius',
+            approved: true
+        },
         {
-            id: '1',
-            departureTime: '2018-01-01',
+            id: '2',
+            departureTime: '2018-01-02',
             accomodation: 'Vilnius chata',
-            city: 'Vilnius'
+            city: 'Vilnius',
+            approved: false
         }
     ]
     dispatch({
@@ -18,3 +21,17 @@ export const getAllTravels = (userId) => dispatch => {
         id: userId
     });
 };
+
+export const approveTravel = (travelId) =>{
+    return {
+        type: 'APPROVE_TRAVEL',
+        Id: travelId,
+    }
+};
+
+export const cancelTravel = (travelId) => {
+    return {
+        type: 'CANCEL_TRAVEL',
+        Id: travelId,
+    }
+}

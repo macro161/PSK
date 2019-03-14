@@ -14,7 +14,9 @@ class EmployeeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState;
-    this.props.getAllTravels();
+    this.props.getAllTravels(1);
+    console.log("Screen");
+    this.props.approveTravel(1);
   }
   
   render() {
@@ -25,9 +27,7 @@ class EmployeeScreen extends React.Component {
         <DataTabel 
             travels={this.props.travels}
             approveTravel={this.props.approveTravel}
-            cancelTravel={this.props.cancelTravel}/>
-            
-        
+            cancelTravel={this.props.cancelTravel}/> 
       </div>
     );
   }
@@ -48,6 +48,7 @@ EmployeeScreen.propTypes = {
     departureTime: PropTypes.string,
     accomodation: PropTypes.string,
     city: PropTypes.string,
+    approved: PropTypes.bool
   })),
   getAllTravels: PropTypes.func,
   approveTravel: PropTypes.func,
