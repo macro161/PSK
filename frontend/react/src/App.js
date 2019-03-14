@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store, { history } from './store';
 import Number from './components/Number'
 import Header from './components/header/Header';
+import OrgHeader from './components/orgHeader/OrgHeader';
 import UserManager from './components/adminPage/UserManager';
 import Error from './components/Error';
 import Stats from './components/statisticsPage/StatisticsScreen';
@@ -16,9 +17,9 @@ const App = () => (
   <Provider store={store}>
     <Router history={history}>
       <Switch>
-        <Route exact path="/" render={() => { return (<div> <Header /> <Number /> </div>) }} />
-        <Route exact path="/usermanager" render={() => { return (<div> <Header /> <UserManager /> </div>) }} />
-        <Route exact path="/stats" render={() => { return (<div> <Header /> <Stats /> </div>) }} />
+        <Route exact path="/" render={() => { return (<div> <Header /> <OrgHeader /> <Number /> </div>) }} />
+        <Route exact path="/usermanager" render={() => { return (<div> <Header /> <OrgHeader /> <UserManager /> </div>) }} />
+        <Route exact path="/stats" render={() => { return (<div> <Header /> <OrgHeader /> <Stats /> </div>) }} />
         <Route path="*" component={Error}/>
       </Switch>
     </Router>
