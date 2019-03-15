@@ -1,5 +1,5 @@
 const initialState = {
-    travels: [],
+    travels: []
 };
 
 export default(state = initialState, action) => {

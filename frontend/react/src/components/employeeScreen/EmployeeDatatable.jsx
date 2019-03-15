@@ -5,11 +5,6 @@ import PropTypes from 'prop-types';
 export default class EmployeeDataTable extends React.Component {
   constructor(props) {
     super(props);
-    console.log("Tablee");
-    this.props.approveTravel(1);
-    this.state = {
-      showInfo: false
-    }
   }
 
   render(){
@@ -35,6 +30,8 @@ export default class EmployeeDataTable extends React.Component {
                                 approved={travel.approved}
                                 approveTravel={this.props.approveTravel}
                                 cancelTravel={this.props.cancelTravel}
+                                show={this.props.show}
+                                showInfo={this.props.showInfo}
                                 />);
                 })
             }
@@ -52,8 +49,10 @@ EmployeeDataTable.propTypes = {
         city: PropTypes.string,
         approved: PropTypes.bool
         })),
+        show: PropTypes.bool,
         getAllTravels: PropTypes.func,
         approveTravel: PropTypes.func,
         cancelTravel: PropTypes.func,
         seeTravelDetails: PropTypes.func,
+        showInfo: PropTypes.func,
 };
