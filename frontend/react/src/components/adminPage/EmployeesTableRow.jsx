@@ -16,6 +16,8 @@ export default class EmployeesTableRow extends React.Component {
   editThis() {
     this.props.editEmployee(this.props.Id, this.props.name, this.props.surname, this.props.city, this.props.email);
   }
+
+  
   render() {
     return (
       <tr>

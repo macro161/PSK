@@ -153,3 +153,7 @@ table .actions {
 .cancel-button{
   float: right;
 }
+
+.hide{
+  display:none !important
+}
