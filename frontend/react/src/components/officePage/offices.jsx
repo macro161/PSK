@@ -50,7 +50,8 @@ class Offices extends React.Component {
       this.props.registerOffice(city, address);
     }
     
-    render() {
+  render() {
+      
       return (
         <div className = "page-frame">
           <h2>Devbridge offices</h2>

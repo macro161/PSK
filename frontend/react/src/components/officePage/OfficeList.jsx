@@ -17,7 +17,7 @@ export default class OfficeList extends React.Component {
   render(){
     return (
     <div>
-      {this.state.offices.map(office => <Office office={office} onEdit={this.onEdit.bind(this)}/>)}
+      {this.props.offices.map(office => <Office office={office} onEdit={this.onEdit.bind(this)}/>)}
     </div>
   );}
 }

@@ -28,8 +28,8 @@ export default class Office extends React.Component {
         <div className="list">
           <span><img src={navicon} width={70} className="icon"/></span>
           <span className="info">
-            <div className="city">{office.city}</div>
-            <div className="address">{office.address}</div>
+            <div className="city">{this.props.office.city}</div>
+            <div className="address">{this.props.office.address}</div>
           </span>
           <span>
               <IconButton aria-label="Edit" color="primary" onClick = {this.editItem.bind(this)}>
