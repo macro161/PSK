@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -8,7 +7,6 @@ export default class OfficeRegisterForm extends React.Component{
         super(props);
 
         this.state = {
-            id : 1,
             city : '',
             address : '',
         }
@@ -21,8 +19,7 @@ export default class OfficeRegisterForm extends React.Component{
     }
 
     onSubmit(){
-        this.props.onSubmit(this.state.id.toString(), this.state.city, this.state.address);
-        this.setState({id: this.state.id+1});
+        this.props.onSubmit(Math.floor(Math.random()*10000).toString(), this.state.city, this.state.address);
     }
 
     render(){

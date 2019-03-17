@@ -2,6 +2,7 @@ import React from 'react';
 import OfficeList from './OfficeList';
 import Button from '@material-ui/core/Button';
 import OfficeRegisterForm from './OfficeRegisterForm';
+import OfficeEditForm from './OfficeEditForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
@@ -16,7 +17,7 @@ class Offices extends React.Component {
       this.state = {
         offices: [],
         showRegistration:false,
-        
+        showPopup:false,
       };
 
       this.props.getOffices();
@@ -25,12 +26,14 @@ class Offices extends React.Component {
     addOfficeClick(){
       this.setState({
         showRegistration:true,
+        showPopup:true,
       })
     }
 
     onClose(){
       this.setState({
         showRegistration:false,
+        showPopup:false,
       })
     }
 
@@ -38,30 +41,51 @@ class Offices extends React.Component {
       this.setState({
         showRegistration:false,
         showEdit:true,
+        showPopup:true,
         office:office,
       })
     }
 
     onEditSave(id,city,address){
         this.props.editOffice(id,city,address);
+        this.setState({
+          showEdit:false,
+          showPopup:false
+        })
     }
 
-    onSubmit(city, address){
-      this.props.registerOffice(city, address);
+    onDelete(id){
+      this.props.deleteOffice(id);
+    }
+
+
+    onSubmit(id, city, address){
+      this.props.registerOffice(id, city, address);
+      this.setState({
+        showRegistration:false,
+        showPopup:false,
+      })
     }
     
   render() {
-      
       return (
         <div className = "page-frame">
           <h2>Devbridge offices</h2>
           <hr/>
           <Button variant ="contained" onClick={this.addOfficeClick.bind(this)}> Add office </Button>
           {this.state.showRegistration ? 
-          <OfficeRegisterForm onClose={this.onClose.bind(this)} onSubmit={this.onSubmit.bind(this)}/> : null}
-          <OfficeList offices={this.props.offices} onEdit={this.onEdit.bind(this)}/>
+          <OfficeRegisterForm 
+          onClose={this.onClose.bind(this)} 
+          onSubmit={this.onSubmit.bind(this)}/> : null}
+          <OfficeList offices={this.props.offices} 
+          onEdit={this.onEdit.bind(this)}
+          onDelete={this.onDelete.bind(this)}
+          disabled={this.state.showPopup}/>
           {this.state.showEdit ? 
-          <OfficeEditForm office = {this.state.office} onClose={this.onClose.bind(this)} onEditSave={this.onEditSave.bind(this)}/> : null}
+          <OfficeEditForm office = {this.state.office} 
+          onClose={this.onClose.bind(this)} 
+          onEditSave={this.onEditSave.bind(this)}
+          /> : null}
           </div>
     );
   }	
@@ -74,6 +98,7 @@ export default connect(
       getOffices: actions.getOffices,
       registerOffice: actions.registerOffice,
       editOffice: actions.editOffice,
+      deleteOffice: actions.deleteOffice,
   }, dispatch))(Offices);
 
 Offices.propTypes = {
@@ -85,5 +110,7 @@ Offices.propTypes = {
   getOffices: PropTypes.func,
   registerOffice: PropTypes.func,
   onEdit: PropTypes.func,
-  onEditSave: PropTypes.func
+  deleteOffice: PropTypes.func,
+  onEditSave: PropTypes.func,
+  editOffice: PropTypes.func,
 };

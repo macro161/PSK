@@ -11,6 +11,8 @@ export default class OfficeEditForm extends React.Component{
             city : '',
             address : '',
         }
+        this.state.city=this.props.office.city;
+        this.state.address=this.props.office.address;
     }
 
     inputChange(e){
@@ -24,6 +26,8 @@ export default class OfficeEditForm extends React.Component{
     }
 
     render(){
+        
+        console.log(this.props);
         return(
             <div className="popup">
                 <div className="popup-small">
@@ -35,7 +39,7 @@ export default class OfficeEditForm extends React.Component{
                         <TextField
                             id="city"
                             label="City"
-                            value = {this.props.office.city}
+                            defaultValue = {this.props.office.city}
                             className="form-text-field"
                             type="text"
                             margin="normal"
@@ -45,7 +49,7 @@ export default class OfficeEditForm extends React.Component{
                         <TextField
                             id="address"
                             label="Address"
-                            address = {this.props.office.address}
+                            defaultValue = {this.props.office.address}
                             className="form-text-field-wide"
                             type="text"
                             margin="normal"

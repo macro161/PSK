@@ -13,11 +13,17 @@ export default class OfficeList extends React.Component {
   onEdit(office){
     this.props.onEdit(office);
   } 
+  onDelete(id){
+    this.props.onDelete(id);
+  } 
 
   render(){
     return (
     <div>
-      {this.props.offices.map(office => <Office office={office} onEdit={this.onEdit.bind(this)}/>)}
+      {this.props.offices.map(office => <Office office={office} 
+      onEdit={this.onEdit.bind(this)}
+      onDelete={this.onDelete.bind(this)}
+      disabled={this.props.disabled}/>)}
     </div>
   );}
 }

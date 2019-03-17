@@ -9,17 +9,16 @@ export default class Office extends React.Component {
         super(props);
         this.state={
           showEdit:false,
-          office:this.props.office,
         }
 
     }
 
     editItem(){
-      this.props.onEdit(this.office);
+      this.props.onEdit(this.props.office);
     } 
 
     deleteItem(){
-
+      this.props.onDelete(this.props.office.id)
     }
 
     render() {
@@ -32,10 +31,12 @@ export default class Office extends React.Component {
             <div className="address">{this.props.office.address}</div>
           </span>
           <span>
-              <IconButton aria-label="Edit" color="primary" onClick = {this.editItem.bind(this)}>
+              <IconButton aria-label="Edit" color="primary"
+               onClick = {this.editItem.bind(this)} disabled ={this.props.disabled}>
             <EditIcon />
           </IconButton>
-            <IconButton aria-label="Delete" color="secondary" onClick = {this.deleteItem.bind(this)} >
+            <IconButton aria-label="Delete" color="secondary" 
+            onClick = {this.deleteItem.bind(this)}  disabled ={this.props.disabled}>
             <DeleteIcon />
           </IconButton>
             </span>
