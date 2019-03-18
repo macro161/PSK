@@ -185,3 +185,6 @@ table .actions {
 .hide{
   display:none !important
 }
+.center{
+  text-align: center;
+}
