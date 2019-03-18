@@ -182,3 +182,6 @@ table .actions {
 .list{
   margin: 1rem;
 }
+.hide{
+  display:none !important
+}
