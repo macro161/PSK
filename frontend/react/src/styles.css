@@ -89,6 +89,19 @@ table .actions {
   margin: auto; 
   background-color: rgba(0,0,0, 0.5); 
 } 
+
+.popup-small{
+  position: absolute; 
+  left: 35%; 
+  right: 35%; 
+  top: 20%; 
+  bottom: 40%; 
+  margin: auto; 
+  background: white; 
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 .popup_inner { 
   position: absolute; 
   left: 30%; 
@@ -132,6 +145,10 @@ table .actions {
   width: 40%;
   margin-top: 6%;
 }
+.form-text-field-wide{
+  width: 80%;
+  margin-top: 6%;
+}
 .form-text-field-city{
   width: 50%;
   margin-top: 6%;
@@ -153,7 +170,18 @@ table .actions {
 .cancel-button{
   float: right;
 }
+.info{
+  display: inline-block;
+  margin: 10px;
+}
+.city {
+  font-size: 1.25rem;
+  font-weight: bold;
+  }
 
+.list{
+  margin: 1rem;
+}
 .hide{
   display:none !important
 }
