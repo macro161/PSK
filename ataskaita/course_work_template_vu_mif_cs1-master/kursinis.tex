@@ -1,0 +1,89 @@
+\documentclass{VUMIFInfKursinis}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{color}
+% \usepackage{hyperref}  % Nuorodų aktyvavimas
+\usepackage{url}
+
+
+% Titulinio aprašas
+\university{Vilniaus universitetas}
+\faculty{Matematikos ir informatikos fakultetas}
+\department{Programų sistemų katedra}
+\papertype{Programų sistemų kūrimo darbas}
+\title{TSP ataskaita}
+\titleineng{TSP report}
+\status{3 kurso 3 grupės studentai}
+\author{Mėnuliukai}
+
+
+\supervisor{ Doc., Dr. Saulius Ragaišis}
+\date{Vilnius \\ \the\year}
+
+% Nustatymai
+% \setmainfont{Palemonas}   % Pakeisti teksto šriftą į Palemonas (turi būti įdiegtas sistemoje)
+\bibliography{bibliografija} 
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\sectionnonum{Įvadas}
+Šioje ataskaitoje pateikiame kaip mūsų komandai(,,Mėnuliukai") sekėsi taikyti TSP principus, kurie principai buvai taikomi ir kaip jie įtakojo komandos produktyvumą ir padarytus darbus.
+
+\section{Startavimas}
+	\subsection{Rolės}
+		Dar prieš gaunat reikalavimus iš užsakovo buvo pasiskirstyta rolėmis. Rolės buvo paskirstytos pagal tai ką komandos narys moka geriausiai.
+		\begin{itemize}
+			\item{Matas Savickis - komandos lyderis}
+			\item{Andrius Bentkus - backend specialistas}
+			\item{Justas Tvarijonas - frontend specialistas}
+			\item{Džiugas Mažulis - programuotojas}
+			\item{Greta Pyrantaitė - programuotoja}
+		\end{itemize}
+	\subsection{Komandos tikslai}
+		\begin{enumerate}
+			\item{Kaip galima greičiau sukurti mažiausia užskaitoma produktą(MVP)}
+			\item{Likusį laiką po MVP paskirti papildomiem reikalavimams įgyvendinti ir tobulinti produktą}
+			\item{Baigti darbą likus mėseniui iki atsiskaitymo datos}
+		\end{enumerate}
+	\subsection{Asmeniniai tikslai}
+		\begin{enumerate}
+			\item{Išmokti React technologiją}
+			\item{Įsisavinti Agile darbo komandoje metodologiją}
+			\item{Prisiimti asmeninę atsamokybę už produkto kokybę. Pralaimiu ne aš, pralaimi visa komanda}
+		\end{enumerate}
+	\subsection{Komandos susitikimai}
+	Komanda nutarė dėl vienos dienos savaitėje kada visa komanda susitiks aptarti praeitos savaitės rezultatus ir suplanuoti ateinačios savaitės darbus. Susitikimai vykdavo laikantis šių žingslių:
+		\begin{enumerate}
+			\item{Aptariame praeitos savaitės darbus, kas buvo gerai ir blogai}
+			\item{Aptariame kokius darbus reiks padaryti ateinančia savaitę}
+			\item{Vyksta balsavimas kiek valandų užtruks padaryti kiekvieną atskirą užduotį(Agile poker)}
+			\item{Iš nubalsuotų užduočių sąrašo paimama 40 valandų vertės užduočių ir jos pridedamos į ateinančios savaitės užduočių sąrašą}
+			\item{Jeigu yra užduočių kurias reikia padaryti kuo greičiau tos užduotys būna prisiriamos savanoriams}
+		\end{enumerate}
+	\subsection{Reikalavimai duomenims}
+	Savaitės gale būna sekama kiek užduočių liko nepadaryta arba kiek buvo padaryta daugiau ir pagal valandų skaičių vertinama ar keisti ateinančios savaitės vertinimus, mažindi valandas, didinti valandas ar kitaip koreguoti darbą, kad būtų padaroma kuo daugiau.
+\section{Strategija}
+Paskaičius ir įvertinus reikalavimus buvo nutarta, kad darbui atlikti reikės 2 mėnesių(1 ciklas - 1 savaitė) ir kiek dar liks laiko iki atsiskaitymo projekto tobulinimui. Buvo nutarta naudotis Java Spring ir Javascript React.js teachnologijomis. Technologijos buvo pasirinktos pagal jų populiarumą, norą jas išmokti(tiems komandos nariams kuria nebuvo susidūrę su šiomis technologijomis) ir technologijų galią siekiant greitai kurti geros kokybės produktą.
+\section{Planavimas} 
+Užduotis dažniausiai surašo komandos lydelis pasitaręs su frontend ir backend specialistais komandoje. Pagal programų sistemų kūrimo(PSK) dalyko sandaros aprašyma ir kiek aprašyme numatoma individualaus darbo valandų buvo nutarta(preliminariai paskaičiuota) kad vienas žmogus per savaitę turi padaryti 8 valandas individualaus darbo, todėl vienam ciklui(1 savaitei) planuojama 40 valandų darbo
+\section{Reikalavimai}
+Pagal užsakovo pateiktus prašymus ir atsakymus į klausimus kuriuos jam patekėme buvo sudarytas dokumentas išvardinantis visus reikalavimus kuriuos reikės įgyvendinti. Iš reikalavimu buvo išgauta 14 istorijų(stories) kurie bus mūsų komandos priėmimo testavimo sąrašas.
+\section{Projektavimas}
+Sistema buvo projektuojama pagal MVC šabloną kuriame kiekviena technologija turėjo aiškią paskirtį(M ir C - Java Spring, V - React.js). React.js mums suteikė komponentinio programavimo privalumus(UI komponentų perpanaudojimas), Spring mums suteikė greitą būdą kurti ir testuoti backend'a
+\section{Įgyvendinimas}
+Siekiant sumažinti blogą kodą ir klaidas kodo bazėje buvo įvesta taisyklė, kad bent vienas kitas komandos narys turi peržiūrėti, pasileisti ir įsitikinti, kad kodas veikia teisingai prieš tą kodą pridedant į bendrą kodo bazę.
+\section{Testavimas ir integravimas}
+Formalų testai nebuvo vykdomi, tik patikrinama ar kodas veikia iš pirmo žvilgsnio. Surastos klaidos būdavo užregistruojamos į užduočių planavimo platformą Trello ir pagal klaidos sunkumą būna įtraukiamos arba neįtraukiamos į sekančią savaitę.
+\section{Aptarimas}
+Aptarimas būna vykdomas neformalia forma kiekviena savaitę planavimo metu. Pasikalbama kas buvo gerai ar negerai, pasižadama daugiau nebedaryti blogų dalyku ir dirbti, nors vistiek nedirbant sekantį ciklą. 
+
+
+
+\end{document}
