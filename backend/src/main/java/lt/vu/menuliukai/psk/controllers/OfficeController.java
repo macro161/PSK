@@ -16,8 +16,6 @@ public class OfficeController {
     @Autowired
     private OfficeDao officeDao;
 
-    private static long id = 102;
-
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Office> index() {
         return officeDao.findAll();
