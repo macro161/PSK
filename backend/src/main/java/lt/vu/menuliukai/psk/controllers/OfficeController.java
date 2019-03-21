@@ -23,6 +23,15 @@ public class OfficeController {
         return officeDao.findAll();
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Office get(@PathVariable long id) {
+        Office office = officeDao.findById(id);
+        if (office == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("office with id %d not found", id));
+        }
+        return office;
+    }
+
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Office add(@RequestBody Office office) {
         return officeDao.save(office);
