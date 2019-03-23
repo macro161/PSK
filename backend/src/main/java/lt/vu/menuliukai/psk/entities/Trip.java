@@ -11,6 +11,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,6 +35,20 @@ public class Trip {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     TripChecklist checkList;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "trips")
+    private Set<Employee> employees = new HashSet<>();
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "office_id", nullable = false)
+    @JsonIgnore
+    Office office;
 
 
 

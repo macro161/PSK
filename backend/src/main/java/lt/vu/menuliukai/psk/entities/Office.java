@@ -7,6 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 
@@ -24,9 +29,14 @@ public class Office {
     String address;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "officeApartment_id", nullable = false)
+    @JoinColumn(name = "office_apartment_id", nullable = false)
     @JsonIgnore
     OfficeApartment officeApartment;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "office")
+    List<Trip> tripsToOffice;
 
 
 }
