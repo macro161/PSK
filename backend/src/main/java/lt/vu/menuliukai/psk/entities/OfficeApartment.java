@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,8 +16,8 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="OFFICE")
-public class Office {
+@Table(name="APARTMENT")
+public class OfficeApartment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
@@ -29,14 +27,12 @@ public class Office {
     String address;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "office_apartment_id", nullable = false)
+    @JoinColumn(name = "office_id", nullable = false)
     @JsonIgnore
-    OfficeApartment officeApartment;
+    Office office;
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "office")
-    List<Trip> tripsToOffice;
-
-
+            mappedBy = "officeApartment")
+    List<ApartmentRoom> apartmentRooms;
 }

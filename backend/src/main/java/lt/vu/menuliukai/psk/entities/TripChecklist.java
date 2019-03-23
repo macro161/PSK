@@ -7,10 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -18,25 +16,20 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="OFFICE")
-public class Office {
+@Table(name="CHECKLIST")
+public class TripChecklist {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     long id;
 
-    String city;
+    boolean plainTickets;
 
-    String address;
+    boolean car;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "office_apartment_id", nullable = false)
+    @JoinColumn(name = "trip_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    OfficeApartment officeApartment;
-
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "office")
-    List<Trip> tripsToOffice;
-
-
+    Trip trip;
 }

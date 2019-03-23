@@ -7,10 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,25 +18,23 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="OFFICE")
-public class Office {
+@Table(name="ROOM")
+public class ApartmentRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    String city;
+    int space; // Don't know how to name this
 
-    String address;
+    boolean taken;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "office_apartment_id", nullable = false)
     @JsonIgnore
     OfficeApartment officeApartment;
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "office")
-    List<Trip> tripsToOffice;
-
-
+            mappedBy = "apartmentRoom")
+    List<Trip> trips;
 }
