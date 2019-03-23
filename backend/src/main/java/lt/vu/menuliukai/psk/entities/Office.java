@@ -2,6 +2,7 @@ package lt.vu.menuliukai.psk.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,9 @@ public class Office {
 
     String address;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "officeApartment_id", nullable = false)
+    @JsonIgnore
     OfficeApartment officeApartment;
 
 

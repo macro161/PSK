@@ -2,10 +2,14 @@ package lt.vu.menuliukai.psk.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Getter
 @Setter
 
@@ -20,6 +24,8 @@ public class ApartmentRoom {
 
     int space; // Don't know how to name this
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "officeApartment_id", nullable = false)
+    @JsonIgnore
     OfficeApartment officeApartment;
 }
