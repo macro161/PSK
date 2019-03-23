@@ -6,14 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
 @Getter
 @Setter
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="OFFICE")
-public class Office {
+@Table(name="APARTMENT")
+public class OfficeApartment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
@@ -23,7 +26,8 @@ public class Office {
     String address;
 
     @OneToOne
-    OfficeApartment officeApartment;
+    Office office;
 
-
+    @OneToMany
+    List<ApartmentRoom> apartmentRooms;
 }

@@ -12,18 +12,17 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="OFFICE")
-public class Office {
+@Table(name="CHECKLIST")
+public class TripChecklist {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     long id;
 
-    String city;
+    boolean plainTickets;
 
-    String address;
+    boolean car;
 
     @OneToOne
-    OfficeApartment officeApartment;
-
-
+    Trip trip;
 }

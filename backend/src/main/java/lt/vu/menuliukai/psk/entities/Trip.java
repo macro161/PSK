@@ -6,24 +6,28 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
+
 @Getter
 @Setter
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="OFFICE")
-public class Office {
+@Table(name="TRIP")
+public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    String city;
+    Date leavingDate;
 
-    String address;
+    Date returningDate;
 
     @OneToOne
-    OfficeApartment officeApartment;
+    TripChecklist checkList;
+
 
 
 }

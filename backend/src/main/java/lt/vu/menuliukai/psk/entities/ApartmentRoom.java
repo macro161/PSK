@@ -12,18 +12,14 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="OFFICE")
-public class Office {
+@Table(name="ROOM")
+public class ApartmentRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    String city;
+    int space; // Don't know how to name this
 
-    String address;
-
-    @OneToOne
+    @ManyToOne
     OfficeApartment officeApartment;
-
-
 }
