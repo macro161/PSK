@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
+
 @Getter
 @Setter
 
@@ -24,8 +26,15 @@ public class ApartmentRoom {
 
     int space; // Don't know how to name this
 
+    boolean taken;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "officeApartment_id", nullable = false)
+    @JoinColumn(name = "office_apartment_id", nullable = false)
     @JsonIgnore
     OfficeApartment officeApartment;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "apartmentRoom")
+    List<Trip> trips;
 }

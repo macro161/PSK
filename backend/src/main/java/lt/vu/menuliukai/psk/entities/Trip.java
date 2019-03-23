@@ -50,6 +50,11 @@ public class Trip {
     @JsonIgnore
     Office office;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "apartment_room_id", nullable = false)
+    @JsonIgnore
+    ApartmentRoom apartmentRoom;
+
 
 
 }
