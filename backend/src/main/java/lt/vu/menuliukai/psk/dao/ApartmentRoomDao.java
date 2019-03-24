@@ -5,5 +5,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ApartmentRoomDao extends CrudRepository<ApartmentRoom, Long> {
     ApartmentRoom findById(long id);
-
 }
