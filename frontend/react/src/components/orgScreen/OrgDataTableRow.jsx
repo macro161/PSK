@@ -46,17 +46,19 @@ export default class OrgDataTableRow extends React.Component {
     }
 
     deleteThis() {
-        this.props.removeTravel(this.props.Id);
+        this.props.removeTravel(this.props.id);
     }
     editThis() {
-        this.props.editEmployee(this.props.Id, this.props.name, this.props.surname, this.props.city, this.props.email);
+        this.props.editTravel(this.props.id, this.props.name, this.props.surname, this.props.departureTime, this.props.accomodation, this.props.city);
     }
 
   render() {
     const className=this.props.show ? "hide": ""
     return (
       <tr>
-        <td className="departureTime ">{this.props.departureTime}</td>
+        <td className="name">{this.props.name}</td>
+        <td className="surname">{this.props.surname}</td>
+        <td className="departureTime">{this.props.departureTime}</td>
         <td><Button className={className} variant="contained" disabled={this.props.show} color="primary" >Plain tickets</Button></td>
         <td className="accomodation">{this.props.accomodation}</td>
         <td>{this.props.approved ?
@@ -64,7 +66,7 @@ export default class OrgDataTableRow extends React.Component {
           :
           <MuiThemeProvider theme={themeone}><Button className={className} variant="contained" color="primary" disabled={this.props.show} onClick={this.approve.bind(this)}>Approve</Button></MuiThemeProvider>
         }</td>
-        <td><Button variant="contained" color="primary" disabled={this.props.show} onClick={this.show.bind(this)} >Info</Button></td>
+        <td><Button variant="contained" color="primary" disabled={this.props.show} onClick={this.show.bind(this)}>Info</Button></td>
         <td><Button aria-label="Edit" color="primary" onClick = {this.editThis.bind(this)} disabled = {this.props.disableButtons}>
             <EditIcon />
         </Button>
@@ -78,6 +80,8 @@ export default class OrgDataTableRow extends React.Component {
 
 OrgDataTableRow.propTypes = {
     id: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    surname: PropTypes.string,
     departureTime: PropTypes.string.isRequired,
     accomodation: PropTypes.string.isRequired,
     city: PropTypes.string.isRequired,
@@ -85,6 +89,6 @@ OrgDataTableRow.propTypes = {
     approveTravel: PropTypes.func.isRequired,
     cancelTravel: PropTypes.func.isRequired,
     showInfo: PropTypes.func.isRequired,
-    editEmployee: PropTypes.func.isRequired,
+    editTravel: PropTypes.func.isRequired,
     removeTravel: PropTypes.func.isRequired,
 };

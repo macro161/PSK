@@ -32,7 +32,8 @@ class Offices extends React.Component {
 
     onClose(){
       this.setState({
-        showRegistration:false,
+        showRegistration: false,
+        showEdit:false,
         showPopup:false,
       })
     }

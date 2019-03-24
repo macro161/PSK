@@ -59,7 +59,7 @@ export default class OfficeEditForm extends React.Component{
                         <Button variant="contained" size="large" color="primary" onClick={this.onEditSave.bind(this)}>
                         Save
                         </Button>
-                        <Button variant="contained" size="large" color="secondary" className="cancel-button" >
+                            <Button variant="contained" size="large" color="secondary" className="cancel-button" onClick={this.props.onClose}>
                         Cancel
                         </Button>
                         </div>

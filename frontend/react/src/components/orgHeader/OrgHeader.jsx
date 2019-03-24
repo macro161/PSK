@@ -16,7 +16,7 @@ const OrgHeader = () => {
         </Button> 
       </Link>
 
-      <Link to="/travels">
+      <Link to="/orgtravels">
         <Button variant="contained" color="primary" className="header-image logo float-left" >
           Travels
           <Flight className="float-left flight-icon">send</Flight>

@@ -7,14 +7,18 @@ export default class OrgDataTable extends React.Component {
     super(props);
   }
 
+  
+
   render(){
     const travels = this.props.travels;
     return(
         <table>
             <tbody>
             <tr>
+                <th className="name">Name</th>
+                <th className="surname">Surname</th>
                 <th className="departureTime">Departure time</th>
-                <th className="plainTikets">Plain tickets</th>
+                <th className="plainTickets">Plain tickets</th>
                 <th className="accommodation">Accommodation</th>
                 <th className="status">Status</th>
                 <th className="info">Info</th>
@@ -25,6 +29,8 @@ export default class OrgDataTable extends React.Component {
                     return (<TableRow
                         key={travel.id}
                         id={travel.id}
+                        name={travel.name}
+                        surname={travel.surname}
                         departureTime={travel.departureTime}
                         accomodation={travel.accomodation}
                         city={travel.city}
@@ -33,6 +39,7 @@ export default class OrgDataTable extends React.Component {
                         cancelTravel={this.props.cancelTravel}
                         show={this.props.show}
                         showInfo={this.props.showInfo}
+                        editTravel={this.props.editTravel}
                         removeTravel={this.props.removeTravel}
                         />);
                 })
@@ -43,9 +50,12 @@ export default class OrgDataTable extends React.Component {
   }
 }
   
+
 OrgDataTable.propTypes = {
     travels: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string,
+        name: PropTypes.string,
+        surname: PropTypes.string,
         departureTime: PropTypes.string,
         accomodation: PropTypes.string,
         city: PropTypes.string,
@@ -57,5 +67,6 @@ OrgDataTable.propTypes = {
         cancelTravel: PropTypes.func,
         seeTravelDetails: PropTypes.func,
         showInfo: PropTypes.func,
+        editTravel: PropTypes.func,
         removeTravel: PropTypes.func,
 };

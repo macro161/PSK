@@ -2,6 +2,8 @@ export const getAllTravels = (userId) => dispatch => {
     let moc = [
         {
             id: '1',
+            name: 'Tomas',
+            surname: 'Balta',
             departureTime: '2018-01-01',
             accomodation: 'Vilnius chata',
             city: 'Vilnius',
@@ -9,6 +11,8 @@ export const getAllTravels = (userId) => dispatch => {
         },
         {
             id: '2',
+            name: 'Jonas',
+            surname: 'Juoda',
             departureTime: '2018-01-02',
             accomodation: 'Vilnius chata',
             city: 'Vilnius',
@@ -18,7 +22,7 @@ export const getAllTravels = (userId) => dispatch => {
     dispatch({
         type:'GET_TRAVELS_BY_ID',
         travels: moc,
-        id: userId
+        //id: userId
     });
 };
 
@@ -42,3 +46,33 @@ export const removeTravel = (travelId) => {
         Id: travelId,
     }
 };
+
+export const editTravel = (id, name, surname, departureTime, accomodation, city, approved) => dispatch=>{
+    dispatch({
+        type:"EDIT_TRAVEL",
+        travel:{
+            id: id,
+            name: name,
+            surname: surname,
+            departureTime: departureTime,
+            accomodation: accomodation,
+            city: city,
+            approved: approved,
+        }
+    })
+}
+  
+export const registerTravel = (id, name, surname, departureTime, accomodation, city, approved)=> dispatch=>{
+    dispatch({
+        type: "ADD_TRAVEL",
+        travel:{
+            id: id,
+            name: name,
+            surname: surname,
+            departureTime: departureTime,
+            accomodation: accomodation,
+            city: city,
+            approved: approved,
+        }
+    })
+}
