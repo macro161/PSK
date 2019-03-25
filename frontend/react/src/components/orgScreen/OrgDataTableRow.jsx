@@ -49,7 +49,7 @@ export default class OrgDataTableRow extends React.Component {
         this.props.removeTravel(this.props.id);
     }
     editThis() {
-        this.props.editTravel(this.props.id, this.props.name, this.props.surname, this.props.departureTime, this.props.accomodation, this.props.city);
+      this.props.editTravel({id: this.props.id, name : this.props.name,surname: this.props.surname, departureTime: this.props.departureTime, accomodation: this.props.accomodation,city: this.props.city });
     }
 
   render() {
