@@ -26,8 +26,8 @@ public class OfficeApartment {
 
     String address;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "office_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "office_id")
     @JsonIgnore
     Office office;
 
