@@ -6,9 +6,7 @@ export function removeEmployeeHttp(id) {
   return deleteById(userManagerUrl, id)
     .then(function (response) {
       responseCode = response.status;
-      if (responseCode !== 204) {
-        return response.json();
-      }
+      return response;
     })
     .then(function (responseValue) {
       return {

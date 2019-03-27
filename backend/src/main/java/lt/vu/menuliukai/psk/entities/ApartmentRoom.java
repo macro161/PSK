@@ -28,10 +28,12 @@ public class ApartmentRoom {
 
     boolean taken;
 
+    String address;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "office_apartment_id", nullable = false)
     @JsonIgnore
-    OfficeApartment officeApartment;
+    Office office;
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,

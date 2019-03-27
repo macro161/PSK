@@ -28,10 +28,9 @@ public class Office {
 
     String address;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "office_apartment_id", nullable = false)
+    @OneToMany(mappedBy = "office")
     @JsonIgnore
-    OfficeApartment officeApartment;
+    List<ApartmentRoom> apartmentRooms;
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,

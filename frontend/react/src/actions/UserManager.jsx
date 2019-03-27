@@ -13,11 +13,19 @@ export const getAllEmployees = () => dispatch => {
       });
     });
 };
-export const removeUser = (Id) => {
-  return {
-    type: 'REMOVE_USER',
-    Id: Id,
-  }
+export const removeUser = (Id) => dispatch => {
+  utils.removeEmployeeHttp(Id)
+    .then(function (response) {
+      if (response.responseCode != 200) {
+        alert("Something wrong in delete")
+      }
+      else {
+        dispatch({
+          type: 'REMOVE_USER',
+          Id: Id,
+        });
+      }
+    });
 };
 export const updateUser = (Id) => {
   return {
