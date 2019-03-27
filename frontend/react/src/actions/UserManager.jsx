@@ -1,26 +1,17 @@
-
+import * as utils from '../utils/api/userManager'
 
 export const getAllEmployees = () => dispatch => {
-  let moc = [
-    {
-      id: '1',
-      name: 'Justas',
-      surname: 'Tvarijonas',
-      city : 'Subačius',
-      email: 'Tvarijonasjustas@gmail.com',
-    },
-    {
-      id: '2',
-      name: 'Matas',
-      surname: 'Savickis',
-      city : 'Šiauliai',
-      email: 'Matas.savickis@mif.stud.vu.lt',
-    }
-  ]
-  dispatch({
-    type: 'GET_ALL_EMPLOYEES',
-    employees: moc,
-  });
+  utils.getAllEmployeesHttp()
+    .then(function (response) {
+      if (response.responseCode != 200) {
+        alert("error, wrong response code")
+      }
+      console.log(response);
+      dispatch({
+        type: 'GET_ALL_EMPLOYEES',
+        employees: response.responseValue,
+      });
+    });
 };
 export const removeUser = (Id) => {
   return {
@@ -34,15 +25,13 @@ export const updateUser = (Id) => {
     Id: Id,
   }
 };
-export const registerUser = (name, surname, city, email, password) => dispatch =>{
-  dispatch({
-    type: 'ADD_USER',
-    user: {
-      id: email,
-      name: name,
-      surname: surname,
-      city: city,
-      email: email,
-    }
-  });
+export const registerUser = (name, surname, city, email, password) => dispatch => {
+  utils.registerEmployeeHttp({ name, surname, city, email, password })
+    .then(function (response) {
+      dispatch({
+        type: 'ADD_USER',
+        user: response.responseValue
+      });
+    });
+
 };

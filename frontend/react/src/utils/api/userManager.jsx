@@ -1,7 +1,7 @@
 import { getAll, post, put, deleteById } from './http';
 const userManagerUrl = "http://localhost:8080/employee/";
 
-export function removeEmployee(id) {
+export function removeEmployeeHttp(id) {
   let responseCode;
   return deleteById(userManagerUrl, id)
     .then(function (response) {
@@ -18,7 +18,7 @@ export function removeEmployee(id) {
     });
 }
 
-export function getAllEmplyees() {
+export function getAllEmployeesHttp() {
   let responseCode;
   return getAll(userManagerUrl)
     .then(function (response) {
@@ -34,9 +34,9 @@ export function getAllEmplyees() {
       };
     });
 }
-export function registerEmployee(employee) {
+export function registerEmployeeHttp(employee) {
   let responseCode;
-  return post(userManagerUrl + "register", employee)
+  return post(userManagerUrl + "add", employee)
     .then(function (response) {
       responseCode = response.status;
       if (responseCode === 201) {
@@ -50,7 +50,7 @@ export function registerEmployee(employee) {
       };
     });
 }
-export function registerEmployee(employee) {
+export function updateEmployeeHttp(employee) {
   let responseCode;
   return put(userManagerUrl + "update", employee)
     .then(function (response) {
