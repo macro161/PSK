@@ -19,7 +19,7 @@ export default class OfficeRegisterForm extends React.Component{
     }
 
     onSubmit(){
-        this.props.onSubmit(Math.floor(Math.random()*10000).toString(), this.state.city, this.state.address);
+        this.props.onSubmit(this.state.city, this.state.address);
     }
 
     render(){
