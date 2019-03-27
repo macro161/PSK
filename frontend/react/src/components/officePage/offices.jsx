@@ -106,7 +106,7 @@ Offices.propTypes = {
   offices: PropTypes.arrayOf(PropTypes.shape({
     city: PropTypes.string,
     address: PropTypes.string,
-    id: PropTypes.string,
+    id: PropTypes.int,
   })),
   getOffices: PropTypes.func,
   registerOffice: PropTypes.func,

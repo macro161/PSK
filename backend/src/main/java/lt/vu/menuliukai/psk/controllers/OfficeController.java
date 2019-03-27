@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/office")
 public class OfficeController {
     @Autowired
