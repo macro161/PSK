@@ -38,7 +38,7 @@ export function registerOfficeHttp(office){
     return post(officeUrl + "add", office)
         .then(function(response){
             responseCode = response.status;
-            if(responseCode === 201){
+            if(responseCode === 200){
                 return response.json();
             }
         })
