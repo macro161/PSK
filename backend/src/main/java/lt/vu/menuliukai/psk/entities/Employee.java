@@ -27,6 +27,7 @@ public class Employee {
 
     String name;
     String surname;
+    String city;
     String email;
     String password; // lul
 

@@ -23,7 +23,7 @@ export default class EmployeesTableRow extends React.Component {
       <tr>
         <td className="name">{this.props.name}</td>
         <td className="surname">{this.props.surname}</td>
-        <td className="city">{this.props.city}</td>
+        <td className="cityEmp">{this.props.city}</td>
         <td className="email">{this.props.email}</td>
         <td className="actions">
         <IconButton aria-label="Edit" color="primary" onClick = {this.editThis.bind(this)} disabled = {this.props.disableButtons}>
@@ -40,7 +40,7 @@ export default class EmployeesTableRow extends React.Component {
 
 
 EmployeesTableRow.propTypes = {
-  Id: PropTypes.string.isRequired,
+  Id: PropTypes.any,
   name: PropTypes.string.isRequired,
   surname: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,

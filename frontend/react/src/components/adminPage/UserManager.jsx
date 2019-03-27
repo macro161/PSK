@@ -111,7 +111,7 @@ export default connect(
 
 UserManager.propTypes = {
   employees: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.any,
     name: PropTypes.string,
     surname: PropTypes.string,
     city: PropTypes.string,

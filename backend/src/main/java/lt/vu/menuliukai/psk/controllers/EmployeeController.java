@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/employee")
 public class EmployeeController {
     @Autowired
@@ -29,7 +30,7 @@ public class EmployeeController {
         }
         return employee;
     }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Employee add(@RequestBody Employee employee) {
         return employeeDao.save(employee);
