@@ -14,22 +14,29 @@ export const getOffices = () => dispatch => {
       })
   }
   
-  export const registerOffice = (id, city, address)=> dispatch=>{
-      dispatch({
-          type: "ADD_OFFICE",
-          office:{
-              id:id,
-              city: city,
-              address: address,
-          }
+  export const registerOffice = (city, address)=> dispatch=>{
+      utils.registerOfficeHttp({city, address})
+        .then(function (response){
+          dispatch({
+            type: "ADD_OFFICE",
+            office: response.responseValue
+        })
       })
   }
 
   export const deleteOffice = (id) => dispatch=>{
-    dispatch({
-      type:"DELETE_OFFICE",
-      id: id
-    })
+    utils.removeOfficeHttp(id)
+      .then(function(response){
+        if(response.responseCode != 200){
+          alert("Vel justas cia deda allert'a tai ir as pridesiu")
+        }
+        else{
+          dispatch({
+            type:"DELETE_OFFICE",
+            id: id
+        })}
+      })
+    
   }
 
   export const editOffice = (id, city, address) => dispatch=>{

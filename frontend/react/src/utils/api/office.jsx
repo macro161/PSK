@@ -1,7 +1,20 @@
 import { getAll, post, put, deleteById } from './http';
-const officeUrl = "http://localhost:8080/offices/";
+const officeUrl = "http://localhost:8080/office/";
 
-export function removeOfficeHttp(id){}
+export function removeOfficeHttp(id){
+    let responseCode;
+    return deleteById(officeUrl, id)
+        .then(function(response){
+            responseCode = response.status;
+            return response;
+        })
+        .then(function(responseValue){
+            return {
+                responseCode,
+                responseValue,
+            };
+        });
+}
 
 export function getAllOfficesHttp(){
     let responseCode;
@@ -20,7 +33,37 @@ export function getAllOfficesHttp(){
         });
 }
 
-export function registerOfficeHttp(office){}
+export function registerOfficeHttp(office){
+    let responseCode;
+    return post(officeUrl + "add", office)
+        .then(function(response){
+            responseCode = response.status;
+            if(responseCode === 201){
+                return response.json();
+            }
+        })
+        .then(function(responseValue){
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
 
-export function updateOffice(office){}
+export function updateOffice(office){
+    let responseCode;
+    return put(officeUrl + "update", office)
+        .then(function(response){
+            responseCode = response.status;
+            if(responseCode === 200){
+                return response.json();
+            }
+        })
+        .then(function (responseValue){
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
 
