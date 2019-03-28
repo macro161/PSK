@@ -34,8 +34,15 @@ public class Office {
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "office")
+            mappedBy = "toOffice")
+    @JsonIgnore
     List<Trip> tripsToOffice;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "fromOffice")
+    @JsonIgnore
+    List<Trip> tripsFromOffice;
 
 
 }
