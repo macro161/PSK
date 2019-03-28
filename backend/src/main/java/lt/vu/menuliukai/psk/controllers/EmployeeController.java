@@ -44,4 +44,14 @@ public class EmployeeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("employee with id %d not found", id));
         }
     }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Employee edit(@RequestBody Employee employee, @PathVariable long id){
+        Employee emp = employeeDao.findById(id);
+        if(emp == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("employee with id %d not found", id));
+        }
+        employee.setId(id);
+        return employeeDao.save(employee);
+    }
 }
