@@ -28,7 +28,7 @@ const themetwo = createMuiTheme({
 
 
 
-export default class OrgDataTableRow extends React.Component {
+export default class TravelDataTableRow extends React.Component {
     constructor(props) {
      super(props);
     }
@@ -78,7 +78,7 @@ export default class OrgDataTableRow extends React.Component {
   }
 }
 
-OrgDataTableRow.propTypes = {
+TravelDataTableRow.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string,
     surname: PropTypes.string,

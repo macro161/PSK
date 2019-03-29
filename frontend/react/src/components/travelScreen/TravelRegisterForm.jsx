@@ -6,7 +6,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
 
 
-export default class OrgRegisterForm extends React.Component {
+export default class TravelRegisterForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -99,7 +99,7 @@ export default class OrgRegisterForm extends React.Component {
   }
 }
 
-OrgRegisterForm.propTypes = {
+TravelRegisterForm.propTypes = {
   name: PropTypes.any,
   surname: PropTypes.any,
   departureTime: PropTypes.any,
@@ -109,7 +109,7 @@ OrgRegisterForm.propTypes = {
   onSubmit: PropTypes.any,
 };
 
-OrgRegisterForm.defaulProps = {
+TravelRegisterForm.defaulProps = {
   name: '',
   surname: '',
   departureTime: '',

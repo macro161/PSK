@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-export default class OrgEditForm extends React.Component{
+export default class TravelEditForm extends React.Component{
     constructor(props){
         super(props);
 

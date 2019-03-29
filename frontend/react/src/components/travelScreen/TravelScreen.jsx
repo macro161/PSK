@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import * as actions from '../../actions/OrgScreen';
-import DataTable from './OrgDataTable';
+import * as actions from '../../actions/TravelScreen';
+import DataTable from './TravelDataTable';
 import InfoScreen from '../employeeScreen/InfoScreen';
-import EditForm from './OrgEditForm';
-import RegisterForm from './OrgRegisterForm';
+import EditForm from './TravelEditForm';
+import RegisterForm from './TravelRegisterForm';
 import Button from '@material-ui/core/Button';
 
 const initialState = {
@@ -20,7 +20,7 @@ const initialState = {
     showRegister: false,
     show: false
   };
-class OrgScreen extends React.Component {
+class TravelScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState;
@@ -98,7 +98,7 @@ class OrgScreen extends React.Component {
 }
 
 export default connect(
-  (state) => ({travels: state.OrgScreen.travels}),
+  (state) => ({travels: state.TravelScreen.travels}),
   (dispatch) => bindActionCreators(
     {
         getAllTravels: actions.getAllTravels,
@@ -107,9 +107,9 @@ export default connect(
         editTravel: actions.editTravel,
         removeTravel: actions.removeTravel,
         registerTravel: actions.registerTravel,
-  }, dispatch))(OrgScreen);
+  }, dispatch))(TravelScreen);
 
-OrgScreen.propTypes = {
+TravelScreen.propTypes = {
   travels: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
