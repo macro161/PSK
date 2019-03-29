@@ -1,7 +1,5 @@
 package lt.vu.menuliukai.psk.controllers;
 
-import lombok.Getter;
-import lombok.Setter;
 import lt.vu.menuliukai.psk.dao.EmployeeDao;
 import lt.vu.menuliukai.psk.entities.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
