@@ -12,6 +12,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -30,11 +31,7 @@ public class Trip {
 
     Date returningDate;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "check_list_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    TripChecklist checkList;
+    double price;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -46,15 +43,21 @@ public class Trip {
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "office_id", nullable = false)
+    @JoinColumn(name = "from_office_id", nullable = false)
     @JsonIgnore
-    Office office;
+    Office fromOffice;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "to_office_id", nullable = false)
+    @JsonIgnore
+    Office toOffice;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "apartment_room_id", nullable = false)
     @JsonIgnore
     ApartmentRoom apartmentRoom;
 
-
+    @OneToMany(mappedBy = "trip")
+    List<TripChecklist> checklistLists;
 
 }
