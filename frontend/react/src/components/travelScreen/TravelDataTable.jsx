@@ -1,8 +1,8 @@
 import React from 'react';
-import TableRow from './OrgDataTableRow';
+import TableRow from './TravelDataTableRow';
 import PropTypes from 'prop-types';
 
-export default class OrgDataTable extends React.Component {
+export default class TravelDataTable extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -51,7 +51,7 @@ export default class OrgDataTable extends React.Component {
 }
   
 
-OrgDataTable.propTypes = {
+TravelDataTable.propTypes = {
     travels: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string,
         name: PropTypes.string,

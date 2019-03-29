@@ -5,10 +5,10 @@ import UserManager from './UserManager'
 import StatisticScreen from './StatisticsScreen'
 import Offices from "./Offices"
 import EmployeeScreen from './EmployeeScreen';
-import OrgScreen from './OrgScreen';
+import TravelScreen from './TravelScreen';
 
 const rootReducer = combineReducers({ 
-  routing: routerReducer, number, UserManager, StatisticScreen, EmployeeScreen, Offices, OrgScreen
+  routing: routerReducer, number, UserManager, StatisticScreen, EmployeeScreen, Offices, TravelScreen
 });
 
 export default rootReducer;
