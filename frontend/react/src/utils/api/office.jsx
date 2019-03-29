@@ -51,8 +51,9 @@ export function registerOfficeHttp(office){
 }
 
 export function updateOffice(office){
+    console.log(office)
     let responseCode;
-    return put(officeUrl + "update", office)
+    return put(officeUrl + "edit/" + office.id, office)
         .then(function(response){
             responseCode = response.status;
             if(responseCode === 200){

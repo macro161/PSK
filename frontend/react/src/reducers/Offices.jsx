@@ -15,12 +15,14 @@ export default (state= initialState, action) => {
             ...state, offices: [...state.offices, action.office]
         }
         case "EDIT_OFFICE":
-        const offices = state.offices
-        const index = offices.findIndex(i => i.id === action.office.id)
-        offices.splice(index, 1, action.office)
-        return {
-            ...state, offices: offices
-        }
+        const updatedOffices = state.offices.map(office => {
+            if(office.id === action.office.id){
+              return action.office 
+            }
+            return office
+          })
+          return {...state, offices: updatedOffices}
+    
         case "DELETE_OFFICE":
         const list = Array.from(state.offices)
         const ind = list.findIndex(i => i.id === action.id)

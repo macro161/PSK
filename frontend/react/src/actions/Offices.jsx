@@ -39,7 +39,7 @@ export const getOffices = () => dispatch => {
     
   }
 
-  export const editOffice = (id,city, address) => dispatch=>{
+  export const editOffice = (id,city, address) => dispatch =>{
     utils.updateOffice({id,city,address})
       .then(function(response){
         if(response.responseCode != 200){

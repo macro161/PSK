@@ -11,8 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-@Getter
-@Setter
+
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/employee")
@@ -55,7 +54,7 @@ public class EmployeeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("employee with id %d not found", id));
         }
 
-
+        emp.setId(id);
 
         return employeeDao.save(emp);
     }

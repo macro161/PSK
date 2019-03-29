@@ -10,6 +10,7 @@ export default class Office extends React.Component {
         this.state={
           showEdit:false,
         }
+        console.log
 
     }
 

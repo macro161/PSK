@@ -32,6 +32,7 @@ public class Office {
     @JsonIgnore
     List<ApartmentRoom> apartmentRooms;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "office")
