@@ -12,9 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 @Getter
 @Setter
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,6 +36,7 @@ public class Office {
             fetch = FetchType.LAZY,
             mappedBy = "office")
     List<Trip> tripsToOffice;
+
 
 
 }

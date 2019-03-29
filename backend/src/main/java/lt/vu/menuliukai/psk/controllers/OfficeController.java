@@ -44,4 +44,17 @@ public class OfficeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("office with id %d not found", id));
         }
     }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Office edit(@RequestBody Office office, @PathVariable long id){
+        Office ofc = officeDao.findById(id);
+        if(ofc == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Office with id %d not found", id));
+        }
+
+        ofc.setAddress(office.getAddress());
+        ofc.setCity(office.getCity());
+
+        return officeDao.save(ofc);
+    }
 }

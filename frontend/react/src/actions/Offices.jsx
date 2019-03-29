@@ -39,13 +39,23 @@ export const getOffices = () => dispatch => {
     
   }
 
-  export const editOffice = (id, city, address) => dispatch=>{
-    dispatch({
-      type:"EDIT_OFFICE",
-      office:{
-        id: id,
-        city: city,
-        address: address,
-      }
-    })
+  export const editOffice = (id,city, address) => dispatch=>{
+    utils.updateOffice({id,city,address})
+      .then(function(response){
+        if(response.responseCode != 200){
+          alert("100 proc nebus alerto")
+        }
+        else{
+          dispatch({
+            type:"EDIT_OFFICE",
+            office:{
+              id: id,
+              city: city,
+              address: address,
+            }
+          })
+        }
+      })
+    
+
   }

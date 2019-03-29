@@ -104,6 +104,7 @@ export default connect(
 
 Offices.propTypes = {
   offices: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
     city: PropTypes.string,
     address: PropTypes.string
   })),
