@@ -51,7 +51,6 @@ export function registerOfficeHttp(office){
 }
 
 export function updateOffice(office){
-    console.log(office)
     let responseCode;
     return put(officeUrl + "edit/" + office.id, office)
         .then(function(response){
