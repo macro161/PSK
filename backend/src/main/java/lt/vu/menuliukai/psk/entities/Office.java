@@ -12,9 +12,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 @Getter
 @Setter
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +32,7 @@ public class Office {
     @JsonIgnore
     List<ApartmentRoom> apartmentRooms;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "toOffice")
@@ -43,6 +44,7 @@ public class Office {
             mappedBy = "fromOffice")
     @JsonIgnore
     List<Trip> tripsFromOffice;
+
 
 
 }

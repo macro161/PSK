@@ -60,8 +60,8 @@ class Offices extends React.Component {
     }
 
 
-    onSubmit(id, city, address){
-      this.props.registerOffice(id, city, address);
+    onSubmit(city, address){
+      this.props.registerOffice(city, address);
       this.setState({
         showRegistration:false,
         showPopup:false,
@@ -104,9 +104,9 @@ export default connect(
 
 Offices.propTypes = {
   offices: PropTypes.arrayOf(PropTypes.shape({
-    city: PropTypes.string,
-    address: PropTypes.string,
     id: PropTypes.string,
+    city: PropTypes.string,
+    address: PropTypes.string
   })),
   getOffices: PropTypes.func,
   registerOffice: PropTypes.func,

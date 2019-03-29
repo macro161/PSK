@@ -10,7 +10,6 @@ export default class Office extends React.Component {
         this.state={
           showEdit:false,
         }
-
     }
 
     editItem(){
@@ -22,7 +21,7 @@ export default class Office extends React.Component {
     }
 
     render() {
-    
+
       return (
         <div className="list">
           <span><img src={navicon} width={70} className="icon"/></span>
@@ -43,4 +42,4 @@ export default class Office extends React.Component {
         </div>
       );
     }
-    }
+    } 

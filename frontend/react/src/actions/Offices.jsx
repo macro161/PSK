@@ -1,40 +1,61 @@
-  export const getOffices = () => dispatch => {
-    
-    const testData = [
-        {id:"100", city:"Vilnius", address:"135 Zalgirio g., Vilnius, LT-08217, Lithuania"},
-        {id: "101", city:"Kaunas", address:"11d. Juozapaviciaus pr., Kaunas, LT-45252, Lithuania"},
-      ];
-    dispatch({
-      type: 'GET_OFFICES',
-      offices: testData,
-    });
+import * as utils from '../utils/api/office'
+
+export const getOffices = () => dispatch => {
+    utils.getAllOfficesHttp()
+      .then(function(response){
+        if(response.responseCode != 200){
+          alert("As tikrai gausiu dusimtini")
+        }
+        console.log(response);
+        dispatch({
+          type: 'GET_OFFICES',
+          offices: response.responseValue,
+        });
+      })
   }
   
-  export const registerOffice = (id, city, address)=> dispatch=>{
-      dispatch({
-          type: "ADD_OFFICE",
-          office:{
-              id:id,
-              city: city,
-              address: address,
-          }
+  export const registerOffice = (city, address)=> dispatch=>{
+      utils.registerOfficeHttp({city, address})
+        .then(function (response){
+          dispatch({
+            type: "ADD_OFFICE",
+            office: response.responseValue
+        })
       })
   }
 
   export const deleteOffice = (id) => dispatch=>{
-    dispatch({
-      type:"DELETE_OFFICE",
-      id: id
-    })
+    utils.removeOfficeHttp(id)
+      .then(function(response){
+        if(response.responseCode != 200){
+          alert("Vel justas cia deda allert'a tai ir as pridesiu")
+        }
+        else{
+          dispatch({
+            type:"DELETE_OFFICE",
+            id: id
+        })}
+      })
+    
   }
 
-  export const editOffice = (id, city, address) => dispatch=>{
-    dispatch({
-      type:"EDIT_OFFICE",
-      office:{
-        id: id,
-        city: city,
-        address: address,
-      }
-    })
+  export const editOffice = (id,city, address) => dispatch =>{
+    utils.updateOffice({id,city,address})
+      .then(function(response){
+        if(response.responseCode != 200){
+          alert("100 proc nebus alerto")
+        }
+        else{
+          dispatch({
+            type:"EDIT_OFFICE",
+            office:{
+              id: id,
+              city: city,
+              address: address,
+            }
+          })
+        }
+      })
+    
+
   }
