@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import lt.vu.menuliukai.psk.converters.IdConverter;
+import lt.vu.menuliukai.psk.converters.IdListConverter;
 
 @Getter
 @Setter
@@ -30,7 +30,7 @@ public class Office {
 
     @OneToMany(mappedBy = "office")
     @JsonProperty("apartment_rooms")
-    @JsonSerialize(converter = IdConverter.class)
+    @JsonSerialize(converter = IdListConverter.class)
     List<ApartmentRoom> apartmentRooms;
 
     @JsonIgnore

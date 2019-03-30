@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 
 
-public class IdConverter extends StdConverter<Object, List<Long>> {
+public class IdListConverter extends StdConverter<Object, List<Long>> {
     private IdObjectToLongConverter converter = new IdObjectToLongConverter();
 
     @Override
