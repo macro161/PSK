@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Getter
@@ -36,7 +34,6 @@ public class Office {
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "toOffice")
-    @JsonIgnore
     List<Trip> tripsToOffice;
 
     @OneToMany(cascade = CascadeType.ALL,
