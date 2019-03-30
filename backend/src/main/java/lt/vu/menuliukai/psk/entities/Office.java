@@ -3,13 +3,15 @@ package lt.vu.menuliukai.psk.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
+import lt.vu.menuliukai.psk.converters.IdConverter;
 
 @Getter
 @Setter
@@ -27,7 +29,8 @@ public class Office {
     String address;
 
     @OneToMany(mappedBy = "office")
-    @JsonIgnore
+    @JsonProperty("apartment_rooms")
+    @JsonSerialize(converter = IdConverter.class)
     List<ApartmentRoom> apartmentRooms;
 
     @JsonIgnore
@@ -36,12 +39,9 @@ public class Office {
             mappedBy = "toOffice")
     List<Trip> tripsToOffice;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "fromOffice")
-    @JsonIgnore
     List<Trip> tripsFromOffice;
-
-
-
 }

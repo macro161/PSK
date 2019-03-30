@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
-@RequestMapping("/office/apartment/room")
+@RequestMapping("/office/apartment")
 public class ApartmentRoomController {
     @Autowired
     private ApartmentRoomDao apartmentRoomDao;
@@ -21,13 +21,17 @@ public class ApartmentRoomController {
         return apartmentRoomDao.findAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApartmentRoom get(@PathVariable long id) {
+    private ApartmentRoom findbyId(long id) {
         ApartmentRoom apartmentRoom = apartmentRoomDao.findById(id);
         if (apartmentRoom == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("apartment room with id %d not found", id));
         }
         return apartmentRoom;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ApartmentRoom get(@PathVariable long id) {
+        return findbyId(id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

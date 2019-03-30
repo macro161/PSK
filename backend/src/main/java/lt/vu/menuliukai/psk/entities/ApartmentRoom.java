@@ -3,12 +3,14 @@ package lt.vu.menuliukai.psk.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
+import lt.vu.menuliukai.psk.converters.LongToOfficeConverter;
 
 import java.util.List;
 
@@ -32,11 +34,13 @@ public class ApartmentRoom {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "office_apartment_id", nullable = false)
-    @JsonIgnore
+    @JsonDeserialize(converter = LongToOfficeConverter.class)
+    @JsonSerialize(converter = IdObjectToLongConverter.class)
     Office office;
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "apartmentRoom")
+    @JsonIgnore
     List<Trip> trips;
 }
