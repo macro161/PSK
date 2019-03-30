@@ -1,8 +1,9 @@
 package lt.vu.menuliukai.psk.controllers;
 
-import lt.vu.menuliukai.psk.dao.OfficeApartmentDao;
+import lt.vu.menuliukai.psk.dao.ApartmentRoomDao;
 import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.dto.OfficeDto;
+import lt.vu.menuliukai.psk.entities.ApartmentRoom;
 import lt.vu.menuliukai.psk.entities.Office;
 import lt.vu.menuliukai.psk.util.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -24,7 +23,7 @@ public class OfficeController {
     private OfficeDao officeDao;
 
     @Autowired
-    OfficeApartmentDao officeApartmentDao;
+    ApartmentRoomDao apartmentRoomDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<OfficeDto> index() {
@@ -55,23 +54,25 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Office edit(@RequestBody Office office, @PathVariable long id){
-        Office ofc = officeDao.findById(id);
-        if(ofc == null){
+    public Office edit(@RequestBody OfficeDto officeDto, @PathVariable long id) {
+        Office office = officeDao.findById(id);
+        if (office == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Office with id %d not found", id));
         }
 
-        ofc.setAddress(office.getAddress());
-        ofc.setCity(office.getCity());
+        office.setAddress(officeDto.getAddress());
+        office.setCity(officeDto.getCity());
 
-        return officeDao.save(ofc);
+        return officeDao.save(office);
     }
 
     private Office convert(OfficeDto officeDto) {
         Office office = new Office();
         office.setAddress(officeDto.getAddress());
         office.setCity(officeDto.getCity());
-        office.setOfficeApartment(officeApartmentDao.findById(officeDto.getOfficeApartmentId()));
+        office.setApartmentRooms(
+                officeDto.getApartmentRooms().stream().map(id -> apartmentRoomDao.findById(id).get())
+                .collect(Collectors.toList()));
         return office;
     }
 
@@ -79,7 +80,9 @@ public class OfficeController {
         OfficeDto officeDto = new OfficeDto();
         officeDto.setAddress(office.getAddress());
         officeDto.setCity(office.getCity());
-        officeDto.setOfficeApartmentId(office.getOfficeApartment().getId());
+        officeDto.setApartmentRooms(
+                office.getApartmentRooms().stream().map(ApartmentRoom::getId)
+                .collect(Collectors.toList()));
         return officeDto;
     }
 }

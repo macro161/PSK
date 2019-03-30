@@ -41,7 +41,4 @@ public class Office {
             mappedBy = "fromOffice")
     @JsonIgnore
     List<Trip> tripsFromOffice;
-
-
-
 }
