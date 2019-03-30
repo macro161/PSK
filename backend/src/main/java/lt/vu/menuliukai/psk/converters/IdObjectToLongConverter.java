@@ -9,7 +9,6 @@ import java.util.Arrays;
 public class IdObjectToLongConverter extends StdConverter<Object, Long> {
     @Override
     public Long convert(Object value) {
-
         Class klass = value.getClass();
         Method method = Arrays.stream(klass.getMethods()).filter(m -> m.getName().equals("getId")).findFirst().get();
         try {

@@ -1,13 +1,12 @@
 package lt.vu.menuliukai.psk.controllers;
 
+import lt.vu.menuliukai.psk.converters.ApartmentRoomConverter;
 import lt.vu.menuliukai.psk.dao.ApartmentRoomDao;
 import lt.vu.menuliukai.psk.entities.ApartmentRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -16,17 +15,16 @@ public class ApartmentRoomController {
     @Autowired
     private ApartmentRoomDao apartmentRoomDao;
 
+    @Autowired
+    ApartmentRoomConverter converter;
+
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<ApartmentRoom> index() {
         return apartmentRoomDao.findAll();
     }
 
     private ApartmentRoom findbyId(long id) {
-        ApartmentRoom apartmentRoom = apartmentRoomDao.findById(id);
-        if (apartmentRoom == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("apartment room with id %d not found", id));
-        }
-        return apartmentRoom;
+        return converter.convert(id);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -44,7 +42,7 @@ public class ApartmentRoomController {
         try {
             apartmentRoomDao.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("apartment room with id %d not found", id));
+            converter.throwException(id);
         }
     }
 }
