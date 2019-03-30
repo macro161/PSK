@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LongToOfficeConverter extends StdConverter<Long, Office> {
+public class OfficeConverter extends StdConverter<Long, Office> {
     @Autowired
     OfficeDao officeDao;
 
@@ -15,5 +15,4 @@ public class LongToOfficeConverter extends StdConverter<Long, Office> {
     public Office convert(Long id) {
         return Converter.convert(officeDao, "apartment room", id);
     }
-
 }

@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
-import lt.vu.menuliukai.psk.converters.LongToOfficeConverter;
+import lt.vu.menuliukai.psk.converters.OfficeConverter;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class ApartmentRoom {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "office_apartment_id", nullable = false)
-    @JsonDeserialize(converter = LongToOfficeConverter.class)
+    @JsonDeserialize(converter = OfficeConverter.class)
     @JsonSerialize(converter = IdObjectToLongConverter.class)
     Office office;
 

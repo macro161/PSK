@@ -1,7 +1,6 @@
 package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.converters.Converter;
-import lt.vu.menuliukai.psk.converters.LongToOfficeConverter;
 import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.entities.Office;
 import org.springframework.beans.factory.annotation.Autowired;
