@@ -1,5 +1,6 @@
 package lt.vu.menuliukai.psk.controllers;
 
+import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.converters.LongToOfficeConverter;
 import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.entities.Office;
@@ -16,11 +17,10 @@ import java.util.function.Supplier;
 @CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/office")
 public class OfficeController {
-    @Autowired
-    private OfficeDao officeDao;
+    private final String objectName = "office";
 
     @Autowired
-    private LongToOfficeConverter converter;
+    private OfficeDao officeDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Office> index() {
@@ -29,7 +29,7 @@ public class OfficeController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Office get(@PathVariable long id) {
-        return converter.convert(id);
+        return Converter.convert(officeDao, objectName, id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,7 +42,7 @@ public class OfficeController {
         try {
             officeDao.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
-            converter.throwException(id);
+            Converter.throwException(objectName, id);
         }
     }
 
@@ -57,7 +57,7 @@ public class OfficeController {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Office edit(@RequestBody Office office, @PathVariable long id) {
-        Office baseOffice = converter.convert(id);
+        Office baseOffice = Converter.convert(officeDao, objectName, id);
 
         change(office::getAddress, baseOffice::setAddress);
         change(office::getCity, baseOffice::setCity);

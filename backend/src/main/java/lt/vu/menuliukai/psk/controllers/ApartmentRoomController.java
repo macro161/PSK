@@ -1,6 +1,7 @@
 package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.converters.ApartmentRoomConverter;
+import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.ApartmentRoomDao;
 import lt.vu.menuliukai.psk.entities.ApartmentRoom;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/office/apartment")
 public class ApartmentRoomController {
+    private final String objectName = "apartment room";
+
     @Autowired
     private ApartmentRoomDao apartmentRoomDao;
 
@@ -42,7 +45,7 @@ public class ApartmentRoomController {
         try {
             apartmentRoomDao.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
-            converter.throwException(id);
+            Converter.throwException(objectName, id);
         }
     }
 }
