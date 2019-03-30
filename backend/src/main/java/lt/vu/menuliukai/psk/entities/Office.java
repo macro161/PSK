@@ -2,14 +2,12 @@ package lt.vu.menuliukai.psk.entities;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -27,10 +25,8 @@ public class Office {
     String address;
 
     @OneToMany(mappedBy = "office")
-    @JsonIgnore
     List<ApartmentRoom> apartmentRooms;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "toOffice")
@@ -39,6 +35,5 @@ public class Office {
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "fromOffice")
-    @JsonIgnore
     List<Trip> tripsFromOffice;
 }
