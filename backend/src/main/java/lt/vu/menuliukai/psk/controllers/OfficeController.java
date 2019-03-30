@@ -8,6 +8,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -43,13 +46,23 @@ public class OfficeController {
         }
     }
 
+    private <T> void change(Supplier<T> getter, Consumer<T> setter) {
+        try {
+            T value = getter.get();
+            if (value != null) {
+                setter.accept(value);
+            }
+        } catch (Exception ignored) { }
+    }
+
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Office edit(@RequestBody Office office, @PathVariable long id){
+    public Office edit(@RequestBody Office office, @PathVariable long id) {
         Office baseOffice = converter.convert(id);
 
-        baseOffice.setAddress(office.getAddress());
-        baseOffice.setCity(office.getCity());
+        change(office::getAddress, baseOffice::setAddress);
+        change(office::getCity, baseOffice::setCity);
+        change(office::getApartmentRooms, baseOffice::setApartmentRooms);
 
-        return officeDao.save(office);
+        return officeDao.save(baseOffice);
     }
 }
