@@ -35,9 +35,6 @@ public class Employee {
     @JoinTable(name = "employee_trips",
             joinColumns = { @JoinColumn(name = "employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "trip_id") })
+    @JsonIgnore
     private Set<Trip> trips = new HashSet<>();
-
-
-
-
 }
