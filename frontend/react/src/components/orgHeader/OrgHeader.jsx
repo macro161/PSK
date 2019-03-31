@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import Home from '@material-ui/icons/home';
-import Flight from '@material-ui/icons/flight';
-import People from '@material-ui/icons/people';
-import Chart from '@material-ui/icons/equalizer';
+import Home from '@material-ui/icons/Home';
+import Flight from '@material-ui/icons/Flight';
+import People from '@material-ui/icons/People';
+import Chart from '@material-ui/icons/Equalizer';
 import '../../css/bootstrap.css';
 
 const OrgHeader = () => {

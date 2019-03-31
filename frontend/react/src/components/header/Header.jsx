@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import '../../css/bootstrap.css';
 import Button from '@material-ui/core/Button';
-import Exit from '@material-ui/icons/exitToApp';
+import Exit from '@material-ui/icons/ExitToApp';
 
 
 

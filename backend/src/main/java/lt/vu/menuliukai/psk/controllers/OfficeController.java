@@ -1,19 +1,23 @@
 package lt.vu.menuliukai.psk.controllers;
 
+import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.entities.Office;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/office")
 public class OfficeController {
+    private final String objectName = "office";
+
     @Autowired
     private OfficeDao officeDao;
 
@@ -24,11 +28,7 @@ public class OfficeController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Office get(@PathVariable long id) {
-        Office office = officeDao.findById(id);
-        if (office == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("office with id %d not found", id));
-        }
-        return office;
+        return Converter.convert(officeDao, objectName, id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,20 +41,27 @@ public class OfficeController {
         try {
             officeDao.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("office with id %d not found", id));
+            Converter.throwException(objectName, id);
         }
     }
 
+    private <T> void change(Supplier<T> getter, Consumer<T> setter) {
+        try {
+            T value = getter.get();
+            if (value != null) {
+                setter.accept(value);
+            }
+        } catch (Exception ignored) { }
+    }
+
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Office edit(@RequestBody Office office, @PathVariable long id){
-        Office ofc = officeDao.findById(id);
-        if(ofc == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Office with id %d not found", id));
-        }
+    public Office edit(@RequestBody Office office, @PathVariable long id) {
+        Office baseOffice = Converter.convert(officeDao, objectName, id);
 
-        ofc.setAddress(office.getAddress());
-        ofc.setCity(office.getCity());
+        change(office::getAddress, baseOffice::setAddress);
+        change(office::getCity, baseOffice::setCity);
+        change(office::getApartmentRooms, baseOffice::setApartmentRooms);
 
-        return officeDao.save(ofc);
+        return officeDao.save(baseOffice);
     }
 }

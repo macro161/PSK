@@ -4,5 +4,4 @@ import lt.vu.menuliukai.psk.entities.Trip;
 import org.springframework.data.repository.CrudRepository;
 
 public interface TripDao extends CrudRepository<Trip, Long> {
-    Trip findById(long id);
 }

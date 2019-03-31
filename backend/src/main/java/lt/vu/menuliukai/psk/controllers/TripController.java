@@ -1,18 +1,19 @@
 package lt.vu.menuliukai.psk.controllers;
 
+import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.TripDao;
 import lt.vu.menuliukai.psk.entities.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
 @RequestMapping("/trip")
 public class TripController {
+    private final String objectName = "trip";
+
     @Autowired
     private TripDao tripDao;
 
@@ -23,11 +24,7 @@ public class TripController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Trip get(@PathVariable long id) {
-        Trip trip = tripDao.findById(id);
-        if (trip == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("trip with id %d not found", id));
-        }
-        return trip;
+        return Converter.convert(tripDao, objectName, id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,7 +37,7 @@ public class TripController {
         try {
             tripDao.deleteById(id);
         } catch (EmptyResultDataAccessException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("trip with id %d not found", id));
+            Converter.throwException(objectName, id);
         }
     }
 }

@@ -31,16 +31,10 @@ public class Employee {
     String email;
     String password; // lul
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "employee_trips",
             joinColumns = { @JoinColumn(name = "employee_id") },
             inverseJoinColumns = { @JoinColumn(name = "trip_id") })
+    @JsonIgnore
     private Set<Trip> trips = new HashSet<>();
-
-
-
-
 }
