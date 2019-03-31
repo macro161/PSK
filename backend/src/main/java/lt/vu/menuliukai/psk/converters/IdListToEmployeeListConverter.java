@@ -15,6 +15,6 @@ public class IdListToEmployeeListConverter extends StdConverter<List<Long>, List
 
     @Override
     public List<Employee> convert(List<Long> ids) {
-        ids.stream().map(id -> converter.convert(id)).collect(Collectors.toList());
+        return ids.stream().map(id -> converter.convert(id)).collect(Collectors.toList());
     }
 }

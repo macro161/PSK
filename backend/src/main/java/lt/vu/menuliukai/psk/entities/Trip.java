@@ -33,14 +33,6 @@ public class Trip {
 
     double price;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "trips")
-    private Set<Employee> employees = new HashSet<>();
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "trips")
     @JsonSerialize(converter = IdListConverter.class)
     @JsonDeserialize(converter = IdListToEmployeeListConverter.class)
