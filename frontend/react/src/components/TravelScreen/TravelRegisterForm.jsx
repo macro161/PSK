@@ -12,6 +12,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = theme => ({
   input: {
@@ -173,7 +178,7 @@ class TravelRegisterForm extends React.Component {
     };
 
   }
-
+  
   handleChange(e) {
     this.setState({
       selectedEmployee: e,
@@ -214,13 +219,12 @@ class TravelRegisterForm extends React.Component {
       }),
     };
     return (
-      <div className='popup'>
-        <div className='popup_inner'>
-          <header className="form-header">
-            <span className="form-header-text">Register new travel</span>
-            <span className="form-header-close" onClick={this.props.onClose}>✖</span>
-          </header>
-          <div className="form-container">
+      <Dialog
+        open={true}
+        onClose={this.props.onClose}
+        aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Create new trip</DialogTitle>
+        <DialogContent>
             <NoSsr>
               <Select
                 classes={classes}
@@ -266,7 +270,6 @@ class TravelRegisterForm extends React.Component {
                 onChange={this.inputChange.bind(this)}
               />
               <br />
-              <div classes={classes.divider}>
                 <Select
                   classes={classes}
                   styles={selectStyles}
@@ -313,12 +316,9 @@ class TravelRegisterForm extends React.Component {
                     Cancel
             </Button>
                 </div>
-                </div>
-                </NoSsr>
-          </div>
-        </div>
-      </div>
-
+          </NoSsr>
+        </DialogContent>
+        </Dialog>
     );
   }
 }
