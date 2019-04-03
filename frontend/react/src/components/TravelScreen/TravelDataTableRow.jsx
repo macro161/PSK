@@ -59,14 +59,14 @@ export default class TravelDataTableRow extends React.Component {
         <td className="name">{this.props.name}</td>
         <td className="surname">{this.props.surname}</td>
         <td className="departureTime">{this.props.departureTime}</td>
-        <td><Button className={className} variant="contained" disabled={this.props.show} color="primary" size = "small" >Plain tickets</Button></td>
+        <td><Button className={className} variant="contained" disabled={this.props.show} color="primary" size = "small" >View</Button></td>
         <td className="accomodation">{this.props.accomodation}</td>
         <td>{this.props.approved ?
-          <MuiThemeProvider theme={themetwo}><Button className={className} variant="contained" color="primary" disabled={this.props.show} onClick={this.cancel.bind(this)}>Cancel</Button></MuiThemeProvider>
+          <MuiThemeProvider theme={themetwo}><Button className={className} variant="contained" color="primary" disabled={this.props.show} onClick={this.cancel.bind(this)} size = "small" >Cancel</Button></MuiThemeProvider>
           :
-          <MuiThemeProvider theme={themeone}><Button className={className} variant="contained" color="primary" disabled={this.props.show} onClick={this.approve.bind(this)}>Approve</Button></MuiThemeProvider>
+          <MuiThemeProvider theme={themeone}><Button className={className} variant="contained" color="primary" disabled={this.props.show} onClick={this.approve.bind(this)} size = "small"  >Approve</Button></MuiThemeProvider>
         }</td>
-        <td><Button variant="contained" color="primary" disabled={this.props.show} onClick={this.show.bind(this)}>Info</Button></td>
+        <td><Button size = "small" variant="contained" color="primary" disabled={this.props.show} onClick={this.show.bind(this)}>Info</Button></td>
         <td><Button aria-label="Edit" color="primary" onClick = {this.editThis.bind(this)} disabled = {this.props.disableButtons}>
             <EditIcon />
         </Button>

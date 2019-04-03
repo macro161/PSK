@@ -19,6 +19,9 @@ const styles = theme => ({
     display: 'flex',
     padding: 0,
   },
+  textField: {
+    marginRight: theme.spacing.unit*2,
+  },
   valueContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -153,14 +156,15 @@ const components = {
 class TravelRegisterForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
+      date : new Date().toISOString().substr(0,10),
       leavingOffice: null,
       destinationOffice: null,
       selectedEmployee: null,
       name: this.props.name,
       surname: this.props.surname,
       departureTime: this.props.departureTime,
+      returningTime: null,
       accommodation: this.props.accommodation,
       offices: this.props.offices,
       employees: this.props.employees,
@@ -239,9 +243,26 @@ class TravelRegisterForm extends React.Component {
               <TextField
                 id="departureTime"
                 label="Departure time"
-                className="form-email-travel"
-                type="text"
+                className="form-time-travel"
+                type="date"
+                defaultValue={this.state.date}
                 margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={this.inputChange.bind(this)}
+              />
+              &nbsp;&nbsp;&nbsp;
+              <TextField
+                id="returningTime"
+                label="Returning time"
+                className="form-time-travel"
+                type="date"
+                margin="normal"
+                defaultValue={this.state.date}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 onChange={this.inputChange.bind(this)}
               />
               <br />
