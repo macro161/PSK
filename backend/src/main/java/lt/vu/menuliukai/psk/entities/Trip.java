@@ -33,10 +33,10 @@ public class Trip {
 
     double price;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "trips")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     @JsonSerialize(converter = IdListConverter.class)
     @JsonDeserialize(converter = IdListToEmployeeListConverter.class)
-    List<Employee> employees;
+    List<EmployeeTrip> employeeTrips;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "from_office_id", nullable = false)
@@ -51,14 +51,4 @@ public class Trip {
     @JsonDeserialize(converter = OfficeConverter.class)
     @JsonProperty("to_office")
     Office toOffice;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "apartment_room_id", nullable = false)
-    @JsonSerialize(converter = IdObjectToLongConverter.class)
-    @JsonDeserialize(converter = OfficeConverter.class)
-    ApartmentRoom apartmentRoom;
-
-    @OneToMany(mappedBy = "trip")
-    @JsonIgnore
-    List<TripChecklist> checklistLists;
 }

@@ -31,10 +31,7 @@ public class Employee {
     String email;
     String password; // lul
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "employee_trips",
-            joinColumns = { @JoinColumn(name = "employee_id") },
-            inverseJoinColumns = { @JoinColumn(name = "trip_id") })
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Trip> trips = new HashSet<>();
+    private Set<EmployeeTrip> employeeTrips = new HashSet<>();
 }
