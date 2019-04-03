@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions/TravelScreen';
+import { getOffices } from '../../actions/Offices';
+import { getAllEmployees } from '../../actions/UserManager';
 import DataTable from './TravelDataTable';
 import InfoScreen from '../employeeScreen/InfoScreen';
 import EditForm from './TravelEditForm';
@@ -25,6 +27,8 @@ class TravelScreen extends React.Component {
     super(props);
     this.state = initialState;
     this.props.getAllTravels(1);
+    this.props.getAllEmployees();
+    this.props.getOffices();
   }
 
   showInfo(id){
@@ -65,8 +69,8 @@ class TravelScreen extends React.Component {
   }
 
   render() {
+    console.log(this.props.employees)
     return (
-
       <div className='page-frame'>
         <title>Travels</title>
         <h2>Org travels</h2>
@@ -90,17 +94,25 @@ class TravelScreen extends React.Component {
             /> : null}
             {this.state.showRegister ? 
             <RegisterForm 
-            onClose={this.onClose.bind(this)} 
-            onSubmit={this.onSubmit.bind(this)}/> : null}
+            onClose={this.onClose.bind(this)}
+            onSubmit={this.onSubmit.bind(this)}
+            employees={this.props.employees}
+            offices={this.props.offices} /> : null}
       </div>
     );
   }
 }
 
 export default connect(
-  (state) => ({travels: state.TravelScreen.travels}),
+  (state) => ({
+    travels: state.TravelScreen.travels,
+    employees: state.UserManager.employees,
+    offices: state.Offices.offices
+  }),
   (dispatch) => bindActionCreators(
     {
+       getAllEmployees: getAllEmployees,
+        getOffices : getOffices,
         getAllTravels: actions.getAllTravels,
         approveTravel: actions.approveTravel,
         cancelTravel: actions.cancelTravel,
@@ -118,6 +130,18 @@ TravelScreen.propTypes = {
     accomodation: PropTypes.string,
     city: PropTypes.string,
     approved: PropTypes.bool,
+  })),
+  offices: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    city: PropTypes.string,
+    address: PropTypes.string
+  })),
+  employees: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    name: PropTypes.string,
+    surname: PropTypes.string,
+    city: PropTypes.string,
+    email: PropTypes.string,
   })),
     show: PropTypes.bool,
     getAllTravels: PropTypes.func,

@@ -155,7 +155,10 @@ table .actions {
 }
 .form-text-field-email{
   width: 70%;
-  margin-top: 6%;
+  margin-top: 5%;
+}
+.form-email-travel{
+  width: 80%;
 }
 .form-container{
   margin-left: 6%;
