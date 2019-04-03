@@ -13,7 +13,7 @@ import Offices from './components/officePage/Offices';
 import LogIn from './components/LogInPage/LogIn';
 import EmployeeScreen from './components/employeeScreen/EmployeeScreen';
 import TravelScreen from './components/TravelScreen/TravelScreen';
-
+import AdminHeader from './components/adminHeader/AdminHeader';
 
 
 const App = () => (
@@ -22,6 +22,7 @@ const App = () => (
       <Switch>
         <Route exact path="/" render={() => { return (<div> <Header /> <OrgHeader /> <UserManager /> </div>) }} />
         <Route exact path="/usermanager" render={() => { return (<div> <Header /> <OrgHeader /> <UserManager /> </div>) }} />
+        <Route exact path="/admin" render={() => { return (<div> <Header /> <AdminHeader /> <UserManager /> </div>) }} />
         <Route exact path="/stats" render={() => { return (<div> <Header /> <OrgHeader /> <Stats /> </div>) }} />
         <Route exact path="/offices" render={() => { return (<div> <Header /> <OrgHeader /> <Offices /> </div>) }} />
         <Route exact path="/travels" render={() => { return (<div><Header /> <EmployeeScreen /></div>) }} />
