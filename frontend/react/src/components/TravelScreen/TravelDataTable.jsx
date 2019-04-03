@@ -15,8 +15,7 @@ export default class TravelDataTable extends React.Component {
         <table>
             <tbody>
             <tr>
-                <th className="name">Name</th>
-                <th className="surname">Surname</th>
+                <th className="name">fullName</th>
                 <th className="departureTime">Departure time</th>
                 <th className="plainTickets">Plain tickets</th>
                 <th className="accommodation">Accommodation</th>
@@ -29,8 +28,7 @@ export default class TravelDataTable extends React.Component {
                     return (<TableRow
                         key={travel.id}
                         id={travel.id}
-                        name={travel.name}
-                        surname={travel.surname}
+                        fullName = {travel.fullName}
                         departureTime={travel.departureTime}
                         accomodation={travel.accomodation}
                         city={travel.city}
@@ -54,8 +52,7 @@ export default class TravelDataTable extends React.Component {
 TravelDataTable.propTypes = {
     travels: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string,
-        name: PropTypes.string,
-        surname: PropTypes.string,
+        fullName: PropTypes.string,
         departureTime: PropTypes.string,
         accomodation: PropTypes.string,
         city: PropTypes.string,

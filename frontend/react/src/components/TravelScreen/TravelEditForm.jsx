@@ -8,8 +8,7 @@ export default class TravelEditForm extends React.Component{
         super(props);
 
         this.state = {
-            name: '',
-            surname: '',
+            fullName: '',
             departureTime: '',
             accomodation: '',
             city: '',
@@ -26,7 +25,7 @@ export default class TravelEditForm extends React.Component{
     }
 
     onEditSave(){
-        this.props.onEditSave(this.props.travel, this.state.name, this.state.surname, this.state.departureTime, this.state.accomodation, this.state.city, false);
+        this.props.onEditSave(this.props.travel, this.state.fullName, this.state.departureTime, this.state.accomodation, this.state.city, false);
         //this.props.travel.id, this.props.travel.approved
     }
 
@@ -42,8 +41,8 @@ export default class TravelEditForm extends React.Component{
                     </header>
                     <div className="form-container">
                         <TextField
-                            id="name"
-                            label="Name"
+                            id="fullName"
+                            label="Full name"
                             defaultValue = {this.props.travel.name}
                             className="form-text-field"
                             type="text"
@@ -51,15 +50,6 @@ export default class TravelEditForm extends React.Component{
                             onChange={this.inputChange.bind(this)}
                             />
                         <br />
-                        <TextField
-                            id="surname"
-                            label="Surname"
-                            defaultValue = {this.props.travel.surname}
-                            className="form-text-field"
-                            type="text"
-                            margin="normal"
-                            onChange={this.inputChange.bind(this)}
-                            />
                         <br/>
                         <TextField
                             id="departureTime"

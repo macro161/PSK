@@ -33,8 +33,8 @@ export const updateUser = (Id) => {
     Id: Id,
   }
 };
-export const registerUser = (name, surname, city, email, password) => dispatch => {
-  utils.registerEmployeeHttp({ name, surname, city, email, password })
+export const registerUser = (fullName, city, email, password) => dispatch => {
+  utils.registerEmployeeHttp({ fullName, city, email, password })
     .then(function (response) {
       dispatch({
         type: 'ADD_USER',

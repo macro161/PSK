@@ -12,8 +12,7 @@ import RegisterForm from './TravelRegisterForm';
 import Button from '@material-ui/core/Button';
 
 const initialState = {
-    name: '',
-    surname: '',
+    fullName: '',
     departureTime : '',
     accomodation : '',
     city: '',
@@ -48,13 +47,13 @@ class TravelScreen extends React.Component {
     console.log(travel)
   }
 
-  onEditSave(id, name, surname, departure, accommodation, city, approved){
-    this.props.editTravel(id, name, surname, departure, accommodation, city, approved);
+  onEditSave(id, fullName, departure, accommodation, city, approved){
+    this.props.editTravel(id, fullName, departure, accommodation, city, approved);
     this.setState(initialState)
   }
   
-  onSubmit(id, name, surname, departure, accommodation, city, approved){
-    this.props.registerTravel(id, name, surname, departure, accommodation, city, approved);
+  onSubmit(id, fullName, departure, accommodation, city, approved){
+    this.props.registerTravel(id, fullName, departure, accommodation, city, approved);
     this.setState(initialState)
   }
 
@@ -124,8 +123,7 @@ export default connect(
 TravelScreen.propTypes = {
   travels: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-    name: PropTypes.string,
-    surname: PropTypes.string,
+    fullName : PropTypes.string,
     departureTime: PropTypes.string,
     accomodation: PropTypes.string,
     city: PropTypes.string,
@@ -138,8 +136,7 @@ TravelScreen.propTypes = {
   })),
   employees: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
-    name: PropTypes.string,
-    surname: PropTypes.string,
+    fullName : PropTypes.string,
     city: PropTypes.string,
     email: PropTypes.string,
   })),

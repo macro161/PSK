@@ -15,7 +15,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = theme => ({
@@ -25,7 +24,7 @@ const styles = theme => ({
     padding: 0,
   },
   textField: {
-    marginRight: theme.spacing.unit*2,
+    marginRight: theme.spacing.unit * 2,
   },
   valueContainer: {
     display: 'flex',
@@ -157,17 +156,15 @@ const components = {
   ValueContainer,
 };
 
-
 class TravelRegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      date : new Date().toISOString().substr(0,10),
+      date: new Date().toISOString().substr(0, 10),
       leavingOffice: null,
       destinationOffice: null,
       selectedEmployee: null,
-      name: this.props.name,
-      surname: this.props.surname,
+      fullName: this.props.fullName,
       departureTime: this.props.departureTime,
       returningTime: null,
       accommodation: this.props.accommodation,
@@ -178,7 +175,7 @@ class TravelRegisterForm extends React.Component {
     };
 
   }
-  
+
   handleChange(e) {
     this.setState({
       selectedEmployee: e,
@@ -196,14 +193,13 @@ class TravelRegisterForm extends React.Component {
   };
 
   inputChange(e) {
-    console.log(e.target.id + " " + e.target.value);
     this.setState({
       [e.target.id]: e.target.value,
     });
   }
 
   onSubmit() {
-    this.props.onSubmit(Math.floor(Math.random() * 10000).toString(), this.state.name, this.state.surname, this.state.departureTime, this.state.accommodation, this.state.city, true);
+    this.props.onSubmit(Math.floor(Math.random() * 10000).toString(), this.state.fullName, this.state.departureTime, this.state.accommodation, this.state.city, true);
   }
 
 
@@ -224,101 +220,101 @@ class TravelRegisterForm extends React.Component {
         onClose={this.props.onClose}
         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Create new trip</DialogTitle>
+
         <DialogContent>
-            <NoSsr>
-              <Select
-                classes={classes}
-                styles={selectStyles}
-                options={this.props.employees.map(emp => ({
-                  value: emp.id,
-                  label: emp.name + ' ' + emp.surname,
-                }))}
-                components={components}
-                value={this.state.selectedEmployee}
-                onChange={this.handleChange.bind(this)}
-                textFieldProps={{
-                  label: 'Employee',
-                  InputLabelProps: {
-                    shrink: true,
-                  },
-                }}
-                isClearable
-              />
-              <TextField
-                id="departureTime"
-                label="Departure time"
-                className="form-time-travel"
-                type="date"
-                defaultValue={this.state.date}
-                margin="normal"
-                InputLabelProps={{
+          <NoSsr>
+            <Select
+              classes={classes}
+              styles={selectStyles}
+              options={this.props.employees.map(emp => ({
+                value: emp.id,
+                label: emp.fullName,
+              }))}
+              components={components}
+              value={this.state.selectedEmployee}
+              onChange={this.handleChange.bind(this)}
+              textFieldProps={{
+                label: 'Employee',
+                InputLabelProps: {
                   shrink: true,
-                }}
-                onChange={this.inputChange.bind(this)}
-              />
-              &nbsp;&nbsp;&nbsp;
+                },
+              }}
+              isClearable
+            />
+            <TextField
+              id="departureTime"
+              label="Departure time"
+              className="form-time-travel"
+              type="date"
+              defaultValue={this.state.date}
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={this.inputChange.bind(this)}
+            />
+            &nbsp;&nbsp;&nbsp;
               <TextField
-                id="returningTime"
-                label="Returning time"
-                className="form-time-travel"
-                type="date"
-                margin="normal"
-                defaultValue={this.state.date}
-                InputLabelProps={{
+              id="returningTime"
+              label="Returning time"
+              className="form-time-travel"
+              type="date"
+              margin="normal"
+              defaultValue={this.state.date}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={this.inputChange.bind(this)}
+            />
+            <br />
+            <Select
+              classes={classes}
+              styles={selectStyles}
+              options={this.props.offices.map(off => ({
+                value: off.id,
+                label: off.city,
+              }))}
+              components={components}
+              value={this.state.leavingOffice}
+              onChange={this.handleChangeLeaving.bind(this)}
+              textFieldProps={{
+                label: 'Leaving office',
+                InputLabelProps: {
                   shrink: true,
-                }}
-                onChange={this.inputChange.bind(this)}
-              />
-              <br />
-                <Select
-                  classes={classes}
-                  styles={selectStyles}
-                  options={this.props.offices.map(off => ({
-                    value: off.id,
-                    label: off.city,
-                  }))}
-                  components={components}
-                  value={this.state.leavingOffice}
-                  onChange={this.handleChangeLeaving.bind(this)}
-                  textFieldProps={{
-                    label: 'Leaving office',
-                    InputLabelProps: {
-                      shrink: true,
-                    },
-                  }}
-                  isClearable
-                />
-                <br />
-                <Select
-                  classes={classes}
-                  styles={selectStyles}
-                  options={this.props.offices.map(off => ({
-                    value: off.id,
-                    label: off.city,
-                  }))}
-                  components={components}
-                  value={this.state.destinationOffice}
-                  onChange={this.handleChangeDestination.bind(this)}
-                  textFieldProps={{
-                    label: 'Destination office',
-                    InputLabelProps: {
-                      shrink: true,
-                    },
-                  }}
-                  isClearable
-                />
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                },
+              }}
+              isClearable
+            />
+            <br />
+            <Select
+              classes={classes}
+              styles={selectStyles}
+              options={this.props.offices.map(off => ({
+                value: off.id,
+                label: off.city,
+              }))}
+              components={components}
+              value={this.state.destinationOffice}
+              onChange={this.handleChangeDestination.bind(this)}
+              textFieldProps={{
+                label: 'Destination office',
+                InputLabelProps: {
+                  shrink: true,
+                },
+              }}
+              isClearable
+            />
             <div className="register-form-buttons">
-                  <Button variant="contained" size="large" color="primary" onClick={this.onSubmit.bind(this)}>
-                    Register
+              <Button variant="contained" size="medium" color="primary" onClick={this.onSubmit.bind(this)}>
+                Register
             </Button>
-                  <Button variant="contained" size="large" color="secondary" className="cancel-button" onClick={this.props.onClose}>
-                    Cancel
+              <Button variant="contained" size="medium" color="secondary" className="cancel-button" onClick={this.props.onClose}>
+                Cancel
             </Button>
-                </div>
+            </div>
           </NoSsr>
         </DialogContent>
-        </Dialog>
+      </Dialog>
     );
   }
 }
@@ -326,8 +322,7 @@ class TravelRegisterForm extends React.Component {
 TravelRegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
-  name: PropTypes.any,
-  surname: PropTypes.any,
+  fullName: PropTypes.string,
   departureTime: PropTypes.any,
   accommodation: PropTypes.any,
   city: PropTypes.any,
@@ -340,16 +335,14 @@ TravelRegisterForm.propTypes = {
   })),
   employees: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
-    name: PropTypes.string,
-    surname: PropTypes.string,
+    fullName: PropTypes.string,
     city: PropTypes.string,
     email: PropTypes.string,
   }))
 };
 
 TravelRegisterForm.defaulProps = {
-  name: '',
-  surname: '',
+  fullName: '',
   departureTime: '',
   accommodation: '',
   city: '',

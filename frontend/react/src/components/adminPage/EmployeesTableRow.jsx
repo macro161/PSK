@@ -14,15 +14,14 @@ export default class EmployeesTableRow extends React.Component {
     this.props.removeUser(this.props.Id);
   }
   editThis() {
-    this.props.editEmployee(this.props.Id, this.props.name, this.props.surname, this.props.city, this.props.email);
+    this.props.editEmployee(this.props.Id, this.props.fullName, this.props.city, this.props.email);
   }
 
   
   render() {
     return (
       <tr>
-        <td className="name">{this.props.name}</td>
-        <td className="surname">{this.props.surname}</td>
+        <td className="name">{this.props.fullName}</td>
         <td className="cityEmp">{this.props.city}</td>
         <td className="email">{this.props.email}</td>
         <td className="actions">
@@ -41,8 +40,7 @@ export default class EmployeesTableRow extends React.Component {
 
 EmployeesTableRow.propTypes = {
   Id: PropTypes.any,
-  name: PropTypes.string.isRequired,
-  surname: PropTypes.string.isRequired,
+  fullName : PropTypes.string,
   city: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   editEmployee: PropTypes.func.isRequired,

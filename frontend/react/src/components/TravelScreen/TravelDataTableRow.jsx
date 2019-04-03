@@ -49,15 +49,14 @@ export default class TravelDataTableRow extends React.Component {
         this.props.removeTravel(this.props.id);
     }
     editThis() {
-      this.props.editTravel({id: this.props.id, name : this.props.name,surname: this.props.surname, departureTime: this.props.departureTime, accomodation: this.props.accomodation,city: this.props.city });
+      this.props.editTravel({id: this.props.id, fullName: this.props.fullName, departureTime: this.props.departureTime, accomodation: this.props.accomodation,city: this.props.city });
     }
 
   render() {
     const className=this.props.show ? "hide": ""
     return (
       <tr>
-        <td className="name">{this.props.name}</td>
-        <td className="surname">{this.props.surname}</td>
+        <td className="fullName">{this.props.fullName}</td>
         <td className="departureTime">{this.props.departureTime}</td>
         <td><Button className={className} variant="contained" disabled={this.props.show} color="primary" size = "small" >View</Button></td>
         <td className="accomodation">{this.props.accomodation}</td>
@@ -80,8 +79,7 @@ export default class TravelDataTableRow extends React.Component {
 
 TravelDataTableRow.propTypes = {
     id: PropTypes.string.isRequired,
-    name: PropTypes.string,
-    surname: PropTypes.string,
+    fullName: PropTypes.string,
     departureTime: PropTypes.string.isRequired,
     accomodation: PropTypes.string.isRequired,
     city: PropTypes.string.isRequired,
