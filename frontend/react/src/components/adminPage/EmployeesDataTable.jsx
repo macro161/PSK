@@ -13,8 +13,7 @@ export default class EmployeesDataTable extends React.Component {
       <table>
         <tbody>
           <tr>
-            <th className="name">Name</th>
-            <th className="surname">Surname</th>
+            <th className="name">Full name</th>
             <th className="cityEmp">City</th>
             <th className="email">Email</th>
             <th className="actions">Actions</th>
@@ -24,8 +23,7 @@ export default class EmployeesDataTable extends React.Component {
               <TableRow
                 key={employee.id}
                 Id={employee.id}
-                name={employee.name}
-                surname={employee.surname}
+                fullName = {employee.fullName}
                 email={employee.email}
                 city={employee.city}
                 disableButtons={this.props.disableButtons}
@@ -42,8 +40,7 @@ export default class EmployeesDataTable extends React.Component {
 EmployeesDataTable.propTypes = {
   employees: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
-    name: PropTypes.string,
-    surname: PropTypes.string,
+    fullName: PropTypes.any,
     city: PropTypes.string,
     email: PropTypes.string,
   })),

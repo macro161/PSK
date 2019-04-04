@@ -2,8 +2,7 @@ export const getAllTravels = (userId) => dispatch => {
     let moc = [
         {
             id: '1',
-            name: 'Tomas',
-            surname: 'Balta',
+            fullName: 'Tomas Balta',
             departureTime: '2018-01-01',
             accomodation: 'Vilnius chata',
             city: 'Vilnius',
@@ -11,8 +10,7 @@ export const getAllTravels = (userId) => dispatch => {
         },
         {
             id: '2',
-            name: 'Jonas',
-            surname: 'Juoda',
+            fullName: 'Jonas Juoda',
             departureTime: '2018-01-02',
             accomodation: 'Vilnius chata',
             city: 'Vilnius',
@@ -20,9 +18,8 @@ export const getAllTravels = (userId) => dispatch => {
         }
     ]
     dispatch({
-        type:'GET_TRAVELS_BY_ID',
+        type:'GET_TRAVELS',
         travels: moc,
-        //id: userId
     });
 };
 
@@ -47,13 +44,12 @@ export const removeTravel = (travelId) => {
     }
 };
 
-export const editTravel = (id, name, surname, departureTime, accomodation, city, approved) => dispatch=>{
+export const editTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch=>{
     dispatch({
         type:"EDIT_TRAVEL",
         travel:{
             id: id,
-            name: name,
-            surname: surname,
+            fullName : fullName,
             departureTime: departureTime,
             accomodation: accomodation,
             city: city,
@@ -62,13 +58,12 @@ export const editTravel = (id, name, surname, departureTime, accomodation, city,
     })
 }
   
-export const registerTravel = (id, name, surname, departureTime, accomodation, city, approved)=> dispatch=>{
+export const registerTravel = (id, fullName, departureTime, accomodation, city, approved)=> dispatch=>{
     dispatch({
         type: "ADD_TRAVEL",
         travel:{
             id: id,
-            name: name,
-            surname: surname,
+            fullName : fullName,
             departureTime: departureTime,
             accomodation: accomodation,
             city: city,

@@ -38,9 +38,4 @@ public class ApartmentRoom {
     @JsonSerialize(converter = IdObjectToLongConverter.class)
     Office office;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "apartmentRoom")
-    @JsonIgnore
-    List<Trip> trips;
 }
