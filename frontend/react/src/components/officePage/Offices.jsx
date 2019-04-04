@@ -71,8 +71,7 @@ class Offices extends React.Component {
   render() {
       return (
         <div className = "page-frame">
-          <h2>Devbridge offices</h2>
-          <hr/>
+        <br/>
           <Button variant ="contained" onClick={this.addOfficeClick.bind(this)}> Add office </Button>
           {this.state.showRegistration ? 
           <OfficeRegisterForm 

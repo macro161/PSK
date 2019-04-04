@@ -21,8 +21,12 @@ const App = () => (
     <Router history={history}>
       <Switch>
         <Route exact path="/" render={() => { return (<div> <Header /> <OrgHeader /> <UserManager /> </div>) }} />
+        <Route exact path="/admin" render={() => { return (<div> <AdminHeader /> <EmployeeScreen /> </div>) }} />
         <Route exact path="/usermanager" render={() => { return (<div> <Header /> <OrgHeader /> <UserManager /> </div>) }} />
-        <Route exact path="/admin" render={() => { return (<div> <Header /> <AdminHeader /> <UserManager /> </div>) }} />
+        <Route exact path="/admin/usermanager" render={() => { return (<div> <AdminHeader /> <UserManager /> </div>) }} />
+        {/*<Route exact path="/admin/travels" render={() => { return (<div> <AdminHeader /> <EmployeeScreen /> </div>) }} />*/}
+        <Route exact path="/admin/offices" render={() => { return (<div> <AdminHeader /> <Offices /> </div>) }} />
+        <Route exact path="/admin/stats" render={() => { return (<div> <AdminHeader /> <Stats /> </div>) }} />
         <Route exact path="/stats" render={() => { return (<div> <Header /> <OrgHeader /> <Stats /> </div>) }} />
         <Route exact path="/offices" render={() => { return (<div> <Header /> <OrgHeader /> <Offices /> </div>) }} />
         <Route exact path="/travels" render={() => { return (<div><Header /> <EmployeeScreen /></div>) }} />
