@@ -30,9 +30,5 @@ public class EmployeeTrip implements Serializable {
 
     @ManyToOne
     @JoinColumn
-    private ApartmentRoom apartmentRoom;
-
-    @ManyToOne
-    @JoinColumn
     private TripChecklist tripChecklist;
 }

@@ -28,10 +28,8 @@ public class Office {
 
     String address;
 
-    @OneToMany(mappedBy = "office")
-    @JsonProperty("apartment_rooms")
-    @JsonSerialize(converter = IdListConverter.class)
-    List<ApartmentRoom> apartmentRooms;
+    @OneToOne
+    Apartments apartments;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,

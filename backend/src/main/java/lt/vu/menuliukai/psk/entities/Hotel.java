@@ -1,32 +1,29 @@
 package lt.vu.menuliukai.psk.entities;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-@Getter
-@Setter
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Getter @Setter
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="CHECKLIST")
-public class TripChecklist {
+@Table(name="HOTEL")
+public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     long id;
 
-    // 0 - nereikalingi, 1 - reikalingi, 2 - užsakyti.
-    int plainTickets;
+    String name;
 
-    int car;
+    String address;
 
-    int apartments;
+    int price;
 }

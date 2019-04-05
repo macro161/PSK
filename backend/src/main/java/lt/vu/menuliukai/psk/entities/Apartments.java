@@ -20,20 +20,17 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="ROOM")
-public class ApartmentRoom {
+@Table(name="APARTMENTS")
+public class Apartments {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    int space; // Don't know how to name this
-
-    boolean taken;
+    int roomNumber;
 
     String address;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "office_apartment_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JsonDeserialize(converter = OfficeConverter.class)
     @JsonSerialize(converter = IdObjectToLongConverter.class)
     Office office;

@@ -31,8 +31,6 @@ public class Trip {
 
     Date returningDate;
 
-    double price;
-
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     @JsonSerialize(converter = IdListConverter.class)
     @JsonDeserialize(converter = IdListToEmployeeListConverter.class)
@@ -51,4 +49,14 @@ public class Trip {
     @JsonDeserialize(converter = OfficeConverter.class)
     @JsonProperty("to_office")
     Office toOffice;
+
+
+    @OneToOne
+    @JoinColumn
+    private Hotel hotel;
+
+
+    @OneToOne
+    @JoinColumn
+    private Apartments apartments;
 }
