@@ -4,7 +4,7 @@ const initialState = {
 
 export default(state = initialState, action) => {
     switch(action.type){
-        case 'GET_TRAVELS_BY_ID':
+        case 'GET_TRAVELS':
             return{
                 ...state, travels: action.travels
             };

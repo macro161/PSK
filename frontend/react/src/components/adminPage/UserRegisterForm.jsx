@@ -4,6 +4,10 @@ import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 export default class UserRegistrationForm extends React.Component {
@@ -11,8 +15,7 @@ export default class UserRegistrationForm extends React.Component {
     super(props);
 
     this.state = {
-      name: this.props.name,
-      surname: this.props.surname,
+      fullName: this.props.fullName,
       city: this.props.city,
       email: this.props.Contactemail,
       password1: "",
@@ -24,46 +27,35 @@ export default class UserRegistrationForm extends React.Component {
   }
 
   inputChange(e) {
-    console.log(e.target.id + " " + e.target.value);
     this.setState({
       [e.target.id]: e.target.value,
     });
   }
 
   onSubmit() {
-    console.log(this.state.name + ' ' + this.state.surname + ' ' + this.state.email + ' ')
     this.setState({ error: false });
     this.state.password1 == this.state.password2 ?
-      this.props.onSubmit(this.state.name, this.state.surname, this.state.city, this.state.email, this.state.password1)
+      this.props.onSubmit(this.state.fullName, this.state.city, this.state.email, this.state.password1)
       : this.setState({ error: true });
   }
 
   render() {
     return (
-      <div className='popup'>
-        <div className='popup_inner'>
-          <header className="form-header">
-            <span className="form-header-text">Register new employee</span>
-            <span className="form-header-close" onClick={this.props.onClose}>✖</span>
-          </header>
-          <div className="form-container">
+      <Dialog
+        open={true}
+        onClose={this.props.onClose}
+        aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Register new employee</DialogTitle>
+        <DialogContent>
             <TextField
-              id="name"
-              label="Name"
+              id="fullName"
+              label="Full name"
               className="form-text-field"
               type="text"
               margin="normal"
               onChange={this.inputChange.bind(this)}
             />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <TextField
-              id="surname"
-              label="Surname"
-              className="form-text-field"
-              type="text"
-              margin="normal"
-              onChange={this.inputChange.bind(this)}
-            />
+            &nbsp;&nbsp;&nbsp;
             <TextField
               id="city"
               label="City"
@@ -109,16 +101,14 @@ export default class UserRegistrationForm extends React.Component {
             Cancel
             </Button>
             </div>
-          </div>
-        </div>
-      </div>
+            </DialogContent>
+      </Dialog>
     );
   }
 }
 
 UserRegistrationForm.propTypes = {
-  name: PropTypes.any,
-  surname: PropTypes.any,
+  fullName: PropTypes.any,
   city: PropTypes.any,
   email: PropTypes.any,
   onClose: PropTypes.any,
@@ -126,8 +116,7 @@ UserRegistrationForm.propTypes = {
 };
 
 UserRegistrationForm.defaulProps = {
-  name: '',
-  surname: '',
+  fullName: '',
   city: '',
   email: '',
 };

@@ -48,9 +48,6 @@ th, td {
   text-align: center;
 }
 
-table .surname {
-  width: 20%;
-}
 table .name {
   width: 15%;
 }
@@ -150,12 +147,15 @@ table .actions {
   margin-top: 6%;
 }
 .form-text-field-city{
-  width: 50%;
+  width: 30%;
   margin-top: 6%;
 }
 .form-text-field-email{
   width: 70%;
-  margin-top: 6%;
+  margin-top: 5%;
+}
+.form-time-travel{
+  width: 45%;
 }
 .form-container{
   margin-left: 6%;
@@ -164,8 +164,8 @@ table .actions {
   font-size: 20;
 }
 .register-form-buttons{
-  margin-top: 10%;
-  margin-right: 6%;
+  margin-top: 7%;
+  margin-right: 5%;
 }
 .cancel-button{
   float: right;

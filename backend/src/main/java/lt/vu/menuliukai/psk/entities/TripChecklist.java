@@ -26,14 +26,4 @@ public class TripChecklist {
     boolean plainTickets;
 
     boolean car;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trip_id")
-    @JsonIgnore
-    Trip trip;
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    @JsonIgnore
-    Employee employee;
 }

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions/TravelScreen';
+import { getOffices } from '../../actions/Offices';
+import { getAllEmployees } from '../../actions/UserManager';
 import DataTable from './TravelDataTable';
 import InfoScreen from '../employeeScreen/InfoScreen';
 import EditForm from './TravelEditForm';
@@ -10,8 +12,7 @@ import RegisterForm from './TravelRegisterForm';
 import Button from '@material-ui/core/Button';
 
 const initialState = {
-    name: '',
-    surname: '',
+    fullName: '',
     departureTime : '',
     accomodation : '',
     city: '',
@@ -25,6 +26,8 @@ class TravelScreen extends React.Component {
     super(props);
     this.state = initialState;
     this.props.getAllTravels(1);
+    this.props.getAllEmployees();
+    this.props.getOffices();
   }
 
   showInfo(id){
@@ -44,13 +47,13 @@ class TravelScreen extends React.Component {
     console.log(travel)
   }
 
-  onEditSave(id, name, surname, departure, accommodation, city, approved){
-    this.props.editTravel(id, name, surname, departure, accommodation, city, approved);
+  onEditSave(id, fullName, departure, accommodation, city, approved){
+    this.props.editTravel(id, fullName, departure, accommodation, city, approved);
     this.setState(initialState)
   }
   
-  onSubmit(id, name, surname, departure, accommodation, city, approved){
-    this.props.registerTravel(id, name, surname, departure, accommodation, city, approved);
+  onSubmit(id, fullName, departure, accommodation, city, approved){
+    this.props.registerTravel(id, fullName, departure, accommodation, city, approved);
     this.setState(initialState)
   }
 
@@ -65,8 +68,8 @@ class TravelScreen extends React.Component {
   }
 
   render() {
+    console.log(this.props.employees)
     return (
-
       <div className='page-frame'>
         <title>Travels</title>
         <h2>Org travels</h2>
@@ -90,17 +93,25 @@ class TravelScreen extends React.Component {
             /> : null}
             {this.state.showRegister ? 
             <RegisterForm 
-            onClose={this.onClose.bind(this)} 
-            onSubmit={this.onSubmit.bind(this)}/> : null}
+            onClose={this.onClose.bind(this)}
+            onSubmit={this.onSubmit.bind(this)}
+            employees={this.props.employees}
+            offices={this.props.offices} /> : null}
       </div>
     );
   }
 }
 
 export default connect(
-  (state) => ({travels: state.TravelScreen.travels}),
+  (state) => ({
+    travels: state.TravelScreen.travels,
+    employees: state.UserManager.employees,
+    offices: state.Offices.offices
+  }),
   (dispatch) => bindActionCreators(
     {
+       getAllEmployees: getAllEmployees,
+        getOffices : getOffices,
         getAllTravels: actions.getAllTravels,
         approveTravel: actions.approveTravel,
         cancelTravel: actions.cancelTravel,
@@ -112,12 +123,22 @@ export default connect(
 TravelScreen.propTypes = {
   travels: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-    name: PropTypes.string,
-    surname: PropTypes.string,
+    fullName : PropTypes.string,
     departureTime: PropTypes.string,
     accomodation: PropTypes.string,
     city: PropTypes.string,
     approved: PropTypes.bool,
+  })),
+  offices: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    city: PropTypes.string,
+    address: PropTypes.string
+  })),
+  employees: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    fullName : PropTypes.string,
+    city: PropTypes.string,
+    email: PropTypes.string,
   })),
     show: PropTypes.bool,
     getAllTravels: PropTypes.func,
