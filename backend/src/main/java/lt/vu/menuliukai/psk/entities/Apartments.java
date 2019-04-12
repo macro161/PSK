@@ -13,12 +13,12 @@ import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
 import lt.vu.menuliukai.psk.converters.OfficeConverter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name="APARTMENTS")
 public class Apartments {
@@ -26,13 +26,14 @@ public class Apartments {
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    int roomNumber;
-
     String address;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JsonDeserialize(converter = OfficeConverter.class)
     @JsonSerialize(converter = IdObjectToLongConverter.class)
     Office office;
+
+    @OneToMany(mappedBy = "apartments")
+    Set<ApartmentRoom> apartmentRooms;
 
 }

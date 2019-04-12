@@ -49,14 +49,4 @@ public class Trip {
     @JsonDeserialize(converter = OfficeConverter.class)
     @JsonProperty("to_office")
     Office toOffice;
-
-
-    @OneToOne
-    @JoinColumn
-    private Hotel hotel;
-
-
-    @OneToOne
-    @JoinColumn
-    private Apartments apartments;
 }

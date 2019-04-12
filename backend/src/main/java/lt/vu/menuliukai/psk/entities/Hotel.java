@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter @Setter
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name="HOTEL")
 public class Hotel {

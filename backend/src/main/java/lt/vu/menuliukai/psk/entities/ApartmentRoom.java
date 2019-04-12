@@ -20,6 +20,10 @@ public class ApartmentRoom {
 
     int roomNo;
 
-    @OneToMany(mappedBy = "apartmentsRoom")
-    Set<EmployeeTrip> employeeTrips;
+    @OneToMany(mappedBy = "apartmentRoom")
+    private Set<EmployeeTrip> employeeTrips;
+
+    @ManyToOne
+    @JoinColumn
+    private Apartments apartments;
 }
