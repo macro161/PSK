@@ -33,4 +33,8 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<EmployeeTrip> employeeTrips = new HashSet<>();
+
+    @OneToMany(mappedBy = "employee")
+    @JsonIgnore
+    private Set<Event> events = new HashSet<>();
 }

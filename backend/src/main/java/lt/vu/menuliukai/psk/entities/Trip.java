@@ -13,7 +13,9 @@ import lombok.Setter;
 import lt.vu.menuliukai.psk.converters.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,9 +34,7 @@ public class Trip {
     Date returningDate;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-    @JsonSerialize(converter = IdListConverter.class)
-    @JsonDeserialize(converter = IdListToEmployeeListConverter.class)
-    List<EmployeeTrip> employeeTrips;
+    Set<EmployeeTrip> employeeTrips = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "from_office_id", nullable = false)

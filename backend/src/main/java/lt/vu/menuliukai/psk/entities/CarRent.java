@@ -6,27 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
 
 @Entity
 @NoArgsConstructor
-@Table(name="APARTMENT_ROOM")
-public class ApartmentRoom {
+@Table(name="CAR_RENT")
+public class CarRent {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    int roomNo;
+    int price;
 
-    @OneToMany(mappedBy = "apartmentRoom")
-    @JsonIgnore
-    private Set<EmployeeTrip> employeeTrips = new HashSet<>();;
+    String address;
 
-    @ManyToOne
-    @JoinColumn
-    private Apartments apartments;
 }

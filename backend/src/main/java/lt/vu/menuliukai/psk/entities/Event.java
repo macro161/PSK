@@ -6,27 +6,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
 @Getter
 @Setter
 
 @Entity
 @NoArgsConstructor
-@Table(name="APARTMENT_ROOM")
-public class ApartmentRoom {
+@Table(name="EVENT")
+public class Event {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    int roomNo;
-
-    @OneToMany(mappedBy = "apartmentRoom")
-    @JsonIgnore
-    private Set<EmployeeTrip> employeeTrips = new HashSet<>();;
-
     @ManyToOne
     @JoinColumn
-    private Apartments apartments;
+    @JsonIgnore
+    private Employee employee;
+
+    private Date startDate;
+
+    private Date endDate;
+
+    private String eventType;
+
 }

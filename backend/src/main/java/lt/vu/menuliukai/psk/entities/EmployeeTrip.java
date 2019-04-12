@@ -1,16 +1,14 @@
 package lt.vu.menuliukai.psk.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter @Setter
 @NoArgsConstructor
-
+@AllArgsConstructor
 @Entity
 @EqualsAndHashCode()
 public class EmployeeTrip implements Serializable {
@@ -37,7 +35,11 @@ public class EmployeeTrip implements Serializable {
     @JoinColumn
     private Hotel hotel;
 
-    private String airportName;
+    @OneToOne
+    @JoinColumn
+    private Flight flight;
 
-    private String carAddress;
+    @OneToOne
+    @JoinColumn
+    private CarRent carRent;
 }

@@ -12,6 +12,7 @@ import lombok.Setter;
 import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
 import lt.vu.menuliukai.psk.converters.OfficeConverter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +35,7 @@ public class Apartments {
     Office office;
 
     @OneToMany(mappedBy = "apartments")
-    Set<ApartmentRoom> apartmentRooms;
+    @JsonIgnore
+    Set<ApartmentRoom> apartmentRooms = new HashSet<>();;
 
 }
