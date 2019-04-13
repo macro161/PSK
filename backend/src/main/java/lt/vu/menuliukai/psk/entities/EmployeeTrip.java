@@ -13,25 +13,26 @@ import java.io.Serializable;
 @EqualsAndHashCode()
 public class EmployeeTrip implements Serializable {
 
-    @Id
-    @ManyToOne
-    @JoinColumn
+    @EmbeddedId
+    private EmployeeTripId id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("employeeId")
     private Employee employee;
 
-    @Id
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("tripId")
     private Trip trip;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private TripChecklist tripChecklist;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private ApartmentRoom apartmentRoom;       // one of these should be null at all cases
 
-    @ManyToOne                                  // maybe there is a better solution for this.
+    @ManyToOne(fetch = FetchType.LAZY)         // maybe there is a better solution for this.
     @JoinColumn
     private Hotel hotel;
 
@@ -42,4 +43,10 @@ public class EmployeeTrip implements Serializable {
     @OneToOne
     @JoinColumn
     private CarRent carRent;
+
+    public EmployeeTrip(Employee employee, Trip trip){
+        this.employee = employee;
+        this.trip = trip;
+        this.id = new EmployeeTripId(employee.getId(), trip.getId());
+    }
 }
