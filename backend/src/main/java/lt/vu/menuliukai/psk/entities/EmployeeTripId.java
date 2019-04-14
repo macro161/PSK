@@ -1,9 +1,6 @@
 package lt.vu.menuliukai.psk.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,6 +10,7 @@ import java.io.Serializable;
 @Getter @Setter
 @EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeTripId implements Serializable {
 
     @Column(name = "employee_id")

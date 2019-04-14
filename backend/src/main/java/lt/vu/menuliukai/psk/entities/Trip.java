@@ -17,9 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
-
+@Getter @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,8 +27,10 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
+    @JsonProperty("leaving_date")
     Date leavingDate;
 
+    @JsonProperty("returning_date")
     Date returningDate;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)

@@ -45,6 +45,7 @@ public class EmployeeTripController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeTrip add(@RequestBody EmployeeTrip employeeTrip) {
+        employeeTrip.setId(new EmployeeTripId(employeeTrip.getEmployee().getId(), employeeTrip.getTrip().getId()));
         return employeeTripDao.save(employeeTrip);
     }
 

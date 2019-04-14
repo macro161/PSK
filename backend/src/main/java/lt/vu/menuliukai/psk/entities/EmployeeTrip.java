@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
-import lt.vu.menuliukai.psk.converters.EmployeeConverter;
-import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
-import lt.vu.menuliukai.psk.converters.OfficeConverter;
-import lt.vu.menuliukai.psk.converters.TripConverter;
+import lt.vu.menuliukai.psk.converters.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode()
+@ToString
 public class EmployeeTrip implements Serializable {
 
     @EmbeddedId
@@ -37,23 +35,26 @@ public class EmployeeTrip implements Serializable {
     @JsonProperty("trip")
     private Trip trip;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn
     private TripChecklist tripChecklist;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @JsonSerialize(converter = IdObjectToLongConverter.class)
+    @JsonDeserialize(converter = ApartmentRoomConverter.class)
+    @JsonProperty("apartments_room")
     private ApartmentRoom apartmentRoom;       // one of these should be null at all cases
 
-    @ManyToOne(fetch = FetchType.LAZY)         // maybe there is a better solution for this.
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)         // maybe there is a better solution for this.
     @JoinColumn
     private Hotel hotel;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private Flight flight;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private CarRent carRent;
 
