@@ -1,9 +1,14 @@
 package lt.vu.menuliukai.psk.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lt.vu.menuliukai.psk.converters.ApartmentsConverter;
+import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -28,5 +33,8 @@ public class ApartmentRoom {
 
     @ManyToOne
     @JoinColumn
+    @JsonSerialize(converter = IdObjectToLongConverter.class)
+    @JsonDeserialize(converter = ApartmentsConverter.class)
+    @JsonProperty("apartments")
     private Apartments apartments;
 }
