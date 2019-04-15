@@ -9,5 +9,6 @@ import java.util.List;
 public interface EmployeeTripDao extends CrudRepository<EmployeeTrip, EmployeeTripId> {
     List<EmployeeTrip> findByIdTripId(Long tripId);
     List<EmployeeTrip> findByIdEmployeeId(Long employeeId);
+    void deleteByIdTripId(Long tripId);
 
 }

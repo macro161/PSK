@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lt.vu.menuliukai.psk.converters.*;
 
 import java.util.Date;
@@ -34,6 +31,7 @@ public class Trip {
     Date returningDate;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    @JsonIgnore
     Set<EmployeeTrip> employeeTrips = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
