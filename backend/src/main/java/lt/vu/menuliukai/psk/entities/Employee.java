@@ -3,19 +3,22 @@ package lt.vu.menuliukai.psk.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
+import lt.vu.menuliukai.psk.converters.OfficeConverter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
-
+@Getter @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,9 +29,14 @@ public class Employee {
     long id;
 
     String fullName;
-    String city;
     String email;
     String password; // lul
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JsonSerialize(converter = IdObjectToLongConverter.class)
+    @JsonDeserialize(converter = OfficeConverter.class)
+    @JsonProperty("office")
+    Office office;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     @JsonIgnore
