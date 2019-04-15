@@ -16,8 +16,7 @@ import java.util.Set;
 
 import lt.vu.menuliukai.psk.converters.IdListConverter;
 
-@Getter
-@Setter
+@Getter @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,18 +30,18 @@ public class Office {
 
     String address;
 
-    @OneToOne
+    @OneToOne(mappedBy = "office")
     Apartments apartments;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "toOffice")
-    Set<Trip> tripsToOffice = new HashSet<>();;
+    Set<Trip> tripsToOffice = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "fromOffice")
-    Set<Trip> tripsFromOffice = new HashSet<>();;
+    Set<Trip> tripsFromOffice = new HashSet<>();
 }

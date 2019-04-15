@@ -35,8 +35,9 @@ public class EmployeeTrip implements Serializable {
     @JsonProperty("trip")
     private Trip trip;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
+    @JsonProperty("trip_checklist")
     private TripChecklist tripChecklist;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,16 +47,16 @@ public class EmployeeTrip implements Serializable {
     @JsonProperty("apartments_room")
     private ApartmentRoom apartmentRoom;       // one of these should be null at all cases
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)         // maybe there is a better solution for this.
+    @ManyToOne(cascade = CascadeType.ALL)         // maybe there is a better solution for this.
     @JoinColumn
+    @JsonProperty("hotel")
     private Hotel hotel;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
     private Flight flight;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JsonProperty("car_rent")
     private CarRent carRent;
 
     public EmployeeTrip(Employee employee, Trip trip, TripChecklist tripChecklist, ApartmentRoom apartmentRoom, Hotel hotel, Flight flight, CarRent carRent){
