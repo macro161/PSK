@@ -25,4 +25,6 @@ public class Flight {
     private Date date;
 
     private String airport;
+
+    private int seatNumber;
 }
