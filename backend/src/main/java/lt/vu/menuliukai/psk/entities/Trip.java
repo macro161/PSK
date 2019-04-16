@@ -34,6 +34,11 @@ public class Trip {
     @JsonIgnore
     Set<EmployeeTrip> employeeTrips = new HashSet<>();
 
+    @ManyToOne
+    @JsonSerialize(converter = IdObjectToLongConverter.class)
+    @JsonDeserialize(converter = EmployeeConverter.class)
+    Employee organiser;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "from_office_id", nullable = false)
     @JsonSerialize(converter = IdObjectToLongConverter.class)
