@@ -30,6 +30,8 @@ public class Trip {
     @JsonProperty("returning_date")
     Date returningDate;
 
+    boolean approved;
+
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
     @JsonIgnore
     Set<EmployeeTrip> employeeTrips = new HashSet<>();
