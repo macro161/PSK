@@ -15,7 +15,7 @@ export default class TravelDataTable extends React.Component {
         <table>
             <tbody>
             <tr>
-                <th className="name">fullName</th>
+                <th className="name">Full Name</th>
                 <th className="departureTime">Departure time</th>
                 <th className="plainTickets">Plain tickets</th>
                 <th className="accommodation">Accommodation</th>
