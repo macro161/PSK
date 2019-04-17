@@ -4,6 +4,7 @@ import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.EmployeeDao;
 import lt.vu.menuliukai.psk.dao.EmployeeTripDao;
 import lt.vu.menuliukai.psk.dao.TripDao;
+import lt.vu.menuliukai.psk.dto.EmployeeTripBasicDto;
 import lt.vu.menuliukai.psk.dto.TripsGroupingDto;
 import lt.vu.menuliukai.psk.entities.Employee;
 import lt.vu.menuliukai.psk.entities.EmployeeTrip;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -82,6 +85,13 @@ public class EmployeeTripController {
         } catch (EmptyResultDataAccessException exception) {
             Converter.throwException(objectName, employeeId);
         }
+    }
+    @RequestMapping(value = "/basic", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EmployeeTripBasicDto> getBasic(){
+        Iterable<EmployeeTrip> employeeTrips = employeeTripDao.findAll();
+        return StreamSupport.stream(employeeTrips.spliterator(), false).map(et ->
+                new EmployeeTripBasicDto(et.getId(), et.getEmployee().getFullName(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), et.getTrip().getFromOffice().getCity(), et.getTrip().getToOffice().getCity()))
+                    .collect(Collectors.toList());
     }
 
 }
