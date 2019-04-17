@@ -60,7 +60,6 @@ public class OfficeController {
 
         change(office::getAddress, baseOffice::setAddress);
         change(office::getCity, baseOffice::setCity);
-        change(office::getApartmentRooms, baseOffice::setApartmentRooms);
 
         return officeDao.save(baseOffice);
     }

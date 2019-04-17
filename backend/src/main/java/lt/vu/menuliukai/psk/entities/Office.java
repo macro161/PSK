@@ -10,11 +10,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import lt.vu.menuliukai.psk.converters.IdListConverter;
 
-@Getter
-@Setter
+@Getter @Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,20 +30,18 @@ public class Office {
 
     String address;
 
-    @OneToMany(mappedBy = "office")
-    @JsonProperty("apartment_rooms")
-    @JsonSerialize(converter = IdListConverter.class)
-    List<ApartmentRoom> apartmentRooms;
+    @OneToOne(mappedBy = "office")
+    Apartments apartments;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "toOffice")
-    List<Trip> tripsToOffice;
+    Set<Trip> tripsToOffice = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "fromOffice")
-    List<Trip> tripsFromOffice;
+    Set<Trip> tripsFromOffice = new HashSet<>();
 }
