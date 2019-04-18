@@ -202,3 +202,66 @@ table .actions {
   display: inline-block;
   fill:rgb(48, 93, 160);
 }
+
+.spinner-container {
+  background: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  margin: 10% 25%;
+  width: 50%;
+  padding: 2vh;
+  text-align: center;
+}
+
+.spinner {
+  margin: auto;
+  position: relative;
+  width: 40vmin;
+  height: 40vmin;
+}
+
+
+.spinner .circle-outter {
+  position: absolute;
+  border: 4vmin solid rgb(200, 0, 0);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  width: 80%;
+  height: 80%;
+  margin: 0 5%;
+  border-radius: 100%;
+  animation: spinner-outter 2s infinite linear;
+}
+    
+.spinner .circle-inner {
+  position: absolute;
+  border: 4vmin solid rgb(200, 0, 0);;
+  border-radius: 100%;
+  width: 40%;
+  height: 40%;
+  margin: 20% 25%;
+  border-right-color: transparent;
+  border-top-color: transparent;
+    animation: spinner-inner 2s infinite linear;
+}
+
+.spinner-container span {
+  font-size: 3.5vw;
+}
+
+@keyframes spinner-outter {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-inner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
