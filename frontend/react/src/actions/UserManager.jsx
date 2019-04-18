@@ -13,7 +13,7 @@ export const getAllEmployees = () => dispatch => {
         employees: response.responseValue,
       });
     });
-    dispatch({ type: 'SET_LOADING', value: false });
+    //dispatch({ type: 'SET_LOADING', value: false });
 };
 export const removeUser = (Id) => dispatch => {
   dispatch({ type: 'SET_LOADING', value: true });

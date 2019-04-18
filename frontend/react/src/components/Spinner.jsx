@@ -23,7 +23,7 @@ class Spinner extends React.Component {
 }
 export default connect(
   (state) => ({
-    loading: state.sites.loading,
+    loading: state.TravelScreen.loading,
   }), null, null)(Spinner);
 
 Spinner.propTypes = {
