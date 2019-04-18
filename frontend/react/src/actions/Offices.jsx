@@ -1,6 +1,7 @@
 import * as utils from '../utils/api/office'
 
 export const getOffices = () => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     utils.getAllOfficesHttp()
       .then(function(response){
         if(response.responseCode != 200){
@@ -12,19 +13,23 @@ export const getOffices = () => dispatch => {
           offices: response.responseValue,
         });
       })
+    dispatch({ type: 'SET_LOADING', value: false });
   }
   
-  export const registerOffice = (city, address)=> dispatch=>{
+export const registerOffice = (city, address) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
       utils.registerOfficeHttp({city, address})
         .then(function (response){
           dispatch({
             type: "ADD_OFFICE",
             office: response.responseValue
         })
-      })
+        })
+    dispatch({ type: 'SET_LOADING', value: false });
   }
 
-  export const deleteOffice = (id) => dispatch=>{
+export const deleteOffice = (id) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     utils.removeOfficeHttp(id)
       .then(function(response){
         if(response.responseCode != 200){
@@ -36,10 +41,11 @@ export const getOffices = () => dispatch => {
             id: id
         })}
       })
-    
+    dispatch({ type: 'SET_LOADING', value: false });
   }
 
-  export const editOffice = (id,city, address) => dispatch =>{
+export const editOffice = (id, city, address) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     utils.updateOffice({id,city,address})
       .then(function(response){
         if(response.responseCode != 200){
@@ -56,6 +62,5 @@ export const getOffices = () => dispatch => {
           })
         }
       })
-    
-
+    dispatch({ type: 'SET_LOADING', value: false });
   }
