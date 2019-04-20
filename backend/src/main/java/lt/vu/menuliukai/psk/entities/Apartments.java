@@ -3,7 +3,6 @@ package lt.vu.menuliukai.psk.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -12,37 +11,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
 import lt.vu.menuliukai.psk.converters.OfficeConverter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Getter @Setter
+@Getter
+@Setter
+
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name="EMPLOYEE")
-public class Employee {
+@Table(name="APARTMENTS")
+public class Apartments {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    String fullName;
-    String email;
-    String password; // lul
+    String address;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonSerialize(converter = IdObjectToLongConverter.class)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JsonDeserialize(converter = OfficeConverter.class)
-    @JsonProperty("office")
+    @JsonSerialize(converter = IdObjectToLongConverter.class)
     Office office;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "apartments")
     @JsonIgnore
-    private Set<EmployeeTrip> employeeTrips = new HashSet<>();
+    Set<ApartmentRoom> apartmentRooms = new HashSet<>();;
 
-    @OneToMany(mappedBy = "employee")
-    @JsonIgnore
-    private Set<Event> events = new HashSet<>();
 }

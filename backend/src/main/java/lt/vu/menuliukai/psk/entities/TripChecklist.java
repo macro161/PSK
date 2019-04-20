@@ -3,12 +3,11 @@ package lt.vu.menuliukai.psk.entities;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -16,14 +15,18 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Table(name="CHECKLIST")
-public class TripChecklist {
+public class TripChecklist implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     long id;
 
-    boolean plainTickets;
+    // 0 - nereikalingi, 1 - reikalingi, 2 - užsakyti.
+    int plainTickets;
 
-    boolean car;
+    int car;
+
+    int apartments;
 }
