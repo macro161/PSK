@@ -29,9 +29,8 @@ public class Apartments {
 
     String address;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JsonDeserialize(converter = OfficeConverter.class)
-    @JsonSerialize(converter = IdObjectToLongConverter.class)
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "apartments")
     Office office;
 
     @OneToMany(mappedBy = "apartments")
