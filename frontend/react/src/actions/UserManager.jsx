@@ -12,8 +12,8 @@ export const getAllEmployees = () => dispatch => {
         type: 'GET_ALL_EMPLOYEES',
         employees: response.responseValue,
       });
+      dispatch({ type: 'SET_LOADING', value: false });
     });
-    dispatch({ type: 'SET_LOADING', value: false });
 };
 export const removeUser = (Id) => dispatch => {
   dispatch({ type: 'SET_LOADING', value: true });
@@ -28,8 +28,8 @@ export const removeUser = (Id) => dispatch => {
           Id: Id,
         });
       }
+      dispatch({ type: 'SET_LOADING', value: false });
     });
-    dispatch({ type: 'SET_LOADING', value: false });
 };
 export const updateUser = (Id) => {
   return {
@@ -45,6 +45,6 @@ export const registerUser = (fullName, city, email, password) => dispatch => {
         type: 'ADD_USER',
         user: response.responseValue
       });
+      dispatch({ type: 'SET_LOADING', value: false });
     });
-    dispatch({ type: 'SET_LOADING', value: false });
 };
