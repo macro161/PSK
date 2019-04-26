@@ -28,7 +28,7 @@ export default class OfficeEditForm extends React.Component{
     }
 
     onEditSave(){
-        this.props.onEditSave(this.props.office.id, this.state.city, this.state.address, this.state.accommodation, this.state.rooms);
+        this.props.onEditSave(this.props.office.id, this.state.city, this.state.address, this.state.accommodation, parseInt(this.state.rooms));
     }
 
     render(){

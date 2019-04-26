@@ -45,8 +45,8 @@ export const getOffices = () => dispatch => {
     
   }
 
-  export const editOffice = (id,city,address,accommodation,rooms) => dispatch =>{
-    utils.updateOffice({id,city})
+  export const editOffice = (id,city,address,aptAddress,aptSize) => dispatch =>{
+    utils.updateOffice({id,city, address, aptAddress,aptSize})
       .then(function(response){
         if(response.responseCode != 200){
           alert("100 proc nebus alerto")
@@ -58,8 +58,8 @@ export const getOffices = () => dispatch => {
               id: id,
               city: city,
               address: address,
-              aptAddress: accommodation,
-              aptSize: rooms,
+              aptAddress: aptAddress,
+              aptSize: aptSize,
             }
           })
         }
