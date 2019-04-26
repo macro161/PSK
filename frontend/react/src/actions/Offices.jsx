@@ -15,13 +15,19 @@ export const getOffices = () => dispatch => {
   }
   
   export const registerOffice = (city, address, accommodation, rooms)=> dispatch=>{
-      utils.registerOfficeHttp(city, address, accommodation, rooms)
-        .then(function (response){
-          dispatch({
-            type: "ADD_OFFICE",
-            office: response.responseValue
-        })
-      })
+    utils.registerOfficeHttp(city, address, accommodation, rooms)
+    .then(function(response){
+      registerRooms(response.responseValue.id, rooms)})
+    .then( dispatch({
+        type: "ADD_OFFICE",
+        office: {city, address, aptAddress: accommodation, aptSize: rooms}
+    }))
+  }
+  
+  export const registerRooms = (id, rooms)=> {
+    var i;
+    for(i =0;i<rooms;i++) 
+      utils.registerRoomHttp(id,i)
   }
 
   export const deleteOffice = (id) => dispatch=>{
@@ -39,7 +45,7 @@ export const getOffices = () => dispatch => {
     
   }
 
-  export const editOffice = (id,city) => dispatch =>{
+  export const editOffice = (id,city,address,accommodation,rooms) => dispatch =>{
     utils.updateOffice({id,city})
       .then(function(response){
         if(response.responseCode != 200){
@@ -52,8 +58,8 @@ export const getOffices = () => dispatch => {
               id: id,
               city: city,
               address: address,
-              accommodation: accommodation,
-              rooms: rooms,
+              aptAddress: accommodation,
+              aptSize: rooms,
             }
           })
         }

@@ -1,18 +1,14 @@
 package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.converters.Converter;
+import lt.vu.menuliukai.psk.dao.ApartmentRoomDao;
 import lt.vu.menuliukai.psk.dao.OfficeDao;
-import lt.vu.menuliukai.psk.dao.ApartmentsDao;
-import lt.vu.menuliukai.psk.entities.ApartmentRoom;
 import lt.vu.menuliukai.psk.entities.Office;
-import lt.vu.menuliukai.psk.entities.Apartments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -27,7 +23,7 @@ public class OfficeController {
     private OfficeDao officeDao;
 
     @Autowired
-    private ApartmentsDao apartmentsDao;
+    private ApartmentRoomDao apartmentRoomDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Office> index() {
@@ -43,18 +39,10 @@ public class OfficeController {
     public Office add(@RequestParam("city") String city,@RequestParam("address") String address, @RequestParam("accommodation") String accommodation, @RequestParam("rooms") int rooms) {
 
         Office office = new Office();
-        Apartments apartment = new Apartments();
-        apartment.setAddress(accommodation);
-        Set<ApartmentRoom> apartmentRooms = new HashSet<>();;
-        for(int i=0;i<rooms;i++){
-            ApartmentRoom aptRoom = new ApartmentRoom();
-            aptRoom.setRoomNo(i);
-            apartmentRooms.add(aptRoom);
-        }
-        apartment.setApartmentRooms(apartmentRooms);
         office.setCity(city);
         office.setAddress(address);
-        office.setApartments(apartment);
+        office.setAptAddress(accommodation);
+        office.setAptSize(rooms);
 
         return officeDao.save(office);
     }
@@ -83,6 +71,8 @@ public class OfficeController {
 
         change(office::getAddress, baseOffice::setAddress);
         change(office::getCity, baseOffice::setCity);
+        change(office::getAptAddress, baseOffice::setAptAddress);
+        change(office::getAptSize, baseOffice::setAptSize);
 
         return officeDao.save(baseOffice);
     }

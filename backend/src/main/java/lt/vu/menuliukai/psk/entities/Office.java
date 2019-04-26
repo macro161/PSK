@@ -30,8 +30,9 @@ public class Office {
 
     String address;
 
-    @OneToOne(cascade=CascadeType.ALL, mappedBy = "office")
-    Apartments apartments;
+    String aptAddress;
+
+    int aptSize;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
@@ -44,4 +45,8 @@ public class Office {
             fetch = FetchType.LAZY,
             mappedBy = "fromOffice")
     Set<Trip> tripsFromOffice = new HashSet<>();
+
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "office")
+    @JsonIgnore
+    Set<ApartmentRoom> apartmentRooms = new HashSet<>();
 }

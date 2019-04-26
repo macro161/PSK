@@ -28,8 +28,8 @@ export default class Office extends React.Component {
           <span className="info">
             <div className="city">{this.props.office.city}</div>
             <div className="address">{this.props.office.address}</div>
-            <div className="accommodation">{this.props.office.accommodation}</div>
-            <div className="rooms">{this.props.office.rooms}</div>
+            <div className="accommodation">Accommodation: {this.props.office.aptAddress}</div>
+            <div className="rooms">Rooms: {this.props.office.aptSize}</div>
           </span>
           <span>
               <IconButton aria-label="Edit" color="primary"

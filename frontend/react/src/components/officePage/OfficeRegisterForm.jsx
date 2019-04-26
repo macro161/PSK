@@ -34,7 +34,7 @@ export default class OfficeRegisterForm extends React.Component{
         open={true}
         onClose={this.props.onClose}
         aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Register new employee</DialogTitle>
+        <DialogTitle id="form-dialog-title">Register new office</DialogTitle>
         <DialogContent>
             <TextField
               id="city"
