@@ -16,10 +16,25 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import green from '@material-ui/core/colors/green';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+
 
 const styles = theme => ({
+  root: {
+    color: green[600],
+    '&$checked': {
+      color: green[500],
+    },
+  },
+  checked: {},
   input: {
-
     display: 'flex',
     padding: 0,
   },
@@ -172,10 +187,15 @@ class TravelRegisterForm extends React.Component {
       employees: this.props.employees,
       city: this.props.city,
       onClose: this.props.onClose,
+      checkedPlane: true,
+      checkedCar: true,
+      checkedAcomondation: true,
     };
 
   }
-
+  handleChangeCheckBox(e) {
+    this.setState({ [e.target.value]: e.target.checked });
+  };
   handleChange(e) {
     this.setState({
       selectedEmployee: e,
@@ -304,6 +324,53 @@ class TravelRegisterForm extends React.Component {
               }}
               isClearable
             />
+              <FormGroup row>
+              <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.checkedPlane}
+              onChange={this.handleChangeCheckBox.bind(this)}
+              value="checkedPlane"
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+            />
+                  }
+          labelPlacement="start"       
+          label="Plane"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.checkedCar}
+              onChange={this.handleChangeCheckBox.bind(this)}
+              value="checkedCar"
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+            />
+                  }
+          labelPlacement="start"       
+          label="Car"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.checkedAcomondation}
+              onChange={this.handleChangeCheckBox.bind(this)}
+              value="checkedAcomondation"
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+            />
+                  }
+          labelPlacement="start"       
+          label="Acomondation"
+        />
+              </FormGroup>
             <div className="register-form-buttons">
               <Button variant="contained" size="medium" color="primary" onClick={this.onSubmit.bind(this)}>
                 Register
@@ -311,6 +378,7 @@ class TravelRegisterForm extends React.Component {
               <Button variant="contained" size="medium" color="secondary" className="cancel-button" onClick={this.props.onClose}>
                 Cancel
             </Button>
+        
             </div>
           </NoSsr>
         </DialogContent>
