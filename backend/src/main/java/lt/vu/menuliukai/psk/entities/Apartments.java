@@ -34,7 +34,7 @@ public class Apartments {
     @JsonSerialize(converter = IdObjectToLongConverter.class)
     Office office;
 
-    @OneToMany(mappedBy = "apartments")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "apartments")
     @JsonIgnore
     Set<ApartmentRoom> apartmentRooms = new HashSet<>();;
 

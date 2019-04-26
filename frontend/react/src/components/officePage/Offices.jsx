@@ -47,8 +47,8 @@ class Offices extends React.Component {
       })
     }
 
-    onEditSave(id,city,address){
-        this.props.editOffice(id,city,address);
+    onEditSave(id,city,address, accommodation, rooms){
+        this.props.editOffice(id,city,address,accommodation, rooms);
         this.setState({
           showEdit:false,
           showPopup:false
@@ -60,8 +60,8 @@ class Offices extends React.Component {
     }
 
 
-    onSubmit(city, address){
-      this.props.registerOffice(city, address);
+    onSubmit(city, address, accommodation, rooms){
+      this.props.registerOffice(city, address, accommodation, rooms);
       this.setState({
         showRegistration:false,
         showPopup:false,

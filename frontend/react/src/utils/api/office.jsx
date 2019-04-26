@@ -33,9 +33,9 @@ export function getAllOfficesHttp(){
         });
 }
 
-export function registerOfficeHttp(office){
+export function registerOfficeHttp(city, address, accommodation, rooms){
     let responseCode;
-    return post(officeUrl + "add", office)
+    return post(officeUrl + "add" + "?city=" +city +"&address=" +address +"&accommodation=" + accommodation + "&rooms=" +rooms)
         .then(function(response){
             responseCode = response.status;
             if(responseCode === 200){

@@ -30,7 +30,7 @@ public class Office {
 
     String address;
 
-    @OneToOne(mappedBy = "office")
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "office")
     Apartments apartments;
 
     @JsonIgnore

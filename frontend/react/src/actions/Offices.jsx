@@ -14,8 +14,8 @@ export const getOffices = () => dispatch => {
       })
   }
   
-  export const registerOffice = (city, address)=> dispatch=>{
-      utils.registerOfficeHttp({city, address})
+  export const registerOffice = (city, address, accommodation, rooms)=> dispatch=>{
+      utils.registerOfficeHttp(city, address, accommodation, rooms)
         .then(function (response){
           dispatch({
             type: "ADD_OFFICE",
@@ -39,8 +39,8 @@ export const getOffices = () => dispatch => {
     
   }
 
-  export const editOffice = (id,city, address) => dispatch =>{
-    utils.updateOffice({id,city,address})
+  export const editOffice = (id,city) => dispatch =>{
+    utils.updateOffice({id,city})
       .then(function(response){
         if(response.responseCode != 200){
           alert("100 proc nebus alerto")
@@ -52,6 +52,8 @@ export const getOffices = () => dispatch => {
               id: id,
               city: city,
               address: address,
+              accommodation: accommodation,
+              rooms: rooms,
             }
           })
         }
