@@ -59,18 +59,13 @@ export const editTravel = (id, fullName, departureTime, accomodation, city, appr
     })
 }
 
-export const registerTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch => {
-    dispatch({
-        type: "ADD_TRAVEL",
-        travel: {
-            id: id,
-            fullName: fullName,
-            departureTime: departureTime,
-            accomodation: accomodation,
-            city: city,
-            approved: approved,
-        }
-    })
+export const registerTravel = (employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) => dispatch => {
+    utils.registerTripHttp({ from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
+        .then(function (response) {
+            utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved : false })
+                .then(function (r) {
+                });
+        });
 }
 
 export const getAllEmployeeTrips = () => dispatch => {

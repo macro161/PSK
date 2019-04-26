@@ -21,6 +21,7 @@ import { lighten } from '@material-ui/core/styles/colorManipulator';
 import PlaneIcon from '@material-ui/icons/Flight';
 import CarIcon from '@material-ui/icons/DirectionsCar';
 import HotelIcon from '@material-ui/icons/Hotel'
+import Badge from '@material-ui/core/Badge';
 import GroupIcon from '@material-ui/icons/GroupAdd'
 
 function desc(a, b, orderBy) {
@@ -49,7 +50,7 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'traveler', numeric: true, disablePadding: true, label: 'Traveler' },
+  { id: 'fullName', numeric: true, disablePadding: true, label: 'Traveler' },
   { id: 'leavingOffice', numeric: false, disablePadding: true, label: 'Departure office' },
   { id: 'destinationOffice', numeric: false, disablePadding: true, label: 'Destination office' },
   { id: 'leavingDate', numeric: false, disablePadding: true, label: 'Departure time' },
@@ -113,13 +114,13 @@ const toolbarStyles = theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.primary.main,
-          backgroundColor: lighten(theme.palette.primary.light, 0.85),
-        }
+        color: theme.palette.primary.main,
+        backgroundColor: lighten(theme.palette.primary.light, 0.85),
+      }
       : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.primary.dark,
-        },
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.primary.dark,
+      },
   spacer: {
     flex: '1 1 100%',
   },
@@ -146,10 +147,10 @@ let EnhancedTableToolbar = props => {
             {numSelected} {numSelected % 100 == 1 ? "trip" : "trips"} selected
           </Typography>
         ) : (
-          <Typography variant="h6" id="tableTitle">
-            Employees travels
+            <Typography variant="h6" id="tableTitle">
+              Employees travels
           </Typography>
-        )}
+          )}
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
@@ -160,12 +161,12 @@ let EnhancedTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
+            <Tooltip title="Filter list">
+              <IconButton aria-label="Filter list">
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+          )}
       </div>
     </Toolbar>
   );
@@ -216,50 +217,51 @@ class TravelDataTable extends React.Component {
       selectedTrips: [],
     };
   }
-    handleRequestSort = (event, property) => {
-      const orderBy = property;
-      let order = 'desc';
-  
-      if (this.state.orderBy === property && this.state.order === 'desc') {
-        order = 'asc';
-      }
-  
-      this.setState({ order, orderBy });
-    };
-  
-  
+  handleRequestSort = (event, property) => {
+    const orderBy = property;
+    let order = 'desc';
+
+    if (this.state.orderBy === property && this.state.order === 'desc') {
+      order = 'asc';
+    }
+
+    this.setState({ order, orderBy });
+  };
+
+
   handleClick = (event, id) => {
-    console.log(this.props.event);
-      const { selectedTrips } = this.state;
-      const selectedIndex = selectedTrips.indexOf(id);
-      let newSelected = [];
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selectedTrips, id);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selectedTrips.slice(1));
-      } else if (selectedIndex === selectedTrips.length - 1) {
-        newSelected = newSelected.concat(selectedTrips.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-          selectedTrips.slice(0, selectedIndex),
-          selectedTrips.slice(selectedIndex + 1),
-        );
-      }
-  
-      this.setState({ selectedTrips: newSelected });
-    };
-  
-    handleChangePage = (event, page) => {
-      this.setState({ page });
-    };
-  
-    handleChangeRowsPerPage = event => {
-      this.setState({ rowsPerPage: event.target.value });
-    };
-  
+    
+    console.log(this.props.employeeTrips);
+    const { selectedTrips } = this.state;
+    const selectedIndex = selectedTrips.indexOf(id);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selectedTrips, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selectedTrips.slice(1));
+    } else if (selectedIndex === selectedTrips.length - 1) {
+      newSelected = newSelected.concat(selectedTrips.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selectedTrips.slice(0, selectedIndex),
+        selectedTrips.slice(selectedIndex + 1),
+      );
+    }
+
+    this.setState({ selectedTrips: newSelected });
+  };
+
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
   isSelected = id => this.state.selectedTrips.indexOf(id) !== -1;
-  
-  render(){
+
+  render() {
     const { classes } = this.props;
     const { order, orderBy, selectedTrips, rowsPerPage, page } = this.state;
     let data = this.props.employeeTrips;
@@ -295,17 +297,32 @@ class TravelDataTable extends React.Component {
                       </TableCell>
                       <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.leavingOffice}</TableCell>
                       <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.destinationOffice}</TableCell>
-                      <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.leavingDate.substring(0,10)}</TableCell>
+                      <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.leavingDate.substring(0, 10)}</TableCell>
                       <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.returningDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">
-                        <IconButton aria-label="Delete" className={classes.margin}>
-                          <PlaneIcon fontSize="small" />
+                        <IconButton aria-label="Plane info" className={classes.margin}>
+                          {n.tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : n.tripChecklist.plainTickets == 1 ?
+                            <Badge color="secondary" variant="dot">
+                              <PlaneIcon fontSize="small"/>
+                            </Badge> :
+                            <PlaneIcon fontSize="small" color="primary"/>}
                         </IconButton>
-                        <IconButton aria-label="Delete" className={classes.margin}>
-                          <CarIcon fontSize="small" />
+                        <IconButton aria-label="Car rent info" className={classes.margin}>
+                          {n.tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
+                            n.tripChecklist.car == 1 ?
+                              <Badge color="secondary" variant="dot">
+                                <CarIcon fontSize="small" />
+                              </Badge> :
+                            <CarIcon fontSize="small" color="primary" />}
                         </IconButton>
-                        <IconButton aria-label="Delete" className={classes.margin}>
-                          <HotelIcon fontSize="small" />
+      
+                        <IconButton aria-label="accomodation info" className={classes.margin}>
+                          {n.tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : n.tripChecklist.apartments == 1 ?
+                            <Badge color="secondary" variant="dot">
+                              <HotelIcon fontSize="small" />
+                            </Badge> :
+                            <HotelIcon fontSize="small" color="primary" />}
+                          
                         </IconButton>
                       </TableCell>
                     </EnhancedTableRow>
@@ -338,35 +355,40 @@ class TravelDataTable extends React.Component {
     );
   }
 }
-  
+
 
 TravelDataTable.propTypes = {
-    travels: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string,
-        fullName: PropTypes.string,
-        leavingDate: PropTypes.string,
-        accomodation: PropTypes.string,
-        city: PropTypes.string,
-        approved: PropTypes.bool
-    })),
-    classes: PropTypes.object.isRequired,
-        employeeTrips: PropTypes.arrayOf(PropTypes.shape({
-          id: PropTypes.any,
-          fullName : PropTypes.string,
-          leavingDate: PropTypes.string,
-          returningDate: PropTypes.string,
-          leavingOffice: PropTypes.string,
-          destinationOffice: PropTypes.string,
-          approved: PropTypes.bool,
-        })),
-        show: PropTypes.bool,
+  travels: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+    fullName: PropTypes.string,
+    leavingDate: PropTypes.string,
+    accomodation: PropTypes.string,
+    city: PropTypes.string,
+    approved: PropTypes.bool
+  })),
+  classes: PropTypes.object.isRequired,
+  employeeTrips: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    fullName: PropTypes.string,
+    leavingDate: PropTypes.string,
+    returningDate: PropTypes.string,
+    leavingOffice: PropTypes.string,
+    destinationOffice: PropTypes.string,
+    approved: PropTypes.bool,
+    tripChecklist: PropTypes.PropTypes.shape({
+      plainTickets: PropTypes.number,
+      car: PropTypes.number,
+      apartments: PropTypes.number,
+    }),
+  })),
+  show: PropTypes.bool,
   getAllTravels: PropTypes.func,
-        getEmployeeTrips :PropTypes.func,
-        approveTravel: PropTypes.func,
-        cancelTravel: PropTypes.func,
-        seeTravelDetails: PropTypes.func,
-        showInfo: PropTypes.func,
-        editTravel: PropTypes.func,
-        removeTravel: PropTypes.func,
+  getEmployeeTrips: PropTypes.func,
+  approveTravel: PropTypes.func,
+  cancelTravel: PropTypes.func,
+  seeTravelDetails: PropTypes.func,
+  showInfo: PropTypes.func,
+  editTravel: PropTypes.func,
+  removeTravel: PropTypes.func,
 };
 export default withStyles(styles)(TravelDataTable)

@@ -75,7 +75,8 @@ public class EmployeeTripController {
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeTrip add(@RequestBody EmployeeTrip employeeTrip) {
         employeeTrip.setId(new EmployeeTripId(employeeTrip.getEmployee().getId(), employeeTrip.getTrip().getId()));
-        return employeeTripDao.save(employeeTrip);
+        employeeTripDao.save(employeeTrip);
+        return employeeTrip;
     }
 
     @RequestMapping(value = "/delete/{employeeId}/{tripId}", method = RequestMethod.DELETE)
@@ -90,7 +91,7 @@ public class EmployeeTripController {
     public List<EmployeeTripBasicDto> getBasic(){
         Iterable<EmployeeTrip> employeeTrips = employeeTripDao.findAll();
         return StreamSupport.stream(employeeTrips.spliterator(), false).map(et ->
-                new EmployeeTripBasicDto(et.getId(), et.getEmployee().getFullName(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), et.getTrip().getFromOffice().getCity(), et.getTrip().getToOffice().getCity()))
+                new EmployeeTripBasicDto(et.getId(), et.getEmployee().getFullName(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), et.getTrip().getFromOffice().getCity(), et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved()))
                     .collect(Collectors.toList());
     }
 

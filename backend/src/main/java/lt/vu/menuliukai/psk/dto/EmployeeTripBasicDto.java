@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lt.vu.menuliukai.psk.entities.EmployeeTripId;
+import lt.vu.menuliukai.psk.entities.TripChecklist;
 
 import java.util.Date;
 
@@ -24,7 +25,8 @@ public class EmployeeTripBasicDto {
 
     String destinationOffice;
 
+    TripChecklist tripChecklist;
 
-
+    boolean approved;
 
 }

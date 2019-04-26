@@ -54,9 +54,10 @@ class TravelScreen extends React.Component {
     this.setState(initialState)
   }
   
-  onSubmit(id, fullName, departure, accommodation, city, approved){
-    this.props.registerTravel(id, fullName, departure, accommodation, city, approved);
+  onSubmit(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist){
+    this.props.registerTravel(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist);
     this.setState(initialState)
+    this.props.getAllEmployeeTrips();
   }
 
   removeTravel(id){
@@ -129,11 +130,16 @@ TravelScreen.propTypes = {
   employeeTrips: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
     fullName : PropTypes.string,
-    departureTime: PropTypes.string,
-    returningTime: PropTypes.string,
-    departureOffice: PropTypes.string,
+    leavingDate: PropTypes.string,
+    returningDate: PropTypes.string,
+    leavingOffice: PropTypes.string,
     destinationOffice: PropTypes.string,
     approved: PropTypes.bool,
+    tripChecklist: PropTypes.shape({
+      plainTickets : PropTypes.number,
+      car: PropTypes.number,
+      apartments: PropTypes.number,
+    }),
   })),
   offices: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,

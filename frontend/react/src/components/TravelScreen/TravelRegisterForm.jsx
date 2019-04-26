@@ -180,8 +180,8 @@ class TravelRegisterForm extends React.Component {
       destinationOffice: null,
       selectedEmployee: null,
       fullName: this.props.fullName,
-      departureTime: this.props.departureTime,
-      returningTime: null,
+      departureTime: new Date().toISOString().substr(0, 10),
+      returningTime: new Date().toISOString().substr(0, 10),
       accommodation: this.props.accommodation,
       offices: this.props.offices,
       employees: this.props.employees,
@@ -197,18 +197,22 @@ class TravelRegisterForm extends React.Component {
     this.setState({ [e.target.value]: e.target.checked });
   };
   handleChange(e) {
+    console.log(e);
     this.setState({
-      selectedEmployee: e,
+      selectedEmployee: e.value,
+      fullName: e.value.fullName,
     });
   };
   handleChangeLeaving(e) {
+    console.log(e);
     this.setState({
-      leavingOffice: e,
+      leavingOffice: e.value,
     });
   };
   handleChangeDestination(e) {
+    console.log(e);
     this.setState({
-      destinationOffice: e,
+      destinationOffice: e.value,
     });
   };
 
@@ -219,9 +223,9 @@ class TravelRegisterForm extends React.Component {
   }
 
   onSubmit() {
-    this.props.onSubmit(Math.floor(Math.random() * 10000).toString(), this.state.fullName, this.state.departureTime, this.state.accommodation, this.state.city, true);
+    console.log(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, { PlainTickets: this.state.checkedPlane ? 1 : 0, car: this.state.checkedCar ? 1 : 0, apartments: this.state.checkedAcomondation ? 1 : 0});
+    this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {PlainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
   }
-
 
   render() {
     const { classes, theme } = this.props;
@@ -247,11 +251,11 @@ class TravelRegisterForm extends React.Component {
               classes={classes}
               styles={selectStyles}
               options={this.props.employees.map(emp => ({
-                value: emp.id,
+                value: emp,
                 label: emp.fullName,
               }))}
               components={components}
-              value={this.state.selectedEmployee}
+              value={this.state.fullName}
               onChange={this.handleChange.bind(this)}
               textFieldProps={{
                 label: 'Employee',
@@ -291,7 +295,7 @@ class TravelRegisterForm extends React.Component {
               classes={classes}
               styles={selectStyles}
               options={this.props.offices.map(off => ({
-                value: off.id,
+                value: off,
                 label: off.city,
               }))}
               components={components}
@@ -310,7 +314,7 @@ class TravelRegisterForm extends React.Component {
               classes={classes}
               styles={selectStyles}
               options={this.props.offices.map(off => ({
-                value: off.id,
+                value: off,
                 label: off.city,
               }))}
               components={components}
