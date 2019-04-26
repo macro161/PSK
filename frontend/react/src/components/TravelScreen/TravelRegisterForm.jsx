@@ -224,7 +224,7 @@ class TravelRegisterForm extends React.Component {
 
   onSubmit() {
     console.log(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, { PlainTickets: this.state.checkedPlane ? 1 : 0, car: this.state.checkedCar ? 1 : 0, apartments: this.state.checkedAcomondation ? 1 : 0});
-    this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {PlainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
+    this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {plainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
   }
 
   render() {
@@ -255,7 +255,7 @@ class TravelRegisterForm extends React.Component {
                 label: emp.fullName,
               }))}
               components={components}
-              value={this.state.fullName}
+              value={this.state.selectedEmployee == null ? null : { value: this.state.selectedEmployee, label: this.state.selectedEmployee.fullName }}
               onChange={this.handleChange.bind(this)}
               textFieldProps={{
                 label: 'Employee',
@@ -299,7 +299,7 @@ class TravelRegisterForm extends React.Component {
                 label: off.city,
               }))}
               components={components}
-              value={this.state.leavingOffice}
+              value={this.state.leavingOffice == null ? null : {value : this.state.leavingOffice, label : this.state.leavingOffice.city}}
               onChange={this.handleChangeLeaving.bind(this)}
               textFieldProps={{
                 label: 'Leaving office',
@@ -318,7 +318,7 @@ class TravelRegisterForm extends React.Component {
                 label: off.city,
               }))}
               components={components}
-              value={this.state.destinationOffice}
+              value={this.state.destinationOffice == null ? null : {value : this.state.destinationOffice, label : this.state.destinationOffice.city}}
               onChange={this.handleChangeDestination.bind(this)}
               textFieldProps={{
                 label: 'Destination office',
