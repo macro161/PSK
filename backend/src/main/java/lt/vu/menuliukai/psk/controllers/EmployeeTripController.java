@@ -6,15 +6,13 @@ import lt.vu.menuliukai.psk.dao.EmployeeTripDao;
 import lt.vu.menuliukai.psk.dao.TripDao;
 import lt.vu.menuliukai.psk.dto.EmployeeTripBasicDto;
 import lt.vu.menuliukai.psk.dto.TripsGroupingDto;
-import lt.vu.menuliukai.psk.entities.Employee;
-import lt.vu.menuliukai.psk.entities.EmployeeTrip;
-import lt.vu.menuliukai.psk.entities.EmployeeTripId;
-import lt.vu.menuliukai.psk.entities.Trip;
+import lt.vu.menuliukai.psk.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +34,7 @@ public class EmployeeTripController {
     @Autowired
     EmployeeDao employeeDao;
 
+
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<EmployeeTrip> index() {
         return employeeTripDao.findAll();
@@ -50,13 +49,13 @@ public class EmployeeTripController {
     public boolean group(@RequestBody TripsGroupingDto tripsGroupingDto) {
         Trip trip = tripDao.save(tripsGroupingDto.getTrip());
         List<EmployeeTrip> tripsToGroup = new ArrayList<>();
-        for (Long id: tripsGroupingDto.getTripsToGroup()) {
+        for (Long id : tripsGroupingDto.getTripsToGroup()) {
             tripsToGroup.addAll(employeeTripDao.findByIdTripId(id));
         }
         for (EmployeeTrip empTrip : tripsToGroup) {
-           EmployeeTrip et = new EmployeeTrip(empTrip.getEmployee(), trip, empTrip.getTripChecklist(), empTrip.getApartmentRoom(), empTrip.getHotel(), empTrip.getFlight(), empTrip.getCarRent());
-           employeeTripDao.save(et);
-           employeeTripDao.deleteById(empTrip.getId());
+            EmployeeTrip et = new EmployeeTrip(empTrip.getEmployee(), trip, empTrip.getTripChecklist(), empTrip.getApartmentRoom(), empTrip.getHotel(), empTrip.getFlight(), empTrip.getCarRent());
+            employeeTripDao.save(et);
+            employeeTripDao.deleteById(empTrip.getId());
         }
         return true;
     }
@@ -87,12 +86,61 @@ public class EmployeeTripController {
             Converter.throwException(objectName, employeeId);
         }
     }
+
     @RequestMapping(value = "/basic", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EmployeeTripBasicDto> getBasic(){
+    public List<EmployeeTripBasicDto> getBasic() {
         Iterable<EmployeeTrip> employeeTrips = employeeTripDao.findAll();
         return StreamSupport.stream(employeeTrips.spliterator(), false).map(et ->
                 new EmployeeTripBasicDto(et.getId(), et.getEmployee().getFullName(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), et.getTrip().getFromOffice().getCity(), et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved()))
-                    .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
+    @RequestMapping(value = "/add/{employeeId}/{tripId}/hotel", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addHotel(@PathVariable long employeeId, @PathVariable long tripId, @RequestBody Hotel hotel) {
+        EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
+        if (et != null) {
+            et.setApartmentRoom(null);
+            et.setHotel(hotel);
+            employeeTripDao.save(et);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Employee trip not found");
+        }
+    }
+
+    @RequestMapping(value = "/add/{employeeId}/{tripId}/car", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addCarRent(@PathVariable long employeeId, @PathVariable long tripId, @RequestBody CarRent carRent) {
+        EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
+        if (et != null) {
+            et.setCarRent(carRent);
+            employeeTripDao.save(et);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Employee trip not found");
+        }
+    }
+    @RequestMapping(value = "/add/{employeeId}/{tripId}/apartments", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addApartments(@PathVariable long employeeId, @PathVariable long tripId, @RequestBody ApartmentRoom apartmentRoom) {
+        EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
+        if (et != null) {
+            et.setHotel(null);
+            et.setApartmentRoom(apartmentRoom);
+            employeeTripDao.save(et);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Employee trip not found");
+        }
+    }
+
+    @RequestMapping(value = "/add/{employeeId}/{tripId}/flight", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addFlight(@PathVariable long employeeId, @PathVariable long tripId, @RequestBody Flight flight) {
+        EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
+        if (et != null) {
+            et.setFlight(flight);
+            employeeTripDao.save(et);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Employee trip not found");
+        }
+    }
 }
