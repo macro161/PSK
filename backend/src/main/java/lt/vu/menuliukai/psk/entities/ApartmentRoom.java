@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.vu.menuliukai.psk.converters.ApartmentsConverter;
+import lt.vu.menuliukai.psk.converters.OfficeConverter;
 import lt.vu.menuliukai.psk.converters.IdObjectToLongConverter;
 
 import javax.persistence.*;
@@ -34,7 +34,7 @@ public class ApartmentRoom {
     @ManyToOne
     @JoinColumn
     @JsonSerialize(converter = IdObjectToLongConverter.class)
-    @JsonDeserialize(converter = ApartmentsConverter.class)
-    @JsonProperty("apartments")
-    private Apartments apartments;
+    @JsonDeserialize(converter = OfficeConverter.class)
+    @JsonProperty("office")
+    private Office office;
 }

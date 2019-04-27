@@ -14,14 +14,20 @@ export const getOffices = () => dispatch => {
       })
   }
   
-  export const registerOffice = (city, address)=> dispatch=>{
-      utils.registerOfficeHttp({city, address})
-        .then(function (response){
-          dispatch({
-            type: "ADD_OFFICE",
-            office: response.responseValue
-        })
-      })
+  export const registerOffice = (city, address, aptAddress, aptSize)=> dispatch=>{
+    utils.registerOfficeHttp({city, address, aptAddress, aptSize})
+    .then(function(response){
+      registerRooms(response.responseValue.id, aptSize)})
+    .then( dispatch({
+        type: "ADD_OFFICE",
+        office: {city, address, aptAddress, aptSize}
+    }))
+  }
+  
+  export const registerRooms = (id, rooms)=> {
+    var i;
+    for(i =0;i<rooms;i++) 
+      utils.registerRoomHttp(id,i)
   }
 
   export const deleteOffice = (id) => dispatch=>{
@@ -39,8 +45,8 @@ export const getOffices = () => dispatch => {
     
   }
 
-  export const editOffice = (id,city, address) => dispatch =>{
-    utils.updateOffice({id,city,address})
+  export const editOffice = (id,city,address,aptAddress,aptSize) => dispatch =>{
+    utils.updateOffice({id,city, address, aptAddress,aptSize})
       .then(function(response){
         if(response.responseCode != 200){
           alert("100 proc nebus alerto")
@@ -52,6 +58,8 @@ export const getOffices = () => dispatch => {
               id: id,
               city: city,
               address: address,
+              aptAddress: aptAddress,
+              aptSize: aptSize,
             }
           })
         }
