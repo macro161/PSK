@@ -1,6 +1,7 @@
 import * as utils from '../utils/api/userManager'
 
 export const getAllEmployees = () => dispatch => {
+  dispatch({ type: 'SET_LOADING', value: true });
   utils.getAllEmployeesHttp()
     .then(function (response) {
       if (response.responseCode != 200) {
@@ -11,9 +12,11 @@ export const getAllEmployees = () => dispatch => {
         type: 'GET_ALL_EMPLOYEES',
         employees: response.responseValue,
       });
+      dispatch({ type: 'SET_LOADING', value: false });
     });
 };
 export const removeUser = (Id) => dispatch => {
+  dispatch({ type: 'SET_LOADING', value: true });
   utils.removeEmployeeHttp(Id)
     .then(function (response) {
       if (response.responseCode != 200) {
@@ -25,6 +28,7 @@ export const removeUser = (Id) => dispatch => {
           Id: Id,
         });
       }
+      dispatch({ type: 'SET_LOADING', value: false });
     });
 };
 export const updateUser = (Id) => {
@@ -34,12 +38,13 @@ export const updateUser = (Id) => {
   }
 };
 export const registerUser = (fullName, city, email, password) => dispatch => {
+  dispatch({ type: 'SET_LOADING', value: true });
   utils.registerEmployeeHttp({ fullName, city, email, password })
     .then(function (response) {
       dispatch({
         type: 'ADD_USER',
         user: response.responseValue
       });
+      dispatch({ type: 'SET_LOADING', value: false });
     });
-
 };

@@ -1,4 +1,5 @@
 export const getAllTravels = (userId) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     let moc = [
         {
             id: '1',
@@ -21,6 +22,7 @@ export const getAllTravels = (userId) => dispatch => {
         type:'GET_TRAVELS',
         travels: moc,
     });
+    dispatch({ type: 'SET_LOADING', value: false });
 };
 
 export const approveTravel = (travelId) =>{
@@ -44,7 +46,8 @@ export const removeTravel = (travelId) => {
     }
 };
 
-export const editTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch=>{
+export const editTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     dispatch({
         type:"EDIT_TRAVEL",
         travel:{
@@ -56,9 +59,11 @@ export const editTravel = (id, fullName, departureTime, accomodation, city, appr
             approved: approved,
         }
     })
+    dispatch({ type: 'SET_LOADING', value: false });
 }
   
-export const registerTravel = (id, fullName, departureTime, accomodation, city, approved)=> dispatch=>{
+export const registerTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     dispatch({
         type: "ADD_TRAVEL",
         travel:{
@@ -70,4 +75,5 @@ export const registerTravel = (id, fullName, departureTime, accomodation, city, 
             approved: approved,
         }
     })
+    dispatch({ type: 'SET_LOADING', value: false });
 }
