@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions/TravelScreen';
 import { getOffices } from '../../actions/Offices';
@@ -14,7 +15,7 @@ import Button from '@material-ui/core/Button';
 const initialState = {
     fullName: '',
     departureTime : '',
-    accomodation : '',
+    returningTime: '',
     city: '',
     approved: false,
     showEdit: false,
@@ -28,6 +29,7 @@ class TravelScreen extends React.Component {
     this.props.getAllTravels(1);
     this.props.getAllEmployees();
     this.props.getOffices();
+    this.props.getAllEmployeeTrips();
   }
 
   showInfo(id){
@@ -52,9 +54,10 @@ class TravelScreen extends React.Component {
     this.setState(initialState)
   }
   
-  onSubmit(id, fullName, departure, accommodation, city, approved){
-    this.props.registerTravel(id, fullName, departure, accommodation, city, approved);
+  onSubmit(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist){
+    this.props.registerTravel(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist);
     this.setState(initialState)
+    this.props.getAllEmployeeTrips();
   }
 
   removeTravel(id){
@@ -68,18 +71,18 @@ class TravelScreen extends React.Component {
   }
 
   render() {
-    console.log(this.props.employees)
+    console.log(this.props.employeeTrips)
     return (
       <div className='page-frame'>
         <title>Travels</title>
-        <h2>Org travels</h2>
+        <h2>Organise travels</h2>
           <hr/>
           <Button variant ="contained" onClick={this.addTravelClick.bind(this)} className="register-travel-button" variant="contained" color="secondary"> Add travel </Button>
         <div>
             {this.state.show ? <InfoScreen onClose={this.onClose.bind(this)} /> : null}
         </div>
         <DataTable 
-            travels={this.props.travels}
+            employeeTrips={this.props.employeeTrips}
             approveTravel={this.props.approveTravel}
             cancelTravel={this.props.cancelTravel}
             showInfo={this.showInfo.bind(this)}
@@ -97,6 +100,7 @@ class TravelScreen extends React.Component {
             onSubmit={this.onSubmit.bind(this)}
             employees={this.props.employees}
             offices={this.props.offices} /> : null}
+        <br/><br/>
       </div>
     );
   }
@@ -105,6 +109,7 @@ class TravelScreen extends React.Component {
 export default connect(
   (state) => ({
     travels: state.TravelScreen.travels,
+    employeeTrips: state.TravelScreen.employeeTrips,
     employees: state.UserManager.employees,
     offices: state.Offices.offices
   }),
@@ -117,17 +122,24 @@ export default connect(
         cancelTravel: actions.cancelTravel,
         editTravel: actions.editTravel,
         removeTravel: actions.removeTravel,
-        registerTravel: actions.registerTravel,
+      registerTravel: actions.registerTravel,
+        getAllEmployeeTrips: actions.getAllEmployeeTrips,
   }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
-  travels: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
+  employeeTrips: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
     fullName : PropTypes.string,
-    departureTime: PropTypes.string,
-    accomodation: PropTypes.string,
-    city: PropTypes.string,
+    leavingDate: PropTypes.string,
+    returningDate: PropTypes.string,
+    leavingOffice: PropTypes.string,
+    destinationOffice: PropTypes.string,
     approved: PropTypes.bool,
+    tripChecklist: PropTypes.shape({
+      plainTickets : PropTypes.number,
+      car: PropTypes.number,
+      apartments: PropTypes.number,
+    }),
   })),
   offices: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
@@ -147,5 +159,6 @@ TravelScreen.propTypes = {
     seeTravelDetails: PropTypes.func,
     editTravel: PropTypes.func,
     removeTravel: PropTypes.func,
-    registerTravel: PropTypes.func,
+  registerTravel: PropTypes.func,
+    getAllEmployeeTrips: PropTypes.func,
 };

@@ -59,6 +59,8 @@ public class EmployeeTrip implements Serializable {
     @JsonProperty("car_rent")
     private CarRent carRent;
 
+    Boolean approved;
+
     public EmployeeTrip(Employee employee, Trip trip, TripChecklist tripChecklist, ApartmentRoom apartmentRoom, Hotel hotel, Flight flight, CarRent carRent){
         this.employee = employee;
         this.trip = trip;

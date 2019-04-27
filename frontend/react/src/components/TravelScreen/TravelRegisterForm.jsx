@@ -16,10 +16,25 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import green from '@material-ui/core/colors/green';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+
 
 const styles = theme => ({
+  root: {
+    color: green[600],
+    '&$checked': {
+      color: green[500],
+    },
+  },
+  checked: {},
   input: {
-
     display: 'flex',
     padding: 0,
   },
@@ -165,30 +180,39 @@ class TravelRegisterForm extends React.Component {
       destinationOffice: null,
       selectedEmployee: null,
       fullName: this.props.fullName,
-      departureTime: this.props.departureTime,
-      returningTime: null,
+      departureTime: new Date().toISOString().substr(0, 10),
+      returningTime: new Date().toISOString().substr(0, 10),
       accommodation: this.props.accommodation,
       offices: this.props.offices,
       employees: this.props.employees,
       city: this.props.city,
       onClose: this.props.onClose,
+      checkedPlane: true,
+      checkedCar: true,
+      checkedAcomondation: true,
     };
 
   }
-
+  handleChangeCheckBox(e) {
+    this.setState({ [e.target.value]: e.target.checked });
+  };
   handleChange(e) {
+    console.log(e);
     this.setState({
-      selectedEmployee: e,
+      selectedEmployee: e.value,
+      fullName: e.value.fullName,
     });
   };
   handleChangeLeaving(e) {
+    console.log(e);
     this.setState({
-      leavingOffice: e,
+      leavingOffice: e.value,
     });
   };
   handleChangeDestination(e) {
+    console.log(e);
     this.setState({
-      destinationOffice: e,
+      destinationOffice: e.value,
     });
   };
 
@@ -199,9 +223,9 @@ class TravelRegisterForm extends React.Component {
   }
 
   onSubmit() {
-    this.props.onSubmit(Math.floor(Math.random() * 10000).toString(), this.state.fullName, this.state.departureTime, this.state.accommodation, this.state.city, true);
+    console.log(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, { PlainTickets: this.state.checkedPlane ? 1 : 0, car: this.state.checkedCar ? 1 : 0, apartments: this.state.checkedAcomondation ? 1 : 0});
+    this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {plainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
   }
-
 
   render() {
     const { classes, theme } = this.props;
@@ -227,11 +251,11 @@ class TravelRegisterForm extends React.Component {
               classes={classes}
               styles={selectStyles}
               options={this.props.employees.map(emp => ({
-                value: emp.id,
+                value: emp,
                 label: emp.fullName,
               }))}
               components={components}
-              value={this.state.selectedEmployee}
+              value={this.state.selectedEmployee == null ? null : { value: this.state.selectedEmployee, label: this.state.selectedEmployee.fullName }}
               onChange={this.handleChange.bind(this)}
               textFieldProps={{
                 label: 'Employee',
@@ -271,11 +295,11 @@ class TravelRegisterForm extends React.Component {
               classes={classes}
               styles={selectStyles}
               options={this.props.offices.map(off => ({
-                value: off.id,
+                value: off,
                 label: off.city,
               }))}
               components={components}
-              value={this.state.leavingOffice}
+              value={this.state.leavingOffice == null ? null : {value : this.state.leavingOffice, label : this.state.leavingOffice.city}}
               onChange={this.handleChangeLeaving.bind(this)}
               textFieldProps={{
                 label: 'Leaving office',
@@ -290,11 +314,11 @@ class TravelRegisterForm extends React.Component {
               classes={classes}
               styles={selectStyles}
               options={this.props.offices.map(off => ({
-                value: off.id,
+                value: off,
                 label: off.city,
               }))}
               components={components}
-              value={this.state.destinationOffice}
+              value={this.state.destinationOffice == null ? null : {value : this.state.destinationOffice, label : this.state.destinationOffice.city}}
               onChange={this.handleChangeDestination.bind(this)}
               textFieldProps={{
                 label: 'Destination office',
@@ -304,6 +328,53 @@ class TravelRegisterForm extends React.Component {
               }}
               isClearable
             />
+              <FormGroup row>
+              <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.checkedPlane}
+              onChange={this.handleChangeCheckBox.bind(this)}
+              value="checkedPlane"
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+            />
+                  }
+          labelPlacement="start"       
+          label="Plane"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.checkedCar}
+              onChange={this.handleChangeCheckBox.bind(this)}
+              value="checkedCar"
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+            />
+                  }
+          labelPlacement="start"       
+          label="Car"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.checkedAcomondation}
+              onChange={this.handleChangeCheckBox.bind(this)}
+              value="checkedAcomondation"
+              classes={{
+                root: classes.root,
+                checked: classes.checked,
+              }}
+            />
+                  }
+          labelPlacement="start"       
+          label="Acomondation"
+        />
+              </FormGroup>
             <div className="register-form-buttons">
               <Button variant="contained" size="medium" color="primary" onClick={this.onSubmit.bind(this)}>
                 Register
@@ -311,6 +382,7 @@ class TravelRegisterForm extends React.Component {
               <Button variant="contained" size="medium" color="secondary" className="cancel-button" onClick={this.props.onClose}>
                 Cancel
             </Button>
+        
             </div>
           </NoSsr>
         </DialogContent>
