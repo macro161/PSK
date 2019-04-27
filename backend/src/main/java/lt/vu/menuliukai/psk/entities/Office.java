@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import lt.vu.menuliukai.psk.converters.IdListConverter;
+import lt.vu.menuliukai.psk.converters.*;
 
 @Getter @Setter
 @Entity
@@ -30,8 +31,9 @@ public class Office {
 
     String address;
 
-    @OneToOne(mappedBy = "office")
-    Apartments apartments;
+    String aptAddress;
+
+    int aptSize;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,
@@ -44,4 +46,8 @@ public class Office {
             fetch = FetchType.LAZY,
             mappedBy = "fromOffice")
     Set<Trip> tripsFromOffice = new HashSet<>();
+
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "office")
+    @JsonIgnore
+    Set<ApartmentRoom> apartmentRooms = new HashSet<>();
 }

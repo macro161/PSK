@@ -18,7 +18,9 @@ let statsByName = [
 
 export const getStatsByName = (name) => {
   return dispatch => {
-    dispatch({ type: 'GET_STAT_BY_NAME', statsByName: statsByName, name: name});
+    dispatch({ type: 'SET_LOADING', value: true });
+    dispatch({ type: 'GET_STAT_BY_NAME', statsByName: statsByName, name: name });
+    dispatch({ type: 'SET_LOADING', value: false });
   }
 }
 
@@ -26,16 +28,20 @@ export const getStatsByName = (name) => {
 export const getStatsapi = () => {
   const dogs = axios.get('https://dog.ceo/api/breeds/list/all');
   return dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     dispatch({ type: FETCH_STATS_STARTS });
     dogs
       .then(({ data }) => {
         dispatch({ type: RECEIVE_STATS, payload: data.message });
       })
+      dispatch({ type: 'SET_LOADING', value: false });
   };
 };
 
 export const getStats = () => {
   return dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     dispatch({ type: 'GET_STATS', stats: staticStats });
+    dispatch({ type: 'SET_LOADING', value: false });
   }
 }

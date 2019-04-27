@@ -1,4 +1,5 @@
 export const getAllTravels = (userId) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     let moc = [
         {
             id: '1',
@@ -20,6 +21,7 @@ export const getAllTravels = (userId) => dispatch => {
         travels: moc,
         id: userId
     });
+    dispatch({ type: 'SET_LOADING', value: false });
 };
 
 export const approveTravel = (travelId) =>{

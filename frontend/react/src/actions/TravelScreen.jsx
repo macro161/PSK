@@ -1,5 +1,6 @@
 import * as utils from '../utils/api/organiser'
 export const getAllTravels = (userId) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     let moc = [
         {
             id: '1',
@@ -22,6 +23,7 @@ export const getAllTravels = (userId) => dispatch => {
         type: 'GET_TRAVELS',
         travels: moc,
     });
+    dispatch({ type: 'SET_LOADING', value: false });
 };
 
 export const approveTravel = (travelId) => {
@@ -46,6 +48,7 @@ export const removeTravel = (travelId) => {
 };
 
 export const editTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     dispatch({
         type: "EDIT_TRAVEL",
         travel: {
@@ -57,18 +60,21 @@ export const editTravel = (id, fullName, departureTime, accomodation, city, appr
             approved: approved,
         }
     })
+    dispatch({ type: 'SET_LOADING', value: false });
 }
-
 export const registerTravel = (employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     utils.registerTripHttp({ from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
         .then(function (response) {
             utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved : false })
                 .then(function (r) {
+              dispatch({ type: 'SET_LOADING', value: false });
                 });
         });
 }
 
 export const getAllEmployeeTrips = () => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
     utils.getBasicTripsHttp()
         .then(function (response) {
             if (response.responseCode != 200) {
@@ -79,5 +85,6 @@ export const getAllEmployeeTrips = () => dispatch => {
                 type: 'GET_EMPLOYEE_TRIPS_BASIC',
                 employeeTrips: response.responseValue,
             });
+      dispatch({ type: 'SET_LOADING', value: false });
         })
 }

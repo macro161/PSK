@@ -1,6 +1,7 @@
 package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.converters.Converter;
+import lt.vu.menuliukai.psk.dao.ApartmentRoomDao;
 import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.entities.Office;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class OfficeController {
     @Autowired
     private OfficeDao officeDao;
 
+    @Autowired
+    private ApartmentRoomDao apartmentRoomDao;
+
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Office> index() {
         return officeDao.findAll();
@@ -32,9 +36,7 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Office add(@RequestBody Office office) {
-        return officeDao.save(office);
-    }
+    public Office add(@RequestBody Office office){return officeDao.save(office);}
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable long id) {
@@ -55,11 +57,13 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Office edit(@RequestBody Office office, @PathVariable long id) {
+    public Office edit(@RequestBody Office office , @PathVariable long id) {
         Office baseOffice = Converter.convert(officeDao, objectName, id);
 
         change(office::getAddress, baseOffice::setAddress);
         change(office::getCity, baseOffice::setCity);
+        change(office::getAptAddress, baseOffice::setAptAddress);
+        change(office::getAptSize, baseOffice::setAptSize);
 
         return officeDao.save(baseOffice);
     }

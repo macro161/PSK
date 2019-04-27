@@ -1,5 +1,6 @@
 import { getAll, post, put, deleteById } from './http';
 const officeUrl = "http://localhost:8080/office/";
+const roomUrl = "http://localhost:8080/room/"
 
 export function removeOfficeHttp(id){
     let responseCode;
@@ -36,6 +37,23 @@ export function getAllOfficesHttp(){
 export function registerOfficeHttp(office){
     let responseCode;
     return post(officeUrl + "add", office)
+        .then(function(response){
+            responseCode = response.status;
+            if(responseCode === 200){
+                return response.json();
+            }
+        })
+        .then(function(responseValue){
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
+
+export function registerRoomHttp(id, roomNr){
+    let responseCode;
+    return post(roomUrl + "create" + "?officeId=" +id +"&roomNr=" +roomNr)
         .then(function(response){
             responseCode = response.status;
             if(responseCode === 200){
