@@ -23,6 +23,8 @@ import CarIcon from '@material-ui/icons/DirectionsCar';
 import HotelIcon from '@material-ui/icons/Hotel'
 import Badge from '@material-ui/core/Badge';
 import GroupIcon from '@material-ui/icons/GroupAdd'
+import FlightForm from './FlightForm';
+import CarRentForm from './CarRentForm';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -215,7 +217,16 @@ class TravelDataTable extends React.Component {
       page: 0,
       rowsPerPage: 5,
       selectedTrips: [],
+      addHotel: false,
+      addFlight: false,
+      addCar: false,
+      addId: null,
     };
+    this.onCloseAdd.bind(this);
+    this.addFlight.bind(this);
+    this.addCar.bind(this);
+    this.onSubmitCar.bind(this);
+    this.onSubmitFlight.bind(this);
   }
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -230,8 +241,6 @@ class TravelDataTable extends React.Component {
 
 
   handleClick = (event, id) => {
-    
-    console.log(this.props.employeeTrips);
     const { selectedTrips } = this.state;
     const selectedIndex = selectedTrips.indexOf(id);
     let newSelected = [];
@@ -247,9 +256,36 @@ class TravelDataTable extends React.Component {
         selectedTrips.slice(selectedIndex + 1),
       );
     }
-
     this.setState({ selectedTrips: newSelected });
   };
+  onCloseAdd = () => {
+    this.setState({
+      addFlight: false,
+      addCar: false,
+      addHotel: false,
+    })
+  }
+
+  addFlight = (id) => {
+    this.setState({
+      addId: id,
+      addFlight: true,
+    });
+  }
+  onSubmitFlight = (id, flight) => {
+    this.props.addFlight(id, flight);
+    this.onCloseAdd();
+  }
+  addCar = (id) => {
+    this.setState({
+      addId: id,
+      addCar: true,
+    });
+  }
+  onSubmitCar = (id, car) => {
+    this.props.addCar(id, car);
+    this.onCloseAdd();
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -268,6 +304,9 @@ class TravelDataTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
+      <div>
+        {this.state.addFlight ? <FlightForm onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId}/> : null }
+        {this.state.addCar ? <CarRentForm onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId}/> : null }
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selectedTrips.length} />
         <div className={classes.tableWrapper}>
@@ -300,14 +339,14 @@ class TravelDataTable extends React.Component {
                       <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.leavingDate.substring(0, 10)}</TableCell>
                       <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.returningDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">
-                        <IconButton aria-label="Plane info" className={classes.margin} disabled = {n.tripChecklist.plainTickets == 0 ? true : false}>
+                        <IconButton onClick={event => this.addFlight(n.id)} aria-label="Plane info" className={classes.margin} disabled = {n.tripChecklist.plainTickets == 0 ? true : false}>
                           {n.tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : n.tripChecklist.plainTickets == 1 ?
                             <Badge color="secondary" variant="dot">
                               <PlaneIcon fontSize="small"/>
                             </Badge> :
                             <PlaneIcon fontSize="small" color="primary"/>}
                         </IconButton>
-                        <IconButton aria-label="Car rent info" className={classes.margin} disabled = {n.tripChecklist.car == 0 ? true : false}>
+                        <IconButton onClick={event => this.addCar(n.id)} aria-label="Car rent info" className={classes.margin} disabled = {n.tripChecklist.car == 0 ? true : false}>
                           {n.tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
                             n.tripChecklist.car == 1 ?
                               <Badge color="secondary" variant="dot">
@@ -352,6 +391,7 @@ class TravelDataTable extends React.Component {
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
       </Paper>
+      </div>
     );
   }
 }
@@ -387,8 +427,9 @@ TravelDataTable.propTypes = {
   approveTravel: PropTypes.func,
   cancelTravel: PropTypes.func,
   seeTravelDetails: PropTypes.func,
-  showInfo: PropTypes.func,
   editTravel: PropTypes.func,
   removeTravel: PropTypes.func,
+  addFlight: PropTypes.func,
+  addCar: PropTypes.func,
 };
 export default withStyles(styles)(TravelDataTable)

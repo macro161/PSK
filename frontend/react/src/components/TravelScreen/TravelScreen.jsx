@@ -7,10 +7,10 @@ import * as actions from '../../actions/TravelScreen';
 import { getOffices } from '../../actions/Offices';
 import { getAllEmployees } from '../../actions/UserManager';
 import DataTable from './TravelDataTable';
-import InfoScreen from '../employeeScreen/InfoScreen';
 import EditForm from './TravelEditForm';
 import RegisterForm from './TravelRegisterForm';
 import Button from '@material-ui/core/Button';
+import FlightForm from './FlightForm';
 
 const initialState = {
     fullName: '',
@@ -20,20 +20,15 @@ const initialState = {
     approved: false,
     showEdit: false,
     showRegister: false,
-    show: false
+    
   };
 class TravelScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState;
-    this.props.getAllTravels(1);
-    this.props.getAllEmployees();
     this.props.getOffices();
     this.props.getAllEmployeeTrips();
-  }
-
-  showInfo(id){
-      this.setState({show: !this.state.show})
+    this.props.getAllEmployees();
   }
 
   onClose() {
@@ -57,7 +52,6 @@ class TravelScreen extends React.Component {
   onSubmit(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist){
     this.props.registerTravel(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist);
     this.setState(initialState)
-    this.props.getAllEmployeeTrips();
   }
 
   removeTravel(id){
@@ -79,16 +73,17 @@ class TravelScreen extends React.Component {
           <hr/>
           <Button variant ="contained" onClick={this.addTravelClick.bind(this)} className="register-travel-button" variant="contained" color="secondary"> Add travel </Button>
         <div>
-            {this.state.show ? <InfoScreen onClose={this.onClose.bind(this)} /> : null}
         </div>
         <DataTable 
             employeeTrips={this.props.employeeTrips}
             approveTravel={this.props.approveTravel}
             cancelTravel={this.props.cancelTravel}
-            showInfo={this.showInfo.bind(this)}
             show={this.state.show}
             editTravel={this.editTravel.bind(this)}
-            removeTravel={this.props.removeTravel} />
+          removeTravel={this.props.removeTravel}
+          addFlight={this.props.addFlight}
+          addCar={this.props.addCar}
+             />
             {this.state.showEdit ? 
             <EditForm travel={this.state.travel}
             onEditSave={this.onEditSave.bind(this)}
@@ -123,7 +118,9 @@ export default connect(
         editTravel: actions.editTravel,
         removeTravel: actions.removeTravel,
       registerTravel: actions.registerTravel,
-        getAllEmployeeTrips: actions.getAllEmployeeTrips,
+      getAllEmployeeTrips: actions.getAllEmployeeTrips,
+      addFlight: actions.addFlight,
+      addCar: actions.addCar,
   }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
@@ -161,4 +158,6 @@ TravelScreen.propTypes = {
     removeTravel: PropTypes.func,
   registerTravel: PropTypes.func,
     getAllEmployeeTrips: PropTypes.func,
+    addFlight: PropTypes.func,
+    addCar: PropTypes.func,
 };

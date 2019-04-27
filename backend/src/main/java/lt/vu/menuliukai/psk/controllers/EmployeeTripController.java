@@ -100,6 +100,7 @@ public class EmployeeTripController {
         EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
         if (et != null) {
             et.setApartmentRoom(null);
+            et.getTripChecklist().setApartments(2);
             et.setHotel(hotel);
             employeeTripDao.save(et);
         } else {
@@ -112,6 +113,7 @@ public class EmployeeTripController {
     public void addCarRent(@PathVariable long employeeId, @PathVariable long tripId, @RequestBody CarRent carRent) {
         EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
         if (et != null) {
+            et.getTripChecklist().setCar(2);
             et.setCarRent(carRent);
             employeeTripDao.save(et);
         } else {
@@ -124,6 +126,7 @@ public class EmployeeTripController {
         EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
         if (et != null) {
             et.setHotel(null);
+            et.getTripChecklist().setApartments(2);
             et.setApartmentRoom(apartmentRoom);
             employeeTripDao.save(et);
         } else {
@@ -137,6 +140,7 @@ public class EmployeeTripController {
         EmployeeTrip et = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
         if (et != null) {
             et.setFlight(flight);
+            et.getTripChecklist().setPlainTickets(2);
             employeeTripDao.save(et);
         } else {
             throw new ResponseStatusException(

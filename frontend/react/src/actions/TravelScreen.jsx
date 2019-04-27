@@ -80,11 +80,41 @@ export const getAllEmployeeTrips = () => dispatch => {
             if (response.responseCode != 200) {
                 alert("As tikrai gausiu dusimtini")
             }
-            console.log(response);
             dispatch({
                 type: 'GET_EMPLOYEE_TRIPS_BASIC',
                 employeeTrips: response.responseValue,
             });
       dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
+
+export const addFlight = (et, flight) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.addFlightHttp(et, flight)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("As tikrai gausiu dusimtini")
+            }
+            dispatch({
+                type: 'ADD_FLIGHT_TO_ET',
+                et: et,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
+
+
+export const addCar = (et, car) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.addCarHttp(et, car)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("As tikrai gausiu dusimtini")
+            }
+            dispatch({
+                type: 'ADD_CAR_TO_ET',
+                et: et,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
         })
 }

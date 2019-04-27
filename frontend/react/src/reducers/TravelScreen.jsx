@@ -18,6 +18,9 @@ export default(state = initialState, action) => {
                 ...state, employeeTrips : [...state.employeeTrips, action.employeeTrip]
             }
         }
+        case 'ADD_FLIGHT_TO_ET': {
+            return { ...state, employeeTrips: state.employeeTrips.map(et => et.id === action.et ? { ...et, tripChecklist : { ...tripChecklist, plainTickets : 2 } } : et)}
+            }
         case 'APPROVE_TRAVEL':
             return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: true} : travel)}
         case 'CANCEL_TRAVEL':

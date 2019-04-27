@@ -59,7 +59,7 @@ export function addHotelHttp(et, hotel) {
         .then(function (response) {
             responseCode = response.status;
             if (responseCode === 200) {
-                return response.json();
+                return response;
             }
         })
         .then(function (responseValue) {
@@ -75,7 +75,7 @@ export function addApartmentsHttp(et, apartments) {
         .then(function (response) {
             responseCode = response.status;
             if (responseCode === 200) {
-                return response.json();
+                return response;
             }
         })
         .then(function (responseValue) {
@@ -91,7 +91,7 @@ export function addFlightHttp(et, flight) {
         .then(function (response) {
             responseCode = response.status;
             if (responseCode === 200) {
-                return response.json();
+                return response;
             }
         })
         .then(function (responseValue) {
@@ -107,7 +107,7 @@ export function addCarHttp(et, car) {
         .then(function (response) {
             responseCode = response.status;
             if (responseCode === 200) {
-                return response.json();
+                return response;
             }
         })
         .then(function (responseValue) {
@@ -116,4 +116,21 @@ export function addCarHttp(et, car) {
                 responseValue
             };
         });
+}
+
+export function groupTripsHttp(trips, trip) {
+    let responseCode;
+    return post(organiserUrl + "group/", { trips_to_group: trips, trip: trip })
+    .then(function (response){
+        responseCode = response.status;
+        if (responseCode === 200) {
+            return response.json();
+        }
+    })
+    .then (function(responseValue){
+        return {
+            responseCode,
+            responseValue
+        };
+    });
 }
