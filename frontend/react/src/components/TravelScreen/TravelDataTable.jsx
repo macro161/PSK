@@ -54,7 +54,7 @@ const rows = [
   { id: 'leavingOffice', numeric: false, disablePadding: true, label: 'Departure office' },
   { id: 'destinationOffice', numeric: false, disablePadding: true, label: 'Destination office' },
   { id: 'leavingDate', numeric: false, disablePadding: true, label: 'Departure time' },
-  { id: 'returningDate', numeric: false, disablePadding: true, label: 'Returning time' },
+  { id: 'returningDate', numeric: false, disablePadding: true, label: 'Return time' },
   { id: 'info', numeric: false, disablePadding: true, label: 'Trip info' },
 ];
 class EnhancedTableHead extends React.Component {
@@ -300,14 +300,14 @@ class TravelDataTable extends React.Component {
                       <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.leavingDate.substring(0, 10)}</TableCell>
                       <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.returningDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">
-                        <IconButton aria-label="Plane info" className={classes.margin}>
+                        <IconButton aria-label="Plane info" className={classes.margin} disabled = {n.tripChecklist.plainTickets == 0 ? true : false}>
                           {n.tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : n.tripChecklist.plainTickets == 1 ?
                             <Badge color="secondary" variant="dot">
                               <PlaneIcon fontSize="small"/>
                             </Badge> :
                             <PlaneIcon fontSize="small" color="primary"/>}
                         </IconButton>
-                        <IconButton aria-label="Car rent info" className={classes.margin}>
+                        <IconButton aria-label="Car rent info" className={classes.margin} disabled = {n.tripChecklist.car == 0 ? true : false}>
                           {n.tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
                             n.tripChecklist.car == 1 ?
                               <Badge color="secondary" variant="dot">
@@ -316,7 +316,7 @@ class TravelDataTable extends React.Component {
                             <CarIcon fontSize="small" color="primary" />}
                         </IconButton>
       
-                        <IconButton aria-label="accomodation info" className={classes.margin}>
+                        <IconButton aria-label="accomodation info" className={classes.margin} disabled = {n.tripChecklist.apartments == 0 ? true : false}>
                           {n.tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : n.tripChecklist.apartments == 1 ?
                             <Badge color="secondary" variant="dot">
                               <HotelIcon fontSize="small" />
