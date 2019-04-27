@@ -14,13 +14,13 @@ export const getOffices = () => dispatch => {
       })
   }
   
-  export const registerOffice = (city, address, accommodation, rooms)=> dispatch=>{
-    utils.registerOfficeHttp(city, address, accommodation, rooms)
+  export const registerOffice = (city, address, aptAddress, aptSize)=> dispatch=>{
+    utils.registerOfficeHttp({city, address, aptAddress, aptSize})
     .then(function(response){
-      registerRooms(response.responseValue.id, rooms)})
+      registerRooms(response.responseValue.id, aptSize)})
     .then( dispatch({
         type: "ADD_OFFICE",
-        office: {city, address, aptAddress: accommodation, aptSize: rooms}
+        office: {city, address, aptAddress, aptSize}
     }))
   }
   

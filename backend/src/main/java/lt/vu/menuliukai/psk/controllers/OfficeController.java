@@ -35,17 +35,8 @@ public class OfficeController {
         return Converter.convert(officeDao, objectName, id);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Office add(@RequestParam("city") String city,@RequestParam("address") String address, @RequestParam("accommodation") String accommodation, @RequestParam("rooms") int rooms) {
-
-        Office office = new Office();
-        office.setCity(city);
-        office.setAddress(address);
-        office.setAptAddress(accommodation);
-        office.setAptSize(rooms);
-
-        return officeDao.save(office);
-    }
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Office add(@RequestBody Office office){return officeDao.save(office);}
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable long id) {
