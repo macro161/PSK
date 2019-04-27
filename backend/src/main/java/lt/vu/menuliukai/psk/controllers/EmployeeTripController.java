@@ -5,6 +5,8 @@ import lt.vu.menuliukai.psk.dao.EmployeeDao;
 import lt.vu.menuliukai.psk.dao.EmployeeTripDao;
 import lt.vu.menuliukai.psk.dao.TripDao;
 import lt.vu.menuliukai.psk.dto.EmployeeTripBasicDto;
+import lt.vu.menuliukai.psk.dto.EmployeeTripDto;
+import lt.vu.menuliukai.psk.dto.TripsDto;
 import lt.vu.menuliukai.psk.dto.TripsGroupingDto;
 import lt.vu.menuliukai.psk.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,5 +148,15 @@ public class EmployeeTripController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Employee trip not found");
         }
+    }
+
+    @RequestMapping(value = "/trips", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<TripsDto> getTrips(){
+        Iterable<Trip> trips = tripDao.findAll();
+        return StreamSupport.stream(trips.spliterator(), false).map(trip ->
+                new TripsDto(trip.getId(), trip.getLeavingDate(), trip.getReturningDate(), trip.getFromOffice().getCity(), trip.getToOffice().getCity(),
+                        employeeTripDao.findByIdTripId(trip.getId()).stream()
+                                .map(et -> new EmployeeTripDto(et.getEmployee().getId(), et.getEmployee().getFullName(),
+                                        et.getTripChecklist(), et.getApproved())).collect(Collectors.toList()))).collect(Collectors.toList());
     }
 }

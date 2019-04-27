@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Collapse from '@material-ui/core/Collapse';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import IconButton from '@material-ui/core/IconButton';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
@@ -202,11 +203,12 @@ const EnhancedTableRow = withStyles({
     },
     "&$hover:hover": {
       backgroundColor: "rgba(102,255,153,0.15) !important"
-    }
+    },
   },
   selected: {},
   hover: {},
 })(TableRow);
+
 
 class TravelDataTable extends React.Component {
   constructor(props) {
@@ -221,6 +223,8 @@ class TravelDataTable extends React.Component {
       addFlight: false,
       addCar: false,
       addId: null,
+      collapse : new Array(60).fill(false),
+      
     };
     this.onCloseAdd.bind(this);
     this.addFlight.bind(this);
@@ -295,6 +299,9 @@ class TravelDataTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+
+
+  
   isSelected = id => this.state.selectedTrips.indexOf(id) !== -1;
 
   render() {
@@ -303,8 +310,21 @@ class TravelDataTable extends React.Component {
     let data = this.props.employeeTrips;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
+    const details = this.state.collapse ? (
+      <TableRow>
+        <TableCell></TableCell>
+        <TableCell colSpan={2}>
+          <Collapse in={this.state.collapse} unmountOnExit={true}>Justas Tvarijonas</Collapse>
+        </TableCell>
+        <TableCell colSpan={2}>
+          <Collapse in={this.state.collapse} unmountOnExit={true}>MMM MMM MMM MMM</Collapse>
+        </TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+    ) : null;
+
     return (
-      <div>
+    <div>
         {this.state.addFlight ? <FlightForm onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId}/> : null }
         {this.state.addCar ? <CarRentForm onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId}/> : null }
       <Paper className={classes.root}>
@@ -324,6 +344,7 @@ class TravelDataTable extends React.Component {
                 .map(n => {
                   const isSelected = this.isSelected(n.id.tripId);
                   return (
+                    <React.Fragment>
                     <EnhancedTableRow
                       hover
                       aria-checked={isSelected}
@@ -355,7 +376,7 @@ class TravelDataTable extends React.Component {
                             <CarIcon fontSize="small" color="primary" />}
                         </IconButton>
       
-                        <IconButton aria-label="accomodation info" className={classes.margin} disabled = {n.tripChecklist.apartments == 0 ? true : false}>
+                        <IconButton onClick={() => this.setState({collapse: !this.state.collapse} )} aria-label="accomodation info" className={classes.margin} disabled = {n.tripChecklist.apartments == 0 ? true : false}>
                           {n.tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : n.tripChecklist.apartments == 1 ?
                             <Badge color="secondary" variant="dot">
                               <HotelIcon fontSize="small" />
@@ -364,7 +385,9 @@ class TravelDataTable extends React.Component {
                           
                         </IconButton>
                       </TableCell>
-                    </EnhancedTableRow>
+                      </EnhancedTableRow>
+                      {details}
+                      </React.Fragment>
                   );
                 })}
               {emptyRows > 0 && (
