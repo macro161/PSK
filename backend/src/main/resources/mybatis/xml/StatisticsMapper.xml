@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lt.vu.menuliukai.psk.mybatis.dao.StatisticsMapper">
+  <resultMap id="BaseResultMap" type="lt.vu.menuliukai.psk.mybatis.model.Statistics">
+    <result column="NUMBER" jdbcType="BIGINT" property="number" />
+  </resultMap>
+  <select id="calculateStatistics" resultMap="BaseResultMap">
+    select 1 as `number`
+    from dual
+  </select>
+</mapper>

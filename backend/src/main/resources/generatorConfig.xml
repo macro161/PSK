@@ -24,19 +24,5 @@
         <!-- XML variantas - daugiau galimybių -->
         <sqlMapGenerator targetPackage="lt.vu.menuliukai.psk.mybatis.xml" targetProject="MAVEN" />
         <javaClientGenerator type="XMLMAPPER" targetPackage="lt.vu.menuliukai.psk.mybatis.dao" targetProject="MAVEN" />
-
-
-        <table schema="public" tableName="employee">
-            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
-        </table>
-        <table schema="public" tableName="office">
-            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
-        </table>
-        <table schema="public" tableName="room">
-            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
-        </table>
-        <table schema="public" tableName="trip">
-            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
-        </table>
     </context>
 </generatorConfiguration>
