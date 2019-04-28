@@ -1,6 +1,7 @@
 package lt.vu.menuliukai.psk;
 
 import lt.vu.menuliukai.psk.entities.Trip;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.MappedTypes;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -23,10 +24,9 @@ public class PskApplication {
     }
 
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactory() throws Exception {
-        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-        factoryBean.setDataSource(datasource);
-        return factoryBean.getObject();
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        return new SqlSessionFactoryBuilder().build(
+                ClassLoader.class.getResourceAsStream("MyBatisConfig.xml")
+        );
     }
-
 }

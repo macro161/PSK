@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="StudentsDB" targetRuntime="MyBatis3Simple">
+        <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:~/h2db/db;AUTO_SERVER=TRUE"
+                        userId="sa"
+                        password="">
+        </jdbcConnection>
+        <!--<jdbcConnection driverClass="org.postgresql.Driver"-->
+                        <!--connectionURL="jdbc:postgresql://localhost/studentsdb"-->
+                        <!--userId="postgres"-->
+                        <!--password="postgres">-->
+        <!--</jdbcConnection>-->
+
+        <javaModelGenerator targetPackage="lt.vu.menuliukai.psk.mybatis.model" targetProject="MAVEN" />
+
+        <!-- Anotacijų variantas - mažiau galimybių, bet paprastesnis -->
+        <!--<javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="lt.vu.usecases.mybatis.dao" targetProject="MAVEN" />-->
+
+        <!-- XML variantas - daugiau galimybių -->
+        <sqlMapGenerator targetPackage="lt.vu.menuliukai.psk.mybatis.xml" targetProject="MAVEN" />
+        <javaClientGenerator type="XMLMAPPER" targetPackage="lt.vu.menuliukai.psk.mybatis.dao" targetProject="MAVEN" />
+
+
+        <table schema="public" tableName="employee">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
+        </table>
+        <table schema="public" tableName="office">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
+        </table>
+        <table schema="public" tableName="room">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
+        </table>
+        <table schema="public" tableName="trip">
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
+        </table>
+    </context>
+</generatorConfiguration>
