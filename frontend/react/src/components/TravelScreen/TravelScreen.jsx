@@ -42,8 +42,6 @@ class TravelScreen extends React.Component {
       showEdit:true,
       travel : travel,
     })
-    console.log("edit travel:")
-    console.log(travel)
   }
 
   onEditSave(id, fullName, departure, accommodation, city, approved){

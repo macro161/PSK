@@ -197,20 +197,17 @@ class TravelRegisterForm extends React.Component {
     this.setState({ [e.target.value]: e.target.checked });
   };
   handleChange(e) {
-    console.log(e);
     this.setState({
       selectedEmployee: e.value,
       fullName: e.value.fullName,
     });
   };
   handleChangeLeaving(e) {
-    console.log(e);
     this.setState({
       leavingOffice: e.value,
     });
   };
   handleChangeDestination(e) {
-    console.log(e);
     this.setState({
       destinationOffice: e.value,
     });
@@ -223,7 +220,6 @@ class TravelRegisterForm extends React.Component {
   }
 
   onSubmit() {
-    console.log(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, { PlainTickets: this.state.checkedPlane ? 1 : 0, car: this.state.checkedCar ? 1 : 0, apartments: this.state.checkedAcomondation ? 1 : 0});
     this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {plainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
   }
 

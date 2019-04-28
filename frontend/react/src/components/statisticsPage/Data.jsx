@@ -48,12 +48,10 @@ class Test extends React.Component {
 
 
   handle(e) {
-    console.log(e.target.value);
     this.props.getStatsByName(e.target.value);
   }
 
   handleChangeOne(e){
-    console.log(e.target.value);
     this.setState({dateOne: e.target.value,});
   }
 
@@ -62,8 +60,6 @@ class Test extends React.Component {
   }
 
   handleDate(e) {
-      console.log(this.state.dateOne);
-      console.log(this.state.dateTwo);
   }
   render() {
     const { classes } = this.props;

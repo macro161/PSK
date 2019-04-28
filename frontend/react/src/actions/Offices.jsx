@@ -7,7 +7,7 @@ export const getOffices = () => dispatch => {
         if(response.responseCode != 200){
           alert("As tikrai gausiu dusimtini")
         }
-        console.log(response);
+
         dispatch({
           type: 'GET_OFFICES',
           offices: response.responseValue,

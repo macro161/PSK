@@ -6,7 +6,6 @@ export function getBasicTripsHttp() {
     let responseCode;
     return getAll(organiserUrl + "basic")
         .then(function (response) {
-            console.log(response)
             responseCode = response.status;
             if (responseCode === 200) {
                 return response.json();

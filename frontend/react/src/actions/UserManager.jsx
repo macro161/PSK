@@ -7,7 +7,6 @@ export const getAllEmployees = () => dispatch => {
       if (response.responseCode != 200) {
         alert("error, wrong response code")
       }
-      console.log(response);
       dispatch({
         type: 'GET_ALL_EMPLOYEES',
         employees: response.responseValue,

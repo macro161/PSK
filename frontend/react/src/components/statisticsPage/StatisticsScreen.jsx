@@ -16,11 +16,8 @@ class StatisticsScreen extends React.Component {
   }
   componentDidMount() {
     this.props.getStats();
-    console.log(this.props.stats);
     this.props.getStats();
     this.props.getStatsByName('Justas')
-    console.log(this.props.travelCount);
-    console.log("nig")
 
   }
 
