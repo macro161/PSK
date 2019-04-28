@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @MappedTypes(Trip.class)
-@MapperScan("lt.vu.menuliukai.psk.mybatis.dao")
+@MapperScan("lt.vu.menuliukai.psk.mappers")
 @SpringBootApplication
 public class PskApplication {
     public static void main(String[] args) {

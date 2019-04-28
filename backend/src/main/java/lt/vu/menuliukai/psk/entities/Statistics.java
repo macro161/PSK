@@ -1,4 +1,4 @@
-package lt.vu.menuliukai.psk.mybatis.model;
+package lt.vu.menuliukai.psk.entities;
 
 import lombok.Getter;
 import lombok.Setter;

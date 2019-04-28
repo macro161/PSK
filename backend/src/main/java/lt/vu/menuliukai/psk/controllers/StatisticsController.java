@@ -1,7 +1,7 @@
 package lt.vu.menuliukai.psk.controllers;
 
-import lt.vu.menuliukai.psk.mybatis.dao.StatisticsMapper;
-import lt.vu.menuliukai.psk.mybatis.model.Statistics;
+import lt.vu.menuliukai.psk.dao.StatisticsDao;
+import lt.vu.menuliukai.psk.entities.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatisticsController {
 
     @Autowired
-    private StatisticsMapper statisticsMapper;
+    private StatisticsDao statisticsDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Statistics index() {
-        return statisticsMapper.calculateStatistics();
+        return statisticsDao.calculateStatistics();
     }
 
 }
