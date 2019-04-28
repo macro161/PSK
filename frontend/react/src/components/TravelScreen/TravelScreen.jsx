@@ -10,7 +10,7 @@ import DataTable from './TravelDataTable';
 import EditForm from './TravelEditForm';
 import RegisterForm from './TravelRegisterForm';
 import Button from '@material-ui/core/Button';
-import FlightForm from './FlightForm';
+
 
 const initialState = {
     fullName: '',
@@ -27,7 +27,6 @@ class TravelScreen extends React.Component {
     super(props);
     this.state = initialState;
     this.props.getOffices();
-    this.props.getAllEmployeeTrips();
     this.props.getAllEmployees();
     this.props.getTrips();
   
@@ -74,7 +73,6 @@ class TravelScreen extends React.Component {
         <div>
         </div>
         <DataTable 
-            employeeTrips={this.props.employeeTrips}
             trips={this.props.trips}
             approveTravel={this.props.approveTravel}
             cancelTravel={this.props.cancelTravel}
@@ -83,6 +81,7 @@ class TravelScreen extends React.Component {
             removeTravel={this.props.removeTravel}
             addFlight={this.props.addFlight}
             addCar={this.props.addCar}
+            groupTrips={this.props.groupTrips}
              />
             {this.state.showEdit ? 
             <EditForm travel={this.state.travel}
@@ -104,7 +103,6 @@ class TravelScreen extends React.Component {
 export default connect(
   (state) => ({
     trips: state.TravelScreen.trips,
-    employeeTrips: state.TravelScreen.employeeTrips,
     employees: state.UserManager.employees,
     offices: state.Offices.offices
   }),
@@ -122,6 +120,7 @@ export default connect(
       addFlight: actions.addFlight,
       addCar: actions.addCar,
       getTrips : actions.getAllTrips,
+      groupTrips: actions.groupTrips,
   }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
@@ -179,4 +178,5 @@ TravelScreen.propTypes = {
     addFlight: PropTypes.func,
     addCar: PropTypes.func,
     getTrips: PropTypes.func,
+    groupTrips: PropTypes.func,
 };

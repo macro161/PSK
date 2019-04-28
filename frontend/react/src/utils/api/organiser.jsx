@@ -117,9 +117,9 @@ export function addCarHttp(et, car) {
         });
 }
 
-export function groupTripsHttp(trips, trip) {
+export function groupTripsHttp(data) {
     let responseCode;
-    return post(organiserUrl + "group/", { trips_to_group: trips, trip: trip })
+    return post(organiserUrl + "group/", data)
     .then(function (response){
         responseCode = response.status;
         if (responseCode === 200) {

@@ -50,14 +50,30 @@ public class EmployeeTripController {
     @RequestMapping(value = "/group", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean group(@RequestBody TripsGroupingDto tripsGroupingDto) {
         Trip trip = tripDao.save(tripsGroupingDto.getTrip());
-        List<EmployeeTrip> tripsToGroup = new ArrayList<>();
-        for (Long id : tripsGroupingDto.getTripsToGroup()) {
-            tripsToGroup.addAll(employeeTripDao.findByIdTripId(id));
+        Trip t = tripDao.findById(tripsGroupingDto.getTripsToGroup().get(0)).orElse(null);
+        if (t != null){
+            Trip trip = new Trip();
+            trip.setLeavingDate(tripsGroupingDto.getDateFrom());
+            trip.setReturningDate(tripsGroupingDto.getDateTo());
+            trip.setFromOffice(t.getFromOffice());
+            trip.setToOffice(t.getToOffice());
+            trip.setOrganiser(t.getOrganiser());
+            tripDao.save(trip);
+            List<EmployeeTrip> tripsToGroup = new ArrayList<>();
+            for (Long id : tripsGroupingDto.getTripsToGroup()) {
+                tripsToGroup.addAll(employeeTripDao.findByIdTripId(id));
+            }
+            for (EmployeeTrip empTrip : tripsToGroup) {
+                EmployeeTrip et = new EmployeeTrip(empTrip.getEmployee(), trip, empTrip.getTripChecklist(), empTrip.getApartmentRoom(), empTrip.getHotel(), empTrip.getFlight(), empTrip.getCarRent(), false);
+                employeeTripDao.save(et);
+            }
+            for (Long id: tripsGroupingDto.getTripsToGroup()){
+                tripDao.deleteById(id);
+            }
         }
-        for (EmployeeTrip empTrip : tripsToGroup) {
-            EmployeeTrip et = new EmployeeTrip(empTrip.getEmployee(), trip, empTrip.getTripChecklist(), empTrip.getApartmentRoom(), empTrip.getHotel(), empTrip.getFlight(), empTrip.getCarRent());
-            employeeTripDao.save(et);
-            employeeTripDao.deleteById(empTrip.getId());
+        else{
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "One of trip to group doesnt exist");
         }
         return true;
     }

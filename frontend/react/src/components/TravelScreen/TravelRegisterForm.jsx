@@ -175,7 +175,6 @@ class TravelRegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      date: new Date().toISOString().substr(0, 10),
       leavingOffice: null,
       destinationOffice: null,
       selectedEmployee: null,
@@ -266,7 +265,7 @@ class TravelRegisterForm extends React.Component {
               label="Departure time"
               className="form-time-travel"
               type="date"
-              defaultValue={this.state.date}
+              defaultValue={this.state.departureTime}
               margin="normal"
               InputLabelProps={{
                 shrink: true,
@@ -280,7 +279,7 @@ class TravelRegisterForm extends React.Component {
               className="form-time-travel"
               type="date"
               margin="normal"
-              defaultValue={this.state.date}
+              defaultValue={this.state.returningTime}
               InputLabelProps={{
                 shrink: true,
               }}

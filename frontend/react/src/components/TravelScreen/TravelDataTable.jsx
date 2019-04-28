@@ -28,6 +28,7 @@ import GroupIcon from '@material-ui/icons/GroupAdd'
 import FlightForm from './FlightForm';
 import CarRentForm from './CarRentForm';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import GroupingForm from './GroupingForm';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -140,8 +141,7 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
-
+  const { numSelected, classes, group } = props;
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -162,8 +162,8 @@ let EnhancedTableToolbar = props => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
-          <Tooltip title="Group">
-            <IconButton aria-label="Group">
+          <Tooltip title="Group" >
+            <IconButton onClick={props.group} aria-label="Group">
               <GroupIcon />
             </IconButton>
           </Tooltip>
@@ -182,6 +182,7 @@ let EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
+  group: PropTypes.func,
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -231,7 +232,15 @@ const InfoTableRow = withStyles({
   }
 })(TableRow);
 
+Date.daysBetween = function( date1, date2 ) {
+  var one_day=1000*60*60*24;
+  var date1_ms = new Date(date1).getTime();
+  var date2_ms = new Date(date2).getTime();
 
+  var difference_ms = date2_ms - date1_ms;
+
+  return Math.abs(Math.round(difference_ms/one_day)); 
+}
 class TravelDataTable extends React.Component {
   constructor(props) {
     super(props);
@@ -246,6 +255,9 @@ class TravelDataTable extends React.Component {
       addCar: false,
       addId: null,
       collapse: {},
+      group: false,
+      datesTo: [],
+      datesFrom: [],
     };
     this.onCloseAdd.bind(this);
     this.addFlight.bind(this);
@@ -253,6 +265,8 @@ class TravelDataTable extends React.Component {
     this.onSubmitCar.bind(this);
     this.onSubmitFlight.bind(this);
     this.expand.bind(this);
+    this.group.bind(this);
+    this.afterGroup.bind(this);
 
   }
   componentWillReceiveProps(props){
@@ -307,6 +321,48 @@ class TravelDataTable extends React.Component {
     c[id] = !this.state.collapse[id];
     this.setState({
       collapse: c
+    });
+  }
+
+  group = () => {
+    const { trips } = this.props;
+    let datesTo = new Set();
+    let datesFrom = new Set();
+    let t = []
+    this.state.selectedTrips.forEach(function (trip) {
+      t.push(trips.find(function (elem) {
+        return trip == elem.tripId;
+      }));
+    });
+    t.forEach(function (trip) {
+      datesTo.add(trip.leavingDate);
+      datesFrom.add(trip.returningDate);
+    });
+    if ((Date.daysBetween(Math.max.apply(null, datesTo), Math.min.apply(null, datesTo)) > 1 || Date.daysBetween(Math.max.apply(null, datesFrom), Math.min.apply(null, datesFrom)) > 1)){
+      alert("Trips are too wide apart");
+    } else {
+      this.setState({
+        datesTo: Array.from(datesFrom),
+        datesFrom: Array.from(datesTo),
+        group: true,
+      });
+    }
+  }
+  
+  afterGroup = (dateFrom, dateTo) => {
+    this.props.groupTrips({trips_to_group : this.state.selectedTrips, dateFrom : new Date(dateFrom).toISOString(), dateTo : new Date(dateTo).toISOString() });
+    this.setState({
+      datesTo: [],
+      datesFrom: [],
+      group: false,
+    });
+  }
+
+  onCloseGroup = () => {
+    this.setState({
+      datesTo: [],
+      datesFrom: [],
+      group: false,
     });
   }
   addFlight = (id) => {
@@ -387,8 +443,9 @@ class TravelDataTable extends React.Component {
       <div>
         {this.state.addFlight ? <FlightForm onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
         {this.state.addCar ? <CarRentForm onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
+        {this.state.group ? <GroupingForm onSubmit = {this.afterGroup} onClose={this.onCloseGroup.bind(this)} datesFrom = {this.state.datesFrom} datesTo = {this.state.datesTo} /> : null}
         <Paper className={classes.root}>
-          <EnhancedTableToolbar numSelected={selectedTrips.length} />
+          <EnhancedTableToolbar numSelected={selectedTrips.length} group={this.group}/>
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">
               <EnhancedTableHead
@@ -485,20 +542,6 @@ TravelDataTable.propTypes = {
     approved: PropTypes.bool
   })),
   classes: PropTypes.object.isRequired,
-  employeeTrips: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.any,
-    fullName: PropTypes.string,
-    leavingDate: PropTypes.string,
-    returningDate: PropTypes.string,
-    leavingOffice: PropTypes.string,
-    destinationOffice: PropTypes.string,
-    approved: PropTypes.bool,
-    tripChecklist: PropTypes.PropTypes.shape({
-      plainTickets: PropTypes.number,
-      car: PropTypes.number,
-      apartments: PropTypes.number,
-    }),
-  })),
   trips: PropTypes.arrayOf(PropTypes.shape({
     tripId: PropTypes.any,
     leavingDate: PropTypes.any,
@@ -518,7 +561,6 @@ TravelDataTable.propTypes = {
   })),
   show: PropTypes.bool,
   getAllTravels: PropTypes.func,
-  getEmployeeTrips: PropTypes.func,
   approveTravel: PropTypes.func,
   cancelTravel: PropTypes.func,
   seeTravelDetails: PropTypes.func,
@@ -526,5 +568,6 @@ TravelDataTable.propTypes = {
   removeTravel: PropTypes.func,
   addFlight: PropTypes.func,
   addCar: PropTypes.func,
+  groupTrips: PropTypes.func,
 };
 export default withStyles(styles)(TravelDataTable)

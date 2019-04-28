@@ -66,9 +66,9 @@ export const registerTravel = (employee, leavingDate, returningDate, fromOffice,
     dispatch({ type: 'SET_LOADING', value: true });
     utils.registerTripHttp({ from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
         .then(function (response) {
-            utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved : false })
+            utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved: false })
                 .then(function (r) {
-              dispatch({ type: 'SET_LOADING', value: false });
+                    dispatch({ type: 'SET_LOADING', value: false });
                 });
         });
 }
@@ -84,7 +84,7 @@ export const getAllEmployeeTrips = () => dispatch => {
                 type: 'GET_EMPLOYEE_TRIPS_BASIC',
                 employeeTrips: response.responseValue,
             });
-      dispatch({ type: 'SET_LOADING', value: false });
+            dispatch({ type: 'SET_LOADING', value: false });
         })
 }
 
@@ -130,5 +130,16 @@ export const getAllTrips = () => dispatch => {
                 trips: response.responseValue,
             });
             dispatch({ type: 'SET_LOADING', value: false });
-    })
+        })
+}
+export const groupTrips = (data) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.groupTripsHttp(data)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("failed to group!")
+            }
+            dispatch({ type: 'SET_LOADING', value: false });
+            getAllTrips();
+    });
 }

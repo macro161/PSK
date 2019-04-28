@@ -30,7 +30,6 @@ export default class TravelEditForm extends React.Component{
     }
 
     render(){
-        
         return(
             <div className="popup">
                 <div className="popup_inner">
