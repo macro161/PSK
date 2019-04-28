@@ -1,14 +1,10 @@
 const initialState = {
-    travels: [],
+    trips: [],
     employeeTrips : [],
 };
 
 export default(state = initialState, action) => {
     switch(action.type){
-        case 'GET_TRAVELS_BY_ID':
-            return{
-                ...state, travels: action.travels
-            };
         case 'GET_EMPLOYEE_TRIPS_BASIC':
             return {
                 ... state, employeeTrips: action.employeeTrips
@@ -26,7 +22,9 @@ export default(state = initialState, action) => {
         case 'CANCEL_TRAVEL':
             return { ...state, travels: state.travels.map(travel => travel.id === action.Id ? { ...travel, approved: false } : travel) }
         case 'SET_LOADING':
-            return {...state, loading: action.value};
+            return { ...state, loading: action.value };
+        case 'GET_TRIPS':
+            return {... state, trips : action.trips}
         default: 
             return state;
     }

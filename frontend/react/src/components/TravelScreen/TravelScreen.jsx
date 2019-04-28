@@ -29,6 +29,8 @@ class TravelScreen extends React.Component {
     this.props.getOffices();
     this.props.getAllEmployeeTrips();
     this.props.getAllEmployees();
+    this.props.getTrips();
+  
   }
 
   onClose() {
@@ -65,7 +67,6 @@ class TravelScreen extends React.Component {
   }
 
   render() {
-    console.log(this.props.employeeTrips)
     return (
       <div className='page-frame'>
         <title>Travels</title>
@@ -76,13 +77,14 @@ class TravelScreen extends React.Component {
         </div>
         <DataTable 
             employeeTrips={this.props.employeeTrips}
+            trips={this.props.trips}
             approveTravel={this.props.approveTravel}
             cancelTravel={this.props.cancelTravel}
             show={this.state.show}
             editTravel={this.editTravel.bind(this)}
-          removeTravel={this.props.removeTravel}
-          addFlight={this.props.addFlight}
-          addCar={this.props.addCar}
+            removeTravel={this.props.removeTravel}
+            addFlight={this.props.addFlight}
+            addCar={this.props.addCar}
              />
             {this.state.showEdit ? 
             <EditForm travel={this.state.travel}
@@ -103,7 +105,7 @@ class TravelScreen extends React.Component {
 
 export default connect(
   (state) => ({
-    travels: state.TravelScreen.travels,
+    trips: state.TravelScreen.trips,
     employeeTrips: state.TravelScreen.employeeTrips,
     employees: state.UserManager.employees,
     offices: state.Offices.offices
@@ -121,6 +123,7 @@ export default connect(
       getAllEmployeeTrips: actions.getAllEmployeeTrips,
       addFlight: actions.addFlight,
       addCar: actions.addCar,
+      getTrips : actions.getAllTrips,
   }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
@@ -137,6 +140,23 @@ TravelScreen.propTypes = {
       car: PropTypes.number,
       apartments: PropTypes.number,
     }),
+  })),
+  trips: PropTypes.arrayOf(PropTypes.shape({
+    tripId: PropTypes.any,
+    leavingDate: PropTypes.any,
+    returningDate: PropTypes.any,
+    leavingOffice: PropTypes.string,
+    destinationOffice: PropTypes.string,
+    employeeTrips: PropTypes.arrayOf(PropTypes.shape({
+      employeeId: PropTypes.any,
+      fullName: PropTypes.string,
+      approved: PropTypes.bool,
+      tripChecklist: PropTypes.shape({
+        plainTickets : PropTypes.number,
+        car: PropTypes.number,
+        apartments: PropTypes.number,
+      }),
+    }))
   })),
   offices: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
@@ -160,4 +180,5 @@ TravelScreen.propTypes = {
     getAllEmployeeTrips: PropTypes.func,
     addFlight: PropTypes.func,
     addCar: PropTypes.func,
+    getTrips: PropTypes.func,
 };

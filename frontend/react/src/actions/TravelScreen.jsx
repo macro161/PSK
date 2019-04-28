@@ -118,3 +118,17 @@ export const addCar = (et, car) => dispatch => {
             dispatch({ type: 'SET_LOADING', value: false });
         })
 }
+export const getAllTrips = () => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.getTripsHttp()
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("Somethign wrong")
+            }
+            dispatch({
+                type: 'GET_TRIPS',
+                trips: response.responseValue,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+    })
+}
