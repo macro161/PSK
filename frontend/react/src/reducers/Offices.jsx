@@ -27,7 +27,6 @@ export default (state= initialState, action) => {
         const list = Array.from(state.offices)
         const ind = list.findIndex(i => i.id === action.id)
         list.splice(ind, 1)
-        console.log(list,state.offices)
         return {
             ...state, offices: list
         }

@@ -66,9 +66,9 @@ export const registerTravel = (employee, leavingDate, returningDate, fromOffice,
     dispatch({ type: 'SET_LOADING', value: true });
     utils.registerTripHttp({ from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
         .then(function (response) {
-            utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved : false })
+            utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved: false })
                 .then(function (r) {
-              dispatch({ type: 'SET_LOADING', value: false });
+                    dispatch({ type: 'SET_LOADING', value: false });
                 });
         });
 }
@@ -80,11 +80,92 @@ export const getAllEmployeeTrips = () => dispatch => {
             if (response.responseCode != 200) {
                 alert("As tikrai gausiu dusimtini")
             }
-            console.log(response);
             dispatch({
                 type: 'GET_EMPLOYEE_TRIPS_BASIC',
                 employeeTrips: response.responseValue,
             });
-      dispatch({ type: 'SET_LOADING', value: false });
+            dispatch({ type: 'SET_LOADING', value: false });
         })
+}
+
+export const addFlight = (et, flight) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.addFlightHttp(et, flight)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("As tikrai gausiu dusimtini")
+            }
+            dispatch({
+                type: 'ADD_FLIGHT_TO_ET',
+                et: et,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
+
+
+export const addCar = (et, car) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.addCarHttp(et, car)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("As tikrai gausiu dusimtini")
+            }
+            dispatch({
+                type: 'ADD_CAR_TO_ET',
+                et: et,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
+export const addHotel = (et, hotel) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.addHotelHttp(et, hotel)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("As tikrai gausiu dusimtini")
+            }
+            dispatch({
+                type: 'ADD_HOTEL_TO_ET',
+                et: et,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
+export const getAllTrips = () => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.getTripsHttp()
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("Somethign wrong")
+            }
+            dispatch({
+                type: 'GET_TRIPS',
+                trips: response.responseValue,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
+export const groupTrips = (data) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.groupTripsHttp(data)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("failed to group!")
+            }
+            dispatch({ type: 'SET_LOADING', value: false });
+            getAllTrips();
+    });
+}
+export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.getEmployeeTripHttp(tripId, employeeId)
+        .then(function (response) {
+            dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: response.responseValue });
+            dispatch({ type: 'SET_LOADING', value: false });
+
+        })
+}
+export const clearEmployeeTrip = () => dispatch => {
+    dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: {} });
 }

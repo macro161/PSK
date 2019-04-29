@@ -42,7 +42,6 @@ public class EmployeeTrip implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    @JsonSerialize(converter = IdObjectToLongConverter.class)
     @JsonDeserialize(converter = ApartmentRoomConverter.class)
     @JsonProperty("apartments_room")
     private ApartmentRoom apartmentRoom;       // one of these should be null at all cases
@@ -61,7 +60,7 @@ public class EmployeeTrip implements Serializable {
 
     Boolean approved;
 
-    public EmployeeTrip(Employee employee, Trip trip, TripChecklist tripChecklist, ApartmentRoom apartmentRoom, Hotel hotel, Flight flight, CarRent carRent){
+    public EmployeeTrip(Employee employee, Trip trip, TripChecklist tripChecklist, ApartmentRoom apartmentRoom, Hotel hotel, Flight flight, CarRent carRent, Boolean approved){
         this.employee = employee;
         this.trip = trip;
         this.tripChecklist = tripChecklist;
@@ -70,5 +69,6 @@ public class EmployeeTrip implements Serializable {
         this.flight = flight;
         this.carRent = carRent;
         this.id = new EmployeeTripId(employee.getId(), trip.getId());
+        this.approved = approved;
     }
 }

@@ -15,6 +15,8 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Collapse from '@material-ui/core/Collapse';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import IconButton from '@material-ui/core/IconButton';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
@@ -23,6 +25,11 @@ import CarIcon from '@material-ui/icons/DirectionsCar';
 import HotelIcon from '@material-ui/icons/Hotel'
 import Badge from '@material-ui/core/Badge';
 import GroupIcon from '@material-ui/icons/GroupAdd'
+import FlightForm from './FlightForm';
+import CarRentForm from './CarRentForm';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import GroupingForm from './GroupingForm';
+import AccomodationForm from './AccomodationForm';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -50,13 +57,21 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'fullName', numeric: true, disablePadding: true, label: 'Traveler' },
   { id: 'leavingOffice', numeric: false, disablePadding: true, label: 'Departure office' },
   { id: 'destinationOffice', numeric: false, disablePadding: true, label: 'Destination office' },
   { id: 'leavingDate', numeric: false, disablePadding: true, label: 'Departure time' },
   { id: 'returningDate', numeric: false, disablePadding: true, label: 'Return time' },
-  { id: 'info', numeric: false, disablePadding: true, label: 'Trip info' },
+  { id: 'actions', numeric: false, disablePadding: true, label: 'Actions' },
 ];
+
+const HeaderTableRow = withStyles({
+  root: {
+
+    backgroundColor: "rgba(0,102,255,0.3) !important"
+  },
+
+})(TableRow);
+
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
@@ -67,10 +82,12 @@ class EnhancedTableHead extends React.Component {
 
     return (
       <TableHead>
-        <TableRow>
+        <HeaderTableRow>
+          <TableCell></TableCell>
           {rows.map(
             row => (
               <TableCell
+                colSpan = {4}
                 key={row.id}
                 align={row.numeric ? 'center' : 'center'}
                 padding={row.disablePadding ? 'none' : 'default'}
@@ -93,7 +110,8 @@ class EnhancedTableHead extends React.Component {
             ),
             this,
           )}
-        </TableRow>
+          <TableCell></TableCell>
+        </HeaderTableRow>
       </TableHead>
     );
   }
@@ -133,8 +151,7 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
-
+  const { numSelected, classes, group } = props;
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -155,8 +172,8 @@ let EnhancedTableToolbar = props => {
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
-          <Tooltip title="Group">
-            <IconButton aria-label="Group">
+          <Tooltip title="Group" >
+            <IconButton onClick={props.group} aria-label="Group">
               <GroupIcon />
             </IconButton>
           </Tooltip>
@@ -175,6 +192,7 @@ let EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
+  group: PropTypes.func,
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -191,21 +209,48 @@ const styles = theme => ({
   tableWrapper: {
     overflowX: 'auto',
   },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
 });
 
 const EnhancedTableRow = withStyles({
   root: {
+    
     "&$selected": {
-      backgroundColor: "rgba(102,255,153,0.2) !important"
+      backgroundColor: "rgba(102,255,153,0.3) !important"
     },
     "&$hover:hover": {
       backgroundColor: "rgba(102,255,153,0.15) !important"
-    }
+    },
+    backgroundColor: "rgba(0,102,255,0.15) !important"
   },
   selected: {},
   hover: {},
 })(TableRow);
 
+const InfoTableRow = withStyles({
+  root: {
+    backgroundColor: "rgba(0,102,255,0.05) !important"
+  }
+})(TableRow);
+
+Date.daysBetween = function( date1, date2 ) {
+  var one_day=1000*60*60*24;
+  var date1_ms = new Date(date1).getTime();
+  var date2_ms = new Date(date2).getTime();
+
+  var difference_ms = date2_ms - date1_ms;
+
+  return Math.abs(Math.round(difference_ms/one_day)); 
+}
 class TravelDataTable extends React.Component {
   constructor(props) {
     super(props);
@@ -215,7 +260,40 @@ class TravelDataTable extends React.Component {
       page: 0,
       rowsPerPage: 5,
       selectedTrips: [],
+      addHotel: false,
+      addFlight: false,
+      addCar: false,
+      editHotel: false,
+      editCar: false,
+      editFlight: false,
+      addId: null,
+      collapse: {},
+      group: false,
+      datesTo: [],
+      datesFrom: [],
     };
+    this.onCloseAdd.bind(this);
+    this.addFlight.bind(this);
+    this.addCar.bind(this);
+    this.onSubmitCar.bind(this);
+    this.onSubmitFlight.bind(this);
+    this.onSubmitHotel.bind(this);
+    this.expand.bind(this);
+    this.group.bind(this);
+    this.afterGroup.bind(this);
+    this.onEditFlight.bind(this);
+    this.onEditCar.bind(this);
+    this.onEditAccomodation.bind(this);
+
+  }
+  componentWillReceiveProps(props){
+    var c = {}
+    props.trips.forEach(function (e) {
+      c[String(e.tripId)] = false;
+    });
+    this.setState({
+      collapse: c,
+    });
   }
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -230,8 +308,6 @@ class TravelDataTable extends React.Component {
 
 
   handleClick = (event, id) => {
-    
-    console.log(this.props.employeeTrips);
     const { selectedTrips } = this.state;
     const selectedIndex = selectedTrips.indexOf(id);
     let newSelected = [];
@@ -247,9 +323,123 @@ class TravelDataTable extends React.Component {
         selectedTrips.slice(selectedIndex + 1),
       );
     }
-
     this.setState({ selectedTrips: newSelected });
   };
+  onCloseAdd = () => {
+    this.setState({
+      addFlight: false,
+      addCar: false,
+      addHotel: false,
+      editHotel: false,
+      editCar: false,
+      editHotel: false,
+    })
+  }
+  
+  expand = (id) => {
+    let c = this.state.collapse;
+    c[id] = !this.state.collapse[id];
+    this.setState({
+      collapse: c
+    });
+  }
+
+  onEditFlight = (id) => {
+    this.props.getEmployeeTrip(id.tripId, id.employeeId);
+    this.setState({
+      addId: id,
+      editFlight: true,
+      addFlight: true,
+    });
+  }
+  onEditCar = (id) => {
+    this.props.getEmployeeTrip(id.tripId, id.employeeId);
+    this.setState({
+      addId: id,
+      editCar: true,
+      addCar: true,
+    });
+  }
+  onEditAccomodation = (id) => {
+    this.props.getEmployeeTrip(id.tripId, id.employeeId);
+    this.setState({
+      addId: id,
+      editHotel: true,
+      addHotel: true,
+    });
+  }
+  group = () => {
+    const { trips } = this.props;
+    let datesTo = new Set();
+    let datesFrom = new Set();
+    let t = []
+    this.state.selectedTrips.forEach(function (trip) {
+      t.push(trips.find(function (elem) {
+        return trip == elem.tripId;
+      }));
+    });
+    t.forEach(function (trip) {
+      datesTo.add(trip.leavingDate);
+      datesFrom.add(trip.returningDate);
+    });
+    if ((Date.daysBetween(Math.max.apply(null, Array.from(datesTo)), Math.min.apply(null, Array.from(datesTo))) > 1 || Date.daysBetween(Math.max.apply(null, Array.from(datesFrom)), Math.min.apply(null, Array.from(datesFrom))) > 1)){
+      alert("Trips are too wide apart");
+    } else {
+      this.setState({
+        datesTo: Array.from(datesFrom),
+        datesFrom: Array.from(datesTo),
+        group: true,
+      });
+    }
+  }
+  
+  afterGroup = (dateFrom, dateTo) => {
+    this.props.groupTrips({trips_to_group : this.state.selectedTrips, dateFrom : new Date(dateFrom).toISOString(), dateTo : new Date(dateTo).toISOString() });
+    this.setState({
+      datesTo: [],
+      datesFrom: [],
+      group: false,
+    });
+  }
+
+  onCloseGroup = () => {
+    this.setState({
+      datesTo: [],
+      datesFrom: [],
+      group: false,
+    });
+    this.props.clearEmployeeTrip();
+  }
+  addFlight = (id) => {
+    this.setState({
+      addId: id,
+      addFlight: true,
+    });
+  }
+  onSubmitFlight = (id, flight) => {
+    this.props.addFlight(id, flight);
+    this.onCloseAdd();
+  }
+  addCar = (id) => {
+    this.setState({
+      addId: id,
+      addCar: true,
+    });
+  }
+  onSubmitCar = (id, car) => {
+    this.props.addCar(id, car);
+    this.onCloseAdd();
+  }
+  addHotel = (id) => {
+    this.setState({
+      addId: id,
+      addHotel: true,
+    });
+  }
+  onSubmitHotel = (id, hotel) => {
+    this.props.addHotel(id, hotel);
+    this.onCloseAdd();
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -259,99 +449,151 @@ class TravelDataTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  details = (fullName, id, collapse, tripChecklist) =>
+    collapse ? (
+      <InfoTableRow key= {id.tripId + ' ' + id.employeeId}>
+        <TableCell colSpan = {3}></TableCell>
+        <TableCell colSpan = {4}>
+          <Collapse  in={collapse} unmountOnExit={true}>{fullName}</Collapse>
+        </TableCell>
+        <TableCell colSpan={8}>
+          <Collapse in={collapse} unmountOnExit={true}>
+          <Tooltip title="Flight info">
+            <IconButton onClick={event => tripChecklist.plainTickets == 1 ? this.addFlight(id) : this.onEditFlight(id)} aria-label="Plane info" disabled={tripChecklist.plainTickets == 0 ? true : false}>
+              {tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : tripChecklist.plainTickets == 1 ?
+                <Badge color="secondary" variant="dot">
+                  <PlaneIcon fontSize="small" />
+                </Badge> :
+                <PlaneIcon fontSize="small" color="primary" />}
+            </IconButton>
+            </Tooltip>
+            <Tooltip title="Car rent info">
+            <IconButton onClick={event => tripChecklist.car == 1 ? this.addCar(id) : this.onEditCar(id)} aria-label="Car rent info" disabled={tripChecklist.car == 0 ? true : false}>
+              {tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
+                tripChecklist.car == 1 ?
+                  <Badge color="secondary" variant="dot">
+                    <CarIcon fontSize="small" />
+                  </Badge> :
+                  <CarIcon fontSize="small" color="primary" />}
+            </IconButton>
+            </Tooltip>
+            <Tooltip title="Accomodation info">
+            <IconButton onClick={event => tripChecklist.car == 1 ? this.addHotel(id) : this.onEditAccomodation(id)} aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
+              {tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : tripChecklist.apartments == 1 ?
+                <Badge color="secondary" variant="dot">
+                  <HotelIcon fontSize="small" />
+                </Badge> :
+                <HotelIcon fontSize="small" color="primary" />}
+            </IconButton></Tooltip></Collapse>
+        </TableCell>
+        <TableCell colSpan = {7}></TableCell>
+      </InfoTableRow>
+    ) : null;
+
+
   isSelected = id => this.state.selectedTrips.indexOf(id) !== -1;
 
   render() {
     const { classes } = this.props;
     const { order, orderBy, selectedTrips, rowsPerPage, page } = this.state;
-    let data = this.props.employeeTrips;
+    let data = this.props.trips;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
-      <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selectedTrips.length} />
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selectedTrips.length}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id.tripId);
-                  return (
-                    <EnhancedTableRow
-                      hover
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.id.employeeId + ' ' + n.id.tripId}
-                      selected={isSelected}
-                    >
-                      <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)} >
-                        {n.fullName}
-                      </TableCell>
-                      <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.leavingOffice}</TableCell>
-                      <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.destinationOffice}</TableCell>
-                      <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.leavingDate.substring(0, 10)}</TableCell>
-                      <TableCell align="center" onClick={event => this.handleClick(event, n.id.tripId)}>{n.returningDate.substring(0, 10)}</TableCell>
-                      <TableCell align="center">
-                        <IconButton aria-label="Plane info" className={classes.margin} disabled = {n.tripChecklist.plainTickets == 0 ? true : false}>
-                          {n.tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : n.tripChecklist.plainTickets == 1 ?
-                            <Badge color="secondary" variant="dot">
-                              <PlaneIcon fontSize="small"/>
-                            </Badge> :
-                            <PlaneIcon fontSize="small" color="primary"/>}
-                        </IconButton>
-                        <IconButton aria-label="Car rent info" className={classes.margin} disabled = {n.tripChecklist.car == 0 ? true : false}>
-                          {n.tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
-                            n.tripChecklist.car == 1 ?
-                              <Badge color="secondary" variant="dot">
-                                <CarIcon fontSize="small" />
-                              </Badge> :
-                            <CarIcon fontSize="small" color="primary" />}
-                        </IconButton>
-      
-                        <IconButton aria-label="accomodation info" className={classes.margin} disabled = {n.tripChecklist.apartments == 0 ? true : false}>
-                          {n.tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : n.tripChecklist.apartments == 1 ?
-                            <Badge color="secondary" variant="dot">
-                              <HotelIcon fontSize="small" />
-                            </Badge> :
-                            <HotelIcon fontSize="small" color="primary" />}
-                          
-                        </IconButton>
-                      </TableCell>
-                    </EnhancedTableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
-      </Paper>
+      <div>
+        {this.state.addFlight ? <FlightForm employeeTrip={this.state.editFlight ? this.props.employeeTrip : { id: { tripId: 0, employeeId: 0 } }} onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} fake={this.props.employeeTrip}/> : null}
+        {this.state.addCar ? <CarRentForm employeeTrip={this.state.editCar ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} fake={this.props.employeeTrip}/> : null}
+        {this.state.addHotel ? <AccomodationForm employeeTrip={this.props.employeeTrip} onSubmit={this.onSubmitHotel} onClose={this.onCloseAdd.bind(this)} id={this.state.addId}/> : null}
+        {this.state.group ? <GroupingForm onSubmit = {this.afterGroup} onClose={this.onCloseGroup.bind(this)} datesFrom = {this.state.datesFrom} datesTo = {this.state.datesTo} /> : null}
+        <Paper className={classes.root}>
+          <EnhancedTableToolbar numSelected={selectedTrips.length} group={this.group}/>
+          <div className={classes.tableWrapper}>
+            <Table className={classes.table} aria-labelledby="tableTitle">
+              <EnhancedTableHead
+                numSelected={selectedTrips.length}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={this.handleRequestSort}
+                rowCount={data.length}
+              />
+              <TableBody>
+                {stableSort(data, getSorting(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(n => {
+                    const isSelected = this.isSelected(n.tripId);
+                    return (
+                      <React.Fragment key={n.tripId + " 00"}>
+                        <EnhancedTableRow
+                          hover
+                          aria-checked={isSelected}
+                          tabIndex={-1}
+                          key={n.tripId}
+                          selected={isSelected}
+                        >
+                        <TableCell></TableCell>
+                          <TableCell colSpan = {4} align="center" onClick={event => this.handleClick(event, n.tripId)}>{n.leavingOffice}</TableCell>
+                          <TableCell colSpan = {4} align="center" onClick={event => this.handleClick(event, n.tripId)}>{n.destinationOffice}</TableCell>
+                          <TableCell colSpan = {4} align="center" onClick={event => this.handleClick(event, n.tripId)}>{n.leavingDate.substring(0, 10)}</TableCell>
+                          <TableCell colSpan = {4} align="center" onClick={event => this.handleClick(event, n.tripId)}>{n.returningDate.substring(0, 10)}</TableCell>
+                          <TableCell colSpan = {4} align="center">
+                          <Tooltip title="Edit">
+                            <IconButton aria-label="Edit" color="primary" onClick={() => this.editTrip(n.tripId)}>
+                              <EditIcon />
+                            </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                            <IconButton aria-label="Delete" color="secondary" onClick={() => this.deleteTrip(n.tripId)}>
+                              <DeleteIcon />
+                            </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Show travelers">
+                            <IconButton
+                              className={classNames(classes.expand, {
+                                [classes.expandOpen]: this.state.collapse[n.tripId],
+                              })}
+                              onClick={() => this.expand(n.tripId)}
+                              aria-expanded={this.state.collapse[n.tripId]}
+                              aria-label="Show employees"
+                            >
+                              <ExpandMoreIcon />
+                            </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                          <TableCell></TableCell>
+                        </EnhancedTableRow>
+                        {n.employeeTrips.map(
+                          et => {
+                            return (this.details(et.fullName, { tripId: n.tripId, employeeId: et.employeeId }, this.state.collapse[n.tripId], et.tripChecklist));
+                          }
+                        )}
+                      </React.Fragment>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 49 * emptyRows }}>
+                    <TableCell colSpan={22} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        </Paper>
+      </div>
     );
   }
 }
@@ -367,28 +609,36 @@ TravelDataTable.propTypes = {
     approved: PropTypes.bool
   })),
   classes: PropTypes.object.isRequired,
-  employeeTrips: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.any,
-    fullName: PropTypes.string,
-    leavingDate: PropTypes.string,
-    returningDate: PropTypes.string,
+  trips: PropTypes.arrayOf(PropTypes.shape({
+    tripId: PropTypes.any,
+    leavingDate: PropTypes.any,
+    returningDate: PropTypes.any,
     leavingOffice: PropTypes.string,
     destinationOffice: PropTypes.string,
-    approved: PropTypes.bool,
-    tripChecklist: PropTypes.PropTypes.shape({
-      plainTickets: PropTypes.number,
-      car: PropTypes.number,
-      apartments: PropTypes.number,
-    }),
+    employeeTrips: PropTypes.arrayOf(PropTypes.shape({
+      employeeId: PropTypes.any,
+      fullName: PropTypes.string,
+      approved: PropTypes.bool,
+      tripChecklist: PropTypes.shape({
+        plainTickets: PropTypes.number,
+        car: PropTypes.number,
+        apartments: PropTypes.number,
+      }),
+    }))
   })),
+  employeeTrip: PropTypes.any,
   show: PropTypes.bool,
   getAllTravels: PropTypes.func,
-  getEmployeeTrips: PropTypes.func,
   approveTravel: PropTypes.func,
   cancelTravel: PropTypes.func,
   seeTravelDetails: PropTypes.func,
-  showInfo: PropTypes.func,
   editTravel: PropTypes.func,
   removeTravel: PropTypes.func,
+  addFlight: PropTypes.func,
+  addCar: PropTypes.func,
+  addHotel: PropTypes.func,
+  groupTrips: PropTypes.func,
+  getEmployeeTrip: PropTypes.func,
+  clearEmployeeTrip: PropTypes.func,
 };
 export default withStyles(styles)(TravelDataTable)
