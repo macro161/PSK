@@ -143,3 +143,12 @@ export const groupTrips = (data) => dispatch => {
             getAllTrips();
     });
 }
+export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.getEmployeeTripHttp(tripId, employeeId)
+        .then(function (response) {
+            dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: response.responseValue });
+            dispatch({ type: 'SET_LOADING', value: false });
+
+    })
+}

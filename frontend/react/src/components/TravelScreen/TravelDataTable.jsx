@@ -29,6 +29,7 @@ import FlightForm from './FlightForm';
 import CarRentForm from './CarRentForm';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GroupingForm from './GroupingForm';
+import AccomodationForm from './AccomodationForm';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -62,6 +63,15 @@ const rows = [
   { id: 'returningDate', numeric: false, disablePadding: true, label: 'Return time' },
   { id: 'actions', numeric: false, disablePadding: true, label: 'Actions' },
 ];
+
+const HeaderTableRow = withStyles({
+  root: {
+
+    backgroundColor: "rgba(0,102,255,0.3) !important"
+  },
+
+})(TableRow);
+
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
@@ -72,7 +82,7 @@ class EnhancedTableHead extends React.Component {
 
     return (
       <TableHead>
-        <TableRow>
+        <HeaderTableRow>
           <TableCell></TableCell>
           {rows.map(
             row => (
@@ -101,7 +111,7 @@ class EnhancedTableHead extends React.Component {
             this,
           )}
           <TableCell></TableCell>
-        </TableRow>
+        </HeaderTableRow>
       </TableHead>
     );
   }
@@ -253,6 +263,9 @@ class TravelDataTable extends React.Component {
       addHotel: false,
       addFlight: false,
       addCar: false,
+      editHotel: false,
+      editCar: false,
+      editFlight: false,
       addId: null,
       collapse: {},
       group: false,
@@ -264,9 +277,13 @@ class TravelDataTable extends React.Component {
     this.addCar.bind(this);
     this.onSubmitCar.bind(this);
     this.onSubmitFlight.bind(this);
+    this.onSubmitHotel.bind(this);
     this.expand.bind(this);
     this.group.bind(this);
     this.afterGroup.bind(this);
+    this.onEditFlight.bind(this);
+    this.onEditCar.bind(this);
+    this.onEditAccomodation.bind(this);
 
   }
   componentWillReceiveProps(props){
@@ -313,6 +330,9 @@ class TravelDataTable extends React.Component {
       addFlight: false,
       addCar: false,
       addHotel: false,
+      editHotel: false,
+      editCar: false,
+      editHotel: false,
     })
   }
   
@@ -324,6 +344,30 @@ class TravelDataTable extends React.Component {
     });
   }
 
+  onEditFlight = (id) => {
+    this.props.getEmployeeTrip(id.tripId, id.employeeId);
+    this.setState({
+      addId: id,
+      editFlight: true,
+      addFlight: true,
+    });
+  }
+  onEditCar = (id) => {
+    this.props.getEmployeeTrip(id.tripId, id.employeeId);
+    this.setState({
+      addId: id,
+      editCar: true,
+      addCar: true,
+    });
+  }
+  onEditAccomodation = (id) => {
+    this.props.getEmployeeTrip(id.tripId, id.employeeId);
+    this.setState({
+      addId: id,
+      editHote: true,
+      editCar: true,
+    });
+  }
   group = () => {
     const { trips } = this.props;
     let datesTo = new Set();
@@ -338,7 +382,7 @@ class TravelDataTable extends React.Component {
       datesTo.add(trip.leavingDate);
       datesFrom.add(trip.returningDate);
     });
-    if ((Date.daysBetween(Math.max.apply(null, datesTo), Math.min.apply(null, datesTo)) > 1 || Date.daysBetween(Math.max.apply(null, datesFrom), Math.min.apply(null, datesFrom)) > 1)){
+    if ((Date.daysBetween(Math.max.apply(null, Array.from(datesTo)), Math.min.apply(null, Array.from(datesTo))) > 1 || Date.daysBetween(Math.max.apply(null, Array.from(datesFrom)), Math.min.apply(null, Array.from(datesFrom))) > 1)){
       alert("Trips are too wide apart");
     } else {
       this.setState({
@@ -385,6 +429,16 @@ class TravelDataTable extends React.Component {
     this.props.addCar(id, car);
     this.onCloseAdd();
   }
+  addHotel = (id) => {
+    this.setState({
+      addId: id,
+      addHotel: true,
+    });
+  }
+  onSubmitHotel = (id, hotel) => {
+    this.props.addHotel(id, hotel);
+    this.onCloseAdd();
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -403,14 +457,17 @@ class TravelDataTable extends React.Component {
         </TableCell>
         <TableCell colSpan={8}>
           <Collapse in={collapse} unmountOnExit={true}>
-            <IconButton onClick={event => this.addFlight(id)} aria-label="Plane info" disabled={tripChecklist.plainTickets == 0 ? true : false}>
+          <Tooltip title="Flight info">
+            <IconButton onClick={event => tripChecklist.plainTickets == 1 ? this.addFlight(id) : this.onEditFlight(id)} aria-label="Plane info" disabled={tripChecklist.plainTickets == 0 ? true : false}>
               {tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : tripChecklist.plainTickets == 1 ?
                 <Badge color="secondary" variant="dot">
                   <PlaneIcon fontSize="small" />
                 </Badge> :
                 <PlaneIcon fontSize="small" color="primary" />}
             </IconButton>
-            <IconButton onClick={event => this.addCar(id)} aria-label="Car rent info" disabled={tripChecklist.car == 0 ? true : false}>
+            </Tooltip>
+            <Tooltip title="Car rent info">
+            <IconButton onClick={event => tripChecklist.car == 1 ? this.addCar(id) : this.onEditCar(id)} aria-label="Car rent info" disabled={tripChecklist.car == 0 ? true : false}>
               {tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
                 tripChecklist.car == 1 ?
                   <Badge color="secondary" variant="dot">
@@ -418,13 +475,15 @@ class TravelDataTable extends React.Component {
                   </Badge> :
                   <CarIcon fontSize="small" color="primary" />}
             </IconButton>
+            </Tooltip>
+            <Tooltip title="Accomodation info">
             <IconButton aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
               {tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : tripChecklist.apartments == 1 ?
                 <Badge color="secondary" variant="dot">
                   <HotelIcon fontSize="small" />
                 </Badge> :
                 <HotelIcon fontSize="small" color="primary" />}
-            </IconButton></Collapse>
+            </IconButton></Tooltip></Collapse>
         </TableCell>
         <TableCell colSpan = {7}></TableCell>
       </InfoTableRow>
@@ -441,8 +500,9 @@ class TravelDataTable extends React.Component {
 
     return (
       <div>
-        {this.state.addFlight ? <FlightForm onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
-        {this.state.addCar ? <CarRentForm onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
+        {this.state.addFlight ? <FlightForm employeeTrip={this.state.editFlight ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
+        {this.state.addCar ? <CarRentForm employeeTrip={this.state.editCar ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
+        {this.state.addHotel ? <AccomodationForm employeeTrip={this.state.editHotel ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitHotel} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
         {this.state.group ? <GroupingForm onSubmit = {this.afterGroup} onClose={this.onCloseGroup.bind(this)} datesFrom = {this.state.datesFrom} datesTo = {this.state.datesTo} /> : null}
         <Paper className={classes.root}>
           <EnhancedTableToolbar numSelected={selectedTrips.length} group={this.group}/>
@@ -475,12 +535,17 @@ class TravelDataTable extends React.Component {
                           <TableCell colSpan = {4} align="center" onClick={event => this.handleClick(event, n.tripId)}>{n.leavingDate.substring(0, 10)}</TableCell>
                           <TableCell colSpan = {4} align="center" onClick={event => this.handleClick(event, n.tripId)}>{n.returningDate.substring(0, 10)}</TableCell>
                           <TableCell colSpan = {4} align="center">
+                          <Tooltip title="Edit">
                             <IconButton aria-label="Edit" color="primary" onClick={() => this.editTrip(n.tripId)}>
                               <EditIcon />
                             </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
                             <IconButton aria-label="Delete" color="secondary" onClick={() => this.deleteTrip(n.tripId)}>
                               <DeleteIcon />
                             </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Show travelers">
                             <IconButton
                               className={classNames(classes.expand, {
                                 [classes.expandOpen]: this.state.collapse[n.tripId],
@@ -491,6 +556,7 @@ class TravelDataTable extends React.Component {
                             >
                               <ExpandMoreIcon />
                             </IconButton>
+                            </Tooltip>
                           </TableCell>
                           <TableCell></TableCell>
                         </EnhancedTableRow>
@@ -559,6 +625,7 @@ TravelDataTable.propTypes = {
       }),
     }))
   })),
+  employeeTrip: PropTypes.any,
   show: PropTypes.bool,
   getAllTravels: PropTypes.func,
   approveTravel: PropTypes.func,
@@ -568,6 +635,8 @@ TravelDataTable.propTypes = {
   removeTravel: PropTypes.func,
   addFlight: PropTypes.func,
   addCar: PropTypes.func,
+  addHotel: PropTypes.func,
   groupTrips: PropTypes.func,
+  getEmployeeTrip: PropTypes.func,
 };
 export default withStyles(styles)(TravelDataTable)

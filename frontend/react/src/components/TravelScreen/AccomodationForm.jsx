@@ -21,36 +21,15 @@ const styles = theme => ({
   },
 });
 
-class FlightForm extends React.Component {
+class AccomodationForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seatNumber: 0,
-      airport: '',
-      loading: true,
-      date: "2019-06-30T12:00",
-      price: 0,
-
+      officeApartments: true,
+      hotelAddres: '',
+      hotelPrice: '',
+      hotelRoomNumber: '',    
     }
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.employeeTrip == {}) {
-      return;
-    }
-    if (props.employeeTrip.id.tripId == 0) {
-      this.setState({
-        loading: false,
-      })
-    } else if (props.employeeTrip.id.tripId == props.id.tripId && props.employeeTrip.id.employeeId) {
-      this.setState({
-        seatNumber: props.employeeTrip.flight.seatNumber,
-        airport:props.employeeTrip.flight.airport,
-        date: props.employeeTrip.flight.date.substring(0, 16),
-        price: props.employeeTrip.flight.price,
-        loading: false,
-      });
-      }
   }
 
   inputChange(e) {
@@ -75,8 +54,7 @@ class FlightForm extends React.Component {
           <TextField
             id="airport"
             label="Airport"
-            value={this.state.airport}
-            className={classes.textField}
+            className="form-text-field-city"
             type="text"
             margin="normal"
             onChange={this.inputChange.bind(this)}
@@ -85,7 +63,7 @@ class FlightForm extends React.Component {
             id="date"
             label="Flight time"
             type="datetime-local"
-            value={this.state.date}
+            defaultValue={this.state.date}
             onChange={this.inputChange.bind(this)}
             className={classes.textField}
             InputLabelProps={{
@@ -133,8 +111,9 @@ class FlightForm extends React.Component {
     );
   }
 }
-FlightForm.propTypes = {
+AccomodationForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  employeeTrips: PropTypes.any,
 };
 
-export default withStyles(styles)(FlightForm);
+export default withStyles(styles)(AccomodationForm);

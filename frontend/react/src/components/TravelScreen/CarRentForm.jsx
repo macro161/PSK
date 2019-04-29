@@ -26,8 +26,25 @@ class CarForm extends React.Component {
     super(props);
     this.state = {
       address: '',
-      price: 0
+      price: 0,
+      loading: true,
     }
+  }
+  componentWillReceiveProps(props) {
+    if (props.employeeTrip == {}) {
+      return;
+    }
+    if (props.employeeTrip.id.tripId == 0) {
+      this.setState({
+        loading: false,
+      })
+    } else if (props.employeeTrip.id.tripId == props.id.tripId && props.employeeTrip.id.employeeId) {
+      this.setState({
+        address: props.employeeTrip.car_rent.address,
+        price: props.employeeTrip.car_rent.price,
+        loading: false,
+      });
+      }
   }
 
   inputChange(e) {
@@ -41,6 +58,7 @@ class CarForm extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     const { classes } = this.props;
     return (
       <Dialog
@@ -52,7 +70,8 @@ class CarForm extends React.Component {
           <TextField
             id="address"
             label="Address"
-            className="form-text-field-city"
+            className={classes.textField}
+            value={this.state.address}
             type="text"
             margin="normal"
             onChange={this.inputChange.bind(this)}

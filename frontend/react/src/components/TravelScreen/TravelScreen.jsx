@@ -13,15 +13,15 @@ import Button from '@material-ui/core/Button';
 
 
 const initialState = {
-    fullName: '',
-    departureTime : '',
-    returningTime: '',
-    city: '',
-    approved: false,
-    showEdit: false,
-    showRegister: false,
-    
-  };
+  fullName: '',
+  departureTime: '',
+  returningTime: '',
+  city: '',
+  approved: false,
+  showEdit: false,
+  showRegister: false,
+
+};
 class TravelScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +29,7 @@ class TravelScreen extends React.Component {
     this.props.getOffices();
     this.props.getAllEmployees();
     this.props.getTrips();
-  
+
   }
 
   onClose() {
@@ -38,28 +38,28 @@ class TravelScreen extends React.Component {
 
   editTravel(travel) {
     this.setState({
-      showEdit:true,
-      travel : travel,
+      showEdit: true,
+      travel: travel,
     })
   }
 
-  onEditSave(id, fullName, departure, accommodation, city, approved){
+  onEditSave(id, fullName, departure, accommodation, city, approved) {
     this.props.editTravel(id, fullName, departure, accommodation, city, approved);
     this.setState(initialState)
   }
-  
-  onSubmit(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist){
+
+  onSubmit(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) {
     this.props.registerTravel(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist);
     this.setState(initialState)
   }
 
-  removeTravel(id){
+  removeTravel(id) {
     this.props.removeTravel(id);
   }
 
-  addTravelClick(){
+  addTravelClick() {
     this.setState({
-      showRegister:true
+      showRegister: true
     })
   }
 
@@ -68,33 +68,35 @@ class TravelScreen extends React.Component {
       <div className='page-frame'>
         <title>Travels</title>
         <h2>Organise travels</h2>
-          <hr/>
-          <Button variant ="contained" onClick={this.addTravelClick.bind(this)} className="register-travel-button" variant="contained" color="secondary"> Add travel </Button>
+        <hr />
+        <Button variant="contained" onClick={this.addTravelClick.bind(this)} className="register-travel-button" variant="contained" color="secondary"> Add travel </Button>
         <div>
         </div>
-        <DataTable 
-            trips={this.props.trips}
-            approveTravel={this.props.approveTravel}
-            cancelTravel={this.props.cancelTravel}
-            show={this.state.show}
-            editTravel={this.editTravel.bind(this)}
-            removeTravel={this.props.removeTravel}
-            addFlight={this.props.addFlight}
-            addCar={this.props.addCar}
-            groupTrips={this.props.groupTrips}
-             />
-            {this.state.showEdit ? 
-            <EditForm travel={this.state.travel}
+        <DataTable
+          trips={this.props.trips}
+          approveTravel={this.props.approveTravel}
+          cancelTravel={this.props.cancelTravel}
+          show={this.state.show}
+          editTravel={this.editTravel.bind(this)}
+          removeTravel={this.props.removeTravel}
+          addFlight={this.props.addFlight}
+          addCar={this.props.addCar}
+          groupTrips={this.props.groupTrips}
+          getEmployeeTrip={this.props.getEmployeeTrip}
+          employeeTrip={this.props.employeeTrip}
+        />
+        {this.state.showEdit ?
+          <EditForm travel={this.state.travel}
             onEditSave={this.onEditSave.bind(this)}
-            onClose={this.onClose.bind(this)} 
-            /> : null}
-            {this.state.showRegister ? 
-            <RegisterForm 
+            onClose={this.onClose.bind(this)}
+          /> : null}
+        {this.state.showRegister ?
+          <RegisterForm
             onClose={this.onClose.bind(this)}
             onSubmit={this.onSubmit.bind(this)}
             employees={this.props.employees}
             offices={this.props.offices} /> : null}
-        <br/><br/>
+        <br /><br />
       </div>
     );
   }
@@ -104,36 +106,38 @@ export default connect(
   (state) => ({
     trips: state.TravelScreen.trips,
     employees: state.UserManager.employees,
-    offices: state.Offices.offices
+    offices: state.Offices.offices,
+    employeeTrip: state.TravelScreen.employeeTrip,
   }),
   (dispatch) => bindActionCreators(
     {
-       getAllEmployees: getAllEmployees,
-        getOffices : getOffices,
-        getAllTravels: actions.getAllTravels,
-        approveTravel: actions.approveTravel,
-        cancelTravel: actions.cancelTravel,
-        editTravel: actions.editTravel,
-        removeTravel: actions.removeTravel,
+      getAllEmployees: getAllEmployees,
+      getOffices: getOffices,
+      getAllTravels: actions.getAllTravels,
+      approveTravel: actions.approveTravel,
+      cancelTravel: actions.cancelTravel,
+      editTravel: actions.editTravel,
+      removeTravel: actions.removeTravel,
       registerTravel: actions.registerTravel,
       getAllEmployeeTrips: actions.getAllEmployeeTrips,
       addFlight: actions.addFlight,
       addCar: actions.addCar,
-      getTrips : actions.getAllTrips,
+      getTrips: actions.getAllTrips,
       groupTrips: actions.groupTrips,
-  }, dispatch))(TravelScreen);
+      getEmployeeTrip: actions.getEmployeeTrip,
+    }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
   employeeTrips: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
-    fullName : PropTypes.string,
+    fullName: PropTypes.string,
     leavingDate: PropTypes.string,
     returningDate: PropTypes.string,
     leavingOffice: PropTypes.string,
     destinationOffice: PropTypes.string,
     approved: PropTypes.bool,
     tripChecklist: PropTypes.shape({
-      plainTickets : PropTypes.number,
+      plainTickets: PropTypes.number,
       car: PropTypes.number,
       apartments: PropTypes.number,
     }),
@@ -149,7 +153,7 @@ TravelScreen.propTypes = {
       fullName: PropTypes.string,
       approved: PropTypes.bool,
       tripChecklist: PropTypes.shape({
-        plainTickets : PropTypes.number,
+        plainTickets: PropTypes.number,
         car: PropTypes.number,
         apartments: PropTypes.number,
       }),
@@ -162,21 +166,23 @@ TravelScreen.propTypes = {
   })),
   employees: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
-    fullName : PropTypes.string,
+    fullName: PropTypes.string,
     city: PropTypes.string,
     email: PropTypes.string,
   })),
-    show: PropTypes.bool,
-    getAllTravels: PropTypes.func,
-    approveTravel: PropTypes.func,
-    cancelTravel: PropTypes.func,
-    seeTravelDetails: PropTypes.func,
-    editTravel: PropTypes.func,
-    removeTravel: PropTypes.func,
+  employeeTrip: PropTypes.any,
+  show: PropTypes.bool,
+  getAllTravels: PropTypes.func,
+  approveTravel: PropTypes.func,
+  cancelTravel: PropTypes.func,
+  seeTravelDetails: PropTypes.func,
+  editTravel: PropTypes.func,
+  removeTravel: PropTypes.func,
   registerTravel: PropTypes.func,
-    getAllEmployeeTrips: PropTypes.func,
-    addFlight: PropTypes.func,
-    addCar: PropTypes.func,
-    getTrips: PropTypes.func,
-    groupTrips: PropTypes.func,
+  getAllEmployeeTrips: PropTypes.func,
+  addFlight: PropTypes.func,
+  addCar: PropTypes.func,
+  getTrips: PropTypes.func,
+  groupTrips: PropTypes.func,
+  getEmployeeTrip: PropTypes.func,
 };

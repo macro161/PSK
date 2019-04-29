@@ -49,7 +49,6 @@ public class EmployeeTripController {
 
     @RequestMapping(value = "/group", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean group(@RequestBody TripsGroupingDto tripsGroupingDto) {
-        Trip trip = tripDao.save(tripsGroupingDto.getTrip());
         Trip t = tripDao.findById(tripsGroupingDto.getTripsToGroup().get(0)).orElse(null);
         if (t != null){
             Trip trip = new Trip();

@@ -1,6 +1,7 @@
 const initialState = {
     trips: [],
-    employeeTrips : [],
+    employeeTrips: [],
+    employeeTrip: {},
 };
 
 export default(state = initialState, action) => {
@@ -24,7 +25,9 @@ export default(state = initialState, action) => {
         case 'SET_LOADING':
             return { ...state, loading: action.value };
         case 'GET_TRIPS':
-            return {... state, trips : action.trips}
+            return { ...state, trips: action.trips }
+        case 'GET_EMPLOYEE_TRIP':
+            return {...state, employeeTrip:action.employeeTrip}
         default: 
             return state;
     }

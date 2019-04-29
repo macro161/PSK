@@ -42,7 +42,6 @@ public class EmployeeTrip implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    @JsonSerialize(converter = IdObjectToLongConverter.class)
     @JsonDeserialize(converter = ApartmentRoomConverter.class)
     @JsonProperty("apartments_room")
     private ApartmentRoom apartmentRoom;       // one of these should be null at all cases
