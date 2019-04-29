@@ -364,8 +364,8 @@ class TravelDataTable extends React.Component {
     this.props.getEmployeeTrip(id.tripId, id.employeeId);
     this.setState({
       addId: id,
-      editHote: true,
-      editCar: true,
+      editHotel: true,
+      addHotel: true,
     });
   }
   group = () => {
@@ -408,6 +408,7 @@ class TravelDataTable extends React.Component {
       datesFrom: [],
       group: false,
     });
+    this.props.clearEmployeeTrip();
   }
   addFlight = (id) => {
     this.setState({
@@ -477,7 +478,7 @@ class TravelDataTable extends React.Component {
             </IconButton>
             </Tooltip>
             <Tooltip title="Accomodation info">
-            <IconButton aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
+            <IconButton onClick={event => tripChecklist.car == 1 ? this.addHotel(id) : this.onEditAccomodation(id)} aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
               {tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : tripChecklist.apartments == 1 ?
                 <Badge color="secondary" variant="dot">
                   <HotelIcon fontSize="small" />
@@ -500,9 +501,9 @@ class TravelDataTable extends React.Component {
 
     return (
       <div>
-        {this.state.addFlight ? <FlightForm employeeTrip={this.state.editFlight ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
-        {this.state.addCar ? <CarRentForm employeeTrip={this.state.editCar ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
-        {this.state.addHotel ? <AccomodationForm employeeTrip={this.state.editHotel ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitHotel} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} /> : null}
+        {this.state.addFlight ? <FlightForm employeeTrip={this.state.editFlight ? this.props.employeeTrip : { id: { tripId: 0, employeeId: 0 } }} onSubmit={this.onSubmitFlight} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} fake={this.props.employeeTrip}/> : null}
+        {this.state.addCar ? <CarRentForm employeeTrip={this.state.editCar ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} fake={this.props.employeeTrip}/> : null}
+        {this.state.addHotel ? <AccomodationForm employeeTrip={this.props.employeeTrip} onSubmit={this.onSubmitHotel} onClose={this.onCloseAdd.bind(this)} id={this.state.addId}/> : null}
         {this.state.group ? <GroupingForm onSubmit = {this.afterGroup} onClose={this.onCloseGroup.bind(this)} datesFrom = {this.state.datesFrom} datesTo = {this.state.datesTo} /> : null}
         <Paper className={classes.root}>
           <EnhancedTableToolbar numSelected={selectedTrips.length} group={this.group}/>
@@ -638,5 +639,6 @@ TravelDataTable.propTypes = {
   addHotel: PropTypes.func,
   groupTrips: PropTypes.func,
   getEmployeeTrip: PropTypes.func,
+  clearEmployeeTrip: PropTypes.func,
 };
 export default withStyles(styles)(TravelDataTable)

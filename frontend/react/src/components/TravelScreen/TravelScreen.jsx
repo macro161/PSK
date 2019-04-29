@@ -81,9 +81,11 @@ class TravelScreen extends React.Component {
           removeTravel={this.props.removeTravel}
           addFlight={this.props.addFlight}
           addCar={this.props.addCar}
+          addHotel={this.props.addHotel}
           groupTrips={this.props.groupTrips}
           getEmployeeTrip={this.props.getEmployeeTrip}
           employeeTrip={this.props.employeeTrip}
+          clearEmployeeTrip={this.props.clearEmployeeTrip}
         />
         {this.state.showEdit ?
           <EditForm travel={this.state.travel}
@@ -122,9 +124,11 @@ export default connect(
       getAllEmployeeTrips: actions.getAllEmployeeTrips,
       addFlight: actions.addFlight,
       addCar: actions.addCar,
+      addHotel: actions.addHotel,
       getTrips: actions.getAllTrips,
       groupTrips: actions.groupTrips,
       getEmployeeTrip: actions.getEmployeeTrip,
+      clearEmployeeTrip:actions.clearEmployeeTrip,
     }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
@@ -182,7 +186,9 @@ TravelScreen.propTypes = {
   getAllEmployeeTrips: PropTypes.func,
   addFlight: PropTypes.func,
   addCar: PropTypes.func,
+  addHotel: PropTypes.func,
   getTrips: PropTypes.func,
   groupTrips: PropTypes.func,
   getEmployeeTrip: PropTypes.func,
+  clearEmployeeTrip:PropTypes.func,
 };

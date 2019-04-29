@@ -118,6 +118,20 @@ export const addCar = (et, car) => dispatch => {
             dispatch({ type: 'SET_LOADING', value: false });
         })
 }
+export const addHotel = (et, hotel) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.addHotelHttp(et, hotel)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("As tikrai gausiu dusimtini")
+            }
+            dispatch({
+                type: 'ADD_HOTEL_TO_ET',
+                et: et,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
 export const getAllTrips = () => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
     utils.getTripsHttp()
@@ -150,5 +164,8 @@ export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
             dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: response.responseValue });
             dispatch({ type: 'SET_LOADING', value: false });
 
-    })
+        })
+}
+export const clearEmployeeTrip = () => dispatch => {
+    dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: {} });
 }
