@@ -51,7 +51,7 @@ public class HomeController {
 
                 Employee newUser = new Employee();
                 newUser.setPassword(hashPwd);
-                newUser.setUsername(signupForm.getUsername());
+                newUser.setEmail(signupForm.getUsername());
                 newUser.setRole("USER");
                 if (employeDao.findByEmail(signupForm.getUsername()) == null) {
                     Office office = new Office();
