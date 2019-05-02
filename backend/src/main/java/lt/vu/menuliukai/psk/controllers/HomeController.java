@@ -5,9 +5,6 @@ import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.entities.Employee;
 import lt.vu.menuliukai.psk.entities.Office;
 import lt.vu.menuliukai.psk.entities.SignupForm;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,7 +53,7 @@ public class HomeController {
                 newUser.setPassword(hashPwd);
                 newUser.setUsername(signupForm.getUsername());
                 newUser.setRole("USER");
-                if (employeDao.findByUsername(signupForm.getUsername()) == null) {
+                if (employeDao.findByEmail(signupForm.getUsername()) == null) {
                     Office office = new Office();
                     newUser.setOffice(officeDao.save(office));
                     employeDao.save(newUser);

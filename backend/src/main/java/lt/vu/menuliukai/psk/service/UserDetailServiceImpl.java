@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * This class is used by spring controller to authenticate and authorize user
  **/
 @Service
-public class UserDetailServiceImpl implements UserDetailsService  {
+public class UserDetailServiceImpl implements UserDetailsService {
 
     private final EmployeeDao employeeDao;
 
@@ -24,11 +24,11 @@ public class UserDetailServiceImpl implements UserDetailsService  {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException
     {
-        Employee curruser = employeeDao.findByUsername(username);
+        Employee curruser = employeeDao.findByEmail(email);
 
-        UserDetails user = new org.springframework.security.core.userdetails.User(username, curruser.getPassword(), true,
+        UserDetails user = new org.springframework.security.core.userdetails.User(email, curruser.getPassword(), true,
         		true, true, true, AuthorityUtils.createAuthorityList(curruser.getRole()));
         
         System.out.println("ROLE: " + curruser.getRole());

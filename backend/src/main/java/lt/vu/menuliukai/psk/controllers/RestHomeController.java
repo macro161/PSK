@@ -27,7 +27,7 @@ public class RestHomeController {
             username = principal.toString();
         }
 
-        Employee employee = employeDao.findByUsername(username);
+        Employee employee = employeDao.findByEmail(username);
         employee.setPassword(null);
 
         return employee;
