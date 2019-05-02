@@ -6,6 +6,8 @@ import lt.vu.menuliukai.psk.entities.Employee;
 import lt.vu.menuliukai.psk.entities.Office;
 import lt.vu.menuliukai.psk.entities.SignupForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +35,7 @@ public class HomeController {
     public String login() {
         return "login";
     }
+
 
     @RequestMapping(value = "signup")
     public String addStudent(Model model){

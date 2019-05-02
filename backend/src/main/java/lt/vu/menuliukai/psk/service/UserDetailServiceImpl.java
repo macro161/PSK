@@ -28,7 +28,7 @@ public class UserDetailServiceImpl implements UserDetailsService  {
     {
         Employee curruser = employeeDao.findByUsername(username);
 
-        UserDetails user = new org.springframework.security.core.userdetails.User("user1", curruser.getPassword(), true,
+        UserDetails user = new org.springframework.security.core.userdetails.User(username, curruser.getPassword(), true,
         		true, true, true, AuthorityUtils.createAuthorityList(curruser.getRole()));
         
         System.out.println("ROLE: " + curruser.getRole());
