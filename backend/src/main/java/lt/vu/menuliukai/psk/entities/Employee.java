@@ -28,9 +28,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
-    String password;
     String fullName;
     String email;
+    String password;
     String role;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
