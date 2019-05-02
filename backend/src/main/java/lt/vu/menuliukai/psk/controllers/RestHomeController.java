@@ -4,10 +4,12 @@ import lt.vu.menuliukai.psk.dao.EmployeeDao;
 import lt.vu.menuliukai.psk.entities.Employee;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/")
 public class RestHomeController {
 
