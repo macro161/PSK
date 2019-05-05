@@ -18,11 +18,15 @@ export default class EmployeesTableRow extends React.Component {
   }
 
   
+  
   render() {
+    const officeCity = this.props.offices.filter((e) => e.id === this.props.city).map( x => x.city)
+    
     return (
+      
       <tr>
         <td className="name">{this.props.fullName}</td>
-        <td className="cityEmp">{this.props.city}</td>
+        <td className="cityEmp">{officeCity}</td>
         <td className="email">{this.props.email}</td>
         <td className="actions">
         <IconButton aria-label="Edit" color="primary" onClick = {this.editThis.bind(this)} disabled = {this.props.disableButtons}>
@@ -45,4 +49,9 @@ EmployeesTableRow.propTypes = {
   email: PropTypes.string.isRequired,
   editEmployee: PropTypes.func.isRequired,
   removeUser: PropTypes.func.isRequired,
+  offices: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    city: PropTypes.string,
+    address: PropTypes.string
+  }))
 };
