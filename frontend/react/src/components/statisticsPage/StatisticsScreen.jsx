@@ -13,37 +13,35 @@ class StatisticsScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      stats: {}
+      stats: {},
+      traveldata: {}
     }
   }
   
   componentDidMount() {
     this.props.getStats();
-    console.log(this.props.cheapestTripOrigin);
-    // this.props.getStats();
-    // this.props.getStatsByName('Justas')
+    //this.props.getStatsByName('Justas');
   }
 
   render() {
-    //const { Stats } = this.props;
+    //const { Stats } = this.props; // Unused?
    
     return (
       <div className='page-frame'>
-       { Array.from(this.props.stats).map(stat => {  //Array.from(this.props.stats)
-         return (
-           <Data mostCommonTripDestination={stat.mostTrmostCommonTripDestinationips}
-             // mostExpensiveTripOrigin={stat.mostExpensiveTripOrigin}
-             // mostExpensiveTripDestination={stat.mostExpensiveTripDestination}
-              cheapestTripOrigin={stat.cheapestTripOrigin}
-              cheapestTripDestination={stat.cheapestTripDestination}
-              // shortestTripOrigin={stat.shortestTripOrigin}
-              // shortestTripDestination={stat.shortestTripDestination}
-              // longestTripOrigin={stat.longestTripOrigin}
-              // longestTripDestination={stat.longestTripDestination}
-              // getStatsByName={this.props.getStatsByName}
-              // employeeTripQuantity={this.props.traveldata.map(data => { return (data.employeeTripQuantity) })}
-          // periodTripQuantity={this.props.traveldata.map(data => {return(data.periodTripQuantity)})}
-          />);
+       { 
+           <Data mostCommonTripDestination={this.props.mostTrmostCommonTripDestinationips}
+             mostExpensiveTripOrigin={this.props.mostExpensiveTripOrigin}
+             mostExpensiveTripDestination={this.props.mostExpensiveTripDestination}
+              cheapestTripOrigin={this.props.cheapestTripOrigin}
+              cheapestTripDestination={this.props.cheapestTripDestination}
+              shortestTripOrigin={this.props.shortestTripOrigin}
+              shortestTripDestination={this.props.shortestTripDestination}
+              longestTripOrigin={this.props.longestTripOrigin}
+              longestTripDestination={this.props.longestTripDestination}
+              getStatsByName={this.props.getStatsByName}
+              //employeeTripQuantity={this.props.traveldata.map(data => { return (data.employeeTripQuantity) })}
+              //periodTripQuantity={this.props.traveldata.map(data => {return(data.periodTripQuantity)})}
+          />
       })}
             
       </div>)
@@ -61,7 +59,7 @@ export default connect(
 
 
   StatisticsScreen.propTypes =  {
-    stats: PropTypes.arrayOf(PropTypes.shape({
+    stats: PropTypes.shape({
       mostCommonTripDestination: PropTypes.string,
       mostExpensiveTripOrigin: PropTypes.string,
       mostExpensiveTripDestination: PropTypes.string,
@@ -71,12 +69,12 @@ export default connect(
       shortestTripDestination: PropTypes.string,
       longestTripOrigin: PropTypes.string,
       longestTripDestination: PropTypes.string,
-    })),
-    traveldata: PropTypes.arrayOf(PropTypes.shape({
+    }),
+    traveldata: PropTypes.shape({
       name: PropTypes.string,
       employeeTripQuantity: PropTypes.number,
       periodTripQuantity: PropTypes.number,
-    })),
+    }),
     getStats: PropTypes.func,
     getStatsByName: PropTypes.func
   };

@@ -12,10 +12,10 @@ let staticStats =
     longest: 'Vilnius-Vilnius'
   }]
 
-let statsByName = [
-  { name : 'Matas', travelCount : 10},
-  { name : 'Justas', travelCount :25}
-]
+let statsByName = {
+   name : 'Matas', travelCount : 10,
+   name : 'Justas', travelCount :25
+}
 
 export const getStats = () => dispatch => {
   dispatch({ type: 'SET_LOADING', value: true });
