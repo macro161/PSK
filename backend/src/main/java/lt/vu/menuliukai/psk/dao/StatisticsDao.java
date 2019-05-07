@@ -13,6 +13,10 @@ public class StatisticsDao {
     }
 
     public Statistics calculateStatistics() {
-        return this.sqlSession.selectOne("calculateStatistics");
+        return this.sqlSession.selectOne("selectCheapestTrip");
+    }
+
+    public Statistics getEmployeeTripQuantity(long id) {
+        return this.sqlSession.selectOne("selectEmployeeTripQuantity", id);
     }
 }

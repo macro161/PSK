@@ -4,12 +4,13 @@ import lt.vu.menuliukai.psk.dao.StatisticsDao;
 import lt.vu.menuliukai.psk.entities.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/statistics/")
+@RequestMapping("/statistics")
 public class StatisticsController {
 
     @Autowired
@@ -18,6 +19,11 @@ public class StatisticsController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Statistics index() {
         return statisticsDao.calculateStatistics();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Statistics get(@PathVariable long id) {
+        return statisticsDao.getEmployeeTripQuantity(id);
     }
 
 }

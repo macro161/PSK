@@ -2,9 +2,97 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="lt.vu.menuliukai.psk.mappers.StatisticsMapper">
   <resultMap id="BaseResultMap" type="lt.vu.menuliukai.psk.entities.Statistics">
-    <result column="number" jdbcType="BIGINT" property="number" />
+    <result column="mostCommonTripDestination" jdbcType="VARCHAR" property="mostCommonTripDestination" />
+    <result column="shortestTripOrigin" jdbcType="VARCHAR" property="shortestTripOrigin" />
+    <result column="shortestTripDestination" jdbcType="VARCHAR" property="shortestTripDestination" />
+    <result column="longestTripOrigin" jdbcType="VARCHAR" property="longestTripOrigin" />
+    <result column="longestTripDestination" jdbcType="VARCHAR" property="longestTripDestination" />
+    <result column="mostExpensiveTripOrigin" jdbcType="VARCHAR" property="mostExpensiveTripOrigin" />
+    <result column="mostExpensiveTripDestination" jdbcType="VARCHAR" property="mostExpensiveTripDestination" />
+    <result column="cheapestTripOrigin" jdbcType="VARCHAR" property="cheapestTripOrigin" />
+    <result column="cheapestTripDestination" jdbcType="VARCHAR" property="cheapestTripDestination" />
+    <result column="employeeTripQuantity" jdbcType="BIGINT" property="employeeTripQuantity" />
+
+    <result column="periodTripQuantity" jdbcType="BIGINT" property="periodTripQuantity" />
   </resultMap>
-  <select id="calculateStatistics" resultMap="BaseResultMap">
-    select 42 as `number` from dual
-  </select>
+
+    <select id="selectMostCommonDestination" resultMap="BaseResultMap">
+        select CITY as mostCommonTripDestination
+        from OFFICE o, TRIP t
+        where o.ID = t.TO_OFFICE_ID
+        group by mostCommonTripDestination
+        order by count(*) desc
+        limit 1
+    </select>
+
+    <select id="selectShortestTrip" resultMap="BaseResultMap">
+        select
+            tmp.tripid,
+            (select CITY from OFFICE where ID = t.FROM_OFFICE_ID) as shortestTripOrigin,
+            (select CITY from OFFICE where ID = t.TO_OFFICE_ID) as shortestTripDestination
+        from TRIP t, (select
+                          (select ID from TRIP order by DATEDIFF(day, LEAVING_DATE, RETURNING_DATE) desc limit 1) as TRIPID
+                      from dual) tmp
+        where t.ID = tmp.TRIPID;
+    </select>
+
+    <select id="selectLongestTrip" resultMap="BaseResultMap">
+        select
+            tmp.tripid,
+            (select CITY from OFFICE where ID = t.FROM_OFFICE_ID) as longestTripOrigin,
+            (select CITY from OFFICE where ID = t.TO_OFFICE_ID) as longestTripDestination
+        from TRIP t, (select
+                          (select ID from TRIP order by DATEDIFF(day, LEAVING_DATE, RETURNING_DATE) asc limit 1) as TRIPID
+                      from dual) tmp
+        where t.ID = tmp.TRIPID;
+    </select>
+
+    <select id="selectMostExpensiveTrip" resultMap="BaseResultMap">
+        select
+            et.TRIP_ID,
+            et.FLIGHT_ID,
+            tmp.flightid,
+            tmp2.tripid,
+            (select CITY from OFFICE where ID = t.FROM_OFFICE_ID) as mostExpensiveTripOrigin,
+            (select CITY from OFFICE where ID = t.TO_OFFICE_ID) as mostExpensiveTripDestination
+        from TRIP t, OFFICE o,
+             EMPLOYEE_TRIP et,
+             (select id as flightid from flight order by price desc limit 1) tmp,
+             (select id as tripid from trip) tmp2
+        where et.TRIP_ID = tmp2.tripid
+          and et.FLIGHT_ID = tmp.flightid
+          and t.ID = TRIP_ID
+        limit 1
+    </select>
+
+    <select id="selectCheapestTrip" resultMap="BaseResultMap">
+        select
+            et.TRIP_ID,
+            et.FLIGHT_ID,
+            tmp.flightid,
+            tmp2.tripid,
+            (select CITY from OFFICE where ID = t.FROM_OFFICE_ID) as cheapestTripOrigin,
+            (select CITY from OFFICE where ID = t.TO_OFFICE_ID) as cheapestTripDestination
+        from TRIP t, OFFICE o,
+             EMPLOYEE_TRIP et,
+             (select id as flightid from flight order by price asc limit 1) tmp,
+             (select id as tripid from trip) tmp2
+        where et.TRIP_ID = tmp2.tripid
+          and et.FLIGHT_ID = tmp.flightid
+          and t.ID = TRIP_ID
+        limit 1
+    </select>
+
+    <select id="selectEmployeeTripQuantity" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select count(*) as employeeTripQuantity
+        from EMPLOYEE_TRIP
+        where EMPLOYEE_ID = #{employeeId, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectPeriodTripQuantity" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select count(*) as periodTripQuantity
+        from TRIP
+        where LEAVING_DATE >= #{leavingDate, jdbcType=DATE}
+
+    </select>
 </mapper>

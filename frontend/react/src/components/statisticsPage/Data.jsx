@@ -67,34 +67,34 @@ class Test extends React.Component {
       <div className={classes.root}>
         <Grid container spacing={24}>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>Most trips were to</Paper>
+            <Paper className={classes.paper}>Most common trip destination</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>{this.props.cheapest}</Paper>
+            <Paper className={classes.paper}>{this.props.mostCommonTripDestination}</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>The most expensive trip was</Paper>
+            <Paper className={classes.paper}>Most expensive flight</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>{this.props.mostExpensive}</Paper>
+            <Paper className={classes.paper}>{this.props.mostExpensiveTripOrigin} - {this.props.mostExpensiveTripDestination}</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>The cheapest trip was</Paper>
+            <Paper className={classes.paper}>Cheapest flight</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>{this.props.cheapest}</Paper>
+          <Paper className={classes.paper}>{this.props.cheapestTripOrigin} - {this.props.cheapestTripDestination}</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>The shortest trip was</Paper>
+            <Paper className={classes.paper}>Shortest trip</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>{this.props.shortest}</Paper>
+          <Paper className={classes.paper}>{this.props.shortestTripOrigin} - {this.props.shortestTripDestination}</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>The longest trip was</Paper>
+            <Paper className={classes.paper}>Longest trip</Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}>{this.props.longest}</Paper>
+          <Paper className={classes.paper}>{this.props.longestTripOrigin} - {this.props.longestTripDestination}</Paper>
           </Grid>
           <Grid item xs={3}>
             <Paper className={classes.paper}>How many times did</Paper>
@@ -116,7 +116,7 @@ class Test extends React.Component {
             <Paper className={classes.paper}>traveled</Paper>
           </Grid>
           <Grid item xs={3}>
-            <Paper className={classes.paper}>{this.props.travelCount} times</Paper>
+            <Paper className={classes.paper}>{this.props.employeeTripQuantity} times</Paper>
           </Grid>
           <Grid item xs={3}>
             <Paper className={classes.paper}>Travels from</Paper>
@@ -160,8 +160,6 @@ class Test extends React.Component {
         Export as PDF
       </Button>      <Button variant="contained" color="primary"size="large" className={classes.button}>
         Export as PNG
-      </Button>      <Button variant="contained" color="primary" size="large"className={classes.button}>
-        Export as CSV
       </Button>
       </div>
     );
@@ -171,13 +169,17 @@ class Test extends React.Component {
 
 Test.propTypes = {
   classes: PropTypes.object.isRequired,
-  mostTrips: PropTypes.string,
-  mostExpensive: PropTypes.string,
-  cheapest: PropTypes.string,
-  shortest: PropTypes.string,
-  longest: PropTypes.string,
-  getStatsByName: PropTypes.func,
-  travelCount: PropTypes.number
+  mostCommonTripDestination: PropTypes.string,
+  mostExpensiveTripOrigin: PropTypes.string,
+  mostExpensiveTripDestination: PropTypes.string,
+  cheapestTripOrigin: PropTypes.string,
+  cheapestTripDestination: PropTypes.string,
+  shortestTripOrigin: PropTypes.string,
+  shortestTripDestination: PropTypes.string,
+  longestTripOrigin: PropTypes.string,
+  longestTripDestination: PropTypes.string,
+  employeeTripQuantity: PropTypes.number,
+  periodTripQuantity: PropTypes.number,
 };
 
 export default withStyles(styles)(Test);

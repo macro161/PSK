@@ -1,6 +1,7 @@
 import axios from 'axios';
 export const FETCH_STATS_STARTS = 'FETCH_STATS_STARTS';
 export const RECEIVE_STATS = 'RECEIVE_STATS';
+import * as utils from '../utils/api/statistics'
 
 let staticStats = 
   [{
@@ -15,6 +16,22 @@ let statsByName = [
   { name : 'Matas', travelCount : 10},
   { name : 'Justas', travelCount :25}
 ]
+
+export const getStats = () => dispatch => {
+  dispatch({ type: 'SET_LOADING', value: true });
+  utils.getStatsHttp()
+    .then(function(response){
+      if(response.responseCode != 200){
+        alert("Geriau pakeisiu, kad nesuprastu, jog nukopinau")
+      }
+
+      dispatch({
+        type: 'GET_STATS',
+        stats: response.responseValue,
+      });
+      dispatch({ type: 'SET_LOADING', value: false });
+    })
+}
 
 export const getStatsByName = (name) => {
   return dispatch => {
@@ -38,10 +55,10 @@ export const getStatsapi = () => {
   };
 };
 
-export const getStats = () => {
+/*export const getStats = () => {
   return dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
     dispatch({ type: 'GET_STATS', stats: staticStats });
     dispatch({ type: 'SET_LOADING', value: false });
   }
-}
+}*/

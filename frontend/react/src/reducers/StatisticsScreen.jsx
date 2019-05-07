@@ -1,8 +1,8 @@
 import {FETCH_STATS_STARTS, RECEIVE_STATS} from '../actions/StatisticsScreen';
 
 const initialState = {
-    stats:[],
-    traveldata: []
+    stats: {},
+    traveldata: {}
  };
  
  export default (state=initialState, action) =>{
