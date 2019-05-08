@@ -12,7 +12,6 @@
     <result column="cheapestTripOrigin" jdbcType="VARCHAR" property="cheapestTripOrigin" />
     <result column="cheapestTripDestination" jdbcType="VARCHAR" property="cheapestTripDestination" />
     <result column="employeeTripQuantity" jdbcType="BIGINT" property="employeeTripQuantity" />
-
     <result column="periodTripQuantity" jdbcType="BIGINT" property="periodTripQuantity" />
   </resultMap>
 
@@ -93,8 +92,7 @@
     <select id="selectPeriodTripQuantity" parameterType="map" resultMap="BaseResultMap">
         select distinct count(*) as periodTripQuantity
         from TRIP
-        where LEAVING_DATE >= ${leavingDate}
-        and RETURNING_DATE <= ${returningDate}
-
+        where LEAVING_DATE between Cast(#{leavingDate} as date) and cast(#{returningDate} as date)
+        and RETURNING_DATE  between Cast(#{leavingDate} as date) and cast(#{returningDate} as date)
     </select>
 </mapper>

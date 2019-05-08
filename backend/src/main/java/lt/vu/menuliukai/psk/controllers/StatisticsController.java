@@ -27,7 +27,7 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/{param}/{param2}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Statistics getDate(@PathVariable String param, String param2) {
+    public Statistics getDate(@PathVariable("param") String param, @PathVariable("param2") String param2) {
         return statisticsDao.getPeriodTripQuantity(param, param2);
     }
 

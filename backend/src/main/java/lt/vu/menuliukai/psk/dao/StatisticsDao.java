@@ -1,7 +1,10 @@
 package lt.vu.menuliukai.psk.dao;
 
 import lt.vu.menuliukai.psk.entities.Statistics;
+import lt.vu.menuliukai.psk.mappers.StatisticsMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -13,15 +16,22 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Component
+//@MapperScan("lt.vu.menuliukai.psk.mappers.StatisticsMapper")
 public class StatisticsDao {
     private final SqlSession sqlSession;
 
-    public StatisticsDao(SqlSession sqlSession) {
+    //private final StatisticsMapper statisticsMapper;
+
+    public StatisticsDao(SqlSession sqlSession){//, StatisticsMapper statisticsMapper) {
         this.sqlSession = sqlSession;
+        //this.statisticsMapper = statisticsMapper;
     }
 
+    private Statistics statistics = new Statistics();
+
+
     public Statistics calculateStatistics() {
-        Statistics statistics = new Statistics();
+        //statistics.setCheapestTripDestination(statisticsMapper.selectMostCommonDestination().getCheapestTripDestination());
         Statistics temp;
 
         BeanUtils.copyProperties(temp = this.sqlSession.selectOne("selectCheapestTrip"), statistics, getNullPropertyNames(temp));

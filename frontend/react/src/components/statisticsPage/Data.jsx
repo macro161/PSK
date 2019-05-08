@@ -42,8 +42,8 @@ class Test extends React.Component {
     this.state = {
       name: '',
       surname: '',
-      date1: '',
-      date2: ''
+      date1: '2019-01-01',
+      date2: '2019-01-01'
     }
   }
 
@@ -54,6 +54,8 @@ class Test extends React.Component {
   }
 
   handleDate(e) {
+    console.log(this.state.date1)
+    console.log(this.state.date2)
     this.props.getStatsByDate(this.state.date1, this.state.date2)
   }
 
@@ -170,7 +172,7 @@ class Test extends React.Component {
   </Button></Paper>
           </Grid>
           <Grid item xs={2}>
-            <Paper className={classes.paper}>25</Paper>
+            <Paper className={classes.paper}>{this.props.periodTripQuantity}</Paper>
           </Grid>
         </Grid>
         <Button variant="contained" color="primary"size="large" className={classes.button}>

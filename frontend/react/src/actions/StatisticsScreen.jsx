@@ -46,7 +46,7 @@ export const getStatsByDate = (leavingDate, returningDate) => dispatch => {
       }
 
       dispatch({
-        type: 'GET_STATS',
+        type: 'GET_STAT_BY_DATE',
         stats: response.responseValue,
       });
       dispatch({ type: 'SET_LOADING', value: false });
