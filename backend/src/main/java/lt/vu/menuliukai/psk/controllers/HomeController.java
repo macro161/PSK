@@ -56,6 +56,7 @@ public class HomeController {
                 newUser.setEmail(signupForm.getUsername());
                 newUser.setRole("USER");
                 if (employeDao.findByEmail(signupForm.getUsername()) == null) {
+                    // TODO: total hack, need to fix this
                     Office office = new Office();
                     newUser.setOffice(officeDao.save(office));
                     employeDao.save(newUser);
