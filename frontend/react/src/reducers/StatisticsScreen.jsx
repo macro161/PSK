@@ -1,8 +1,7 @@
 import {FETCH_STATS_STARTS, RECEIVE_STATS} from '../actions/StatisticsScreen';
 
 const initialState = {
-    stats: {},
-    traveldata: {}
+    stats: {}
  };
  
  export default (state=initialState, action) =>{
@@ -13,7 +12,11 @@ const initialState = {
         };
         case 'GET_STAT_BY_NAME':
             return{
-            ...state, traveldata: action.statsByName.filter((stat) => stat.name === action.name)
+                ...state, stats: action.stats,
+            };
+        case 'GET_STAT_BY_DATE':
+            return{
+                ...state, stats: action.stats
         };
     }
     return state

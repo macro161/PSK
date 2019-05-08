@@ -83,16 +83,18 @@
         limit 1
     </select>
 
-    <select id="selectEmployeeTripQuantity" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select count(*) as employeeTripQuantity
-        from EMPLOYEE_TRIP
-        where EMPLOYEE_ID = #{employeeId, jdbcType=BIGINT}
+    <select id="selectEmployeeTripQuantity" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select distinct count(*) as employeeTripQuantity, e.FULL_NAME
+        from EMPLOYEE_TRIP et, EMPLOYEE e
+        where et.EMPLOYEE_ID = e.ID
+        and e.FULL_NAME = #{fullName, jdbcType=VARCHAR}
     </select>
 
-    <select id="selectPeriodTripQuantity" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select count(*) as periodTripQuantity
+    <select id="selectPeriodTripQuantity" parameterType="map" resultMap="BaseResultMap">
+        select distinct count(*) as periodTripQuantity
         from TRIP
-        where LEAVING_DATE >= #{leavingDate, jdbcType=DATE}
+        where LEAVING_DATE >= ${leavingDate}
+        and RETURNING_DATE <= ${returningDate}
 
     </select>
 </mapper>

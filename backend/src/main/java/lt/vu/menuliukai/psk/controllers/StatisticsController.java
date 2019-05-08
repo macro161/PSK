@@ -21,9 +21,14 @@ public class StatisticsController {
         return statisticsDao.calculateStatistics();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Statistics get(@PathVariable long id) {
-        return statisticsDao.getEmployeeTripQuantity(id);
+    @RequestMapping(value = "/{param}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Statistics getName(@PathVariable String param) {
+        return statisticsDao.getEmployeeTripQuantity(param);
+    }
+
+    @RequestMapping(value = "/{param}/{param2}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Statistics getDate(@PathVariable String param, String param2) {
+        return statisticsDao.getPeriodTripQuantity(param, param2);
     }
 
 }

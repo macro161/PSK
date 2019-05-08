@@ -40,27 +40,29 @@ class Test extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateOne: "2000-01-01",
-      dateTwo: "2000-01-01"
-   }
+      name: '',
+      surname: '',
+      date1: '',
+      date2: ''
+    }
   }
 
 
 
-  handle(e) {
-    this.props.getStatsByName(e.target.value);
-  }
-
-  handleChangeOne(e){
-    this.setState({dateOne: e.target.value,});
-  }
-
-  handleChangeTwo(e){
-    this.setState({dateTwo: e.target.value})
+  handleName(e) {
+    this.props.getStatsByName(this.state.name + "_" + this.state.surname)
   }
 
   handleDate(e) {
+    this.props.getStatsByDate(this.state.date1, this.state.date2)
   }
+
+  inputChange(e) {
+    this.setState({
+        [e.target.id]: e.target.value,
+    });
+}
+
   render() {
     const { classes } = this.props;
     return (
@@ -96,39 +98,55 @@ class Test extends React.Component {
           <Grid item xs={6}>
           <Paper className={classes.paper}>{this.props.longestTripOrigin} - {this.props.longestTripDestination}</Paper>
           </Grid>
-          <Grid item xs={3}>
-            <Paper className={classes.paper}>How many times did</Paper>
+          <Grid item xs={2}>
+            <Paper className={classes.paper}>Employee</Paper>
           </Grid>
-          <Grid item xs={3}>
-
+          <Grid item xs={2}>
             <TextField
-              id="standard-dense"
+              id="name"
               label="Name"
               className="text"
               margin="normal"
-              onBlur={(e) => this.handle(e)}
+              onChange={this.inputChange.bind(this)}
               inputProps={{
                 style: { fontSize: 22 }
               }}
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
+            <TextField
+              id="surname"
+              label="Surname"
+              className="text"
+              margin="normal"
+              onChange={this.inputChange.bind(this)}
+              inputProps={{
+                style: { fontSize: 22 }
+              }}
+              />
+          </Grid>
+          <Grid item xs={1}>
+            <Button size="large" variant="contained" color="primary" onClick={(e) => this.handleName(e)} className={classes.button}>
+              OK
+            </Button>
+          </Grid>
+          <Grid item xs={2}>
             <Paper className={classes.paper}>traveled</Paper>
           </Grid>
           <Grid item xs={3}>
             <Paper className={classes.paper}>{this.props.employeeTripQuantity} times</Paper>
           </Grid>
           <Grid item xs={3}>
-            <Paper className={classes.paper}>Travels from</Paper>
+            <Paper className={classes.paper}>Trips</Paper>
           </Grid>
           <Grid item xs={3}>
-            <Paper className={classes.paper}><TextField
+            <Paper className={classes.paper}>from &nbsp;&nbsp;&nbsp;&nbsp;<TextField
               id="date1"
               label="Date"
               type="date"
               ref="date1"
-              onChange={(e) => this.handleChangeOne(e)}
-              defaultValue="2017-05-24"
+              onChange={this.inputChange.bind(this)}
+              defaultValue="2019-01-01"
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -141,8 +159,8 @@ class Test extends React.Component {
               label="Date"
               type="date"
               ref="date2"
-              defaultValue="2017-05-24"
-              onChange={(e) => this.handleChangeTwo(e)}
+              defaultValue="2019-01-01"
+              onChange={this.inputChange.bind(this)}
               className={classes.textField}
               InputLabelProps={{
                 shrink: true,
@@ -151,9 +169,8 @@ class Test extends React.Component {
                 OK
   </Button></Paper>
           </Grid>
-
           <Grid item xs={2}>
-            <Paper className={classes.paper}>25 travels</Paper>
+            <Paper className={classes.paper}>25</Paper>
           </Grid>
         </Grid>
         <Button variant="contained" color="primary"size="large" className={classes.button}>

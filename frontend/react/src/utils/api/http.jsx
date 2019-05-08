@@ -4,7 +4,12 @@ export function getAll(url) {
 }
 
 export function getById(url, Id) {
-  return fetch(url + '/' + Id, {
+  return fetch(url + Id, {
+  });
+}
+
+export function getByParams(url, Param, Param2) {
+  return fetch(url + Param + '/' + Param2, {
   });
 }
 
