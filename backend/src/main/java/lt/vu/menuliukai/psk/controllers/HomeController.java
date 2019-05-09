@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 
 @Controller
+@CrossOrigin(origins = "http://localhost:8081")
 @RequestMapping("/")
 public class HomeController {
 
@@ -54,6 +56,7 @@ public class HomeController {
                 newUser.setEmail(signupForm.getUsername());
                 newUser.setRole("USER");
                 if (employeDao.findByEmail(signupForm.getUsername()) == null) {
+                    // TODO: total hack, need to fix this
                     Office office = new Office();
                     newUser.setOffice(officeDao.save(office));
                     employeDao.save(newUser);

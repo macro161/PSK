@@ -10,7 +10,7 @@ import UserManager from './components/adminPage/UserManager';
 import Error from './components/Error';
 import Stats from './components/statisticsPage/StatisticsScreen';
 import Offices from './components/officePage/Offices';
-import LogIn from './components/LogInPage/LogIn';
+import LogIn from './components/LogInPage/Login';
 import EmployeeScreen from './components/employeeScreen/EmployeeScreen';
 import TravelScreen from './components/TravelScreen/TravelScreen';
 import Spinner from './components/Spinner';
