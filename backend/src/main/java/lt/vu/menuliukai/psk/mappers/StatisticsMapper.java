@@ -13,5 +13,5 @@ public interface StatisticsMapper {
     String selectMostExpensiveTrip();
     String selectCheapestTrip();
     Integer selectEmployeeTripQuantity(String fullName);
-    Integer selectPeriodTripQuantity(@Param("leavingDate") String param, @Param("returningDate") String param2);
+    Integer selectPeriodTripQuantity(@Param("leavingDate") String leavingDate, @Param("returningDate") String returningDate);
 }
