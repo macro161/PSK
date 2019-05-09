@@ -9,15 +9,21 @@ const initialState = {
         case 'GET_STATS':
             return{
                 ...state, stats: action.stats,
-        };
+            };
         case 'GET_STAT_BY_NAME':
             return{
-                ...state, stats: action.stats,
+                ...state, stats: {
+                    ...state.stats,
+                    employeeTripQuantity: state.stats.employeeTripQuantity
+                }
             };
         case 'GET_STAT_BY_DATE':
             return{
-                ...state, stats: action.stats
-        };
-    }
+                ...state, stats: {
+                    ...state.stats,
+                    periodTripQuantity: state.stats.periodTripQuantity
+                }
+            };
+        }
     return state
 }
