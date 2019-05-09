@@ -6,6 +6,8 @@ import DataTable from './EmployeesDataTable';
 import * as actions from '../../actions/UserManager';
 import UserRegistrationForm from './UserRegisterForm';
 import Button from '@material-ui/core/Button';
+import { getOffices } from '../../actions/Offices';
+import classNames from 'classnames';
 
 
 
@@ -20,6 +22,7 @@ class UserManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState;
+    this.props.getOffices();
 
     this.props.getAllEmployees();
   }
@@ -79,7 +82,7 @@ class UserManager extends React.Component {
       <div className='page-frame'>
         <title>User Manager</title>
         <br />
-        {this.state.showRegistration ? <UserRegistrationForm  fullName = {this.state.fullName} city={this.state.city} email={this.state.email} onClose={this.onClose.bind(this)} onSubmit={this.onSubmit.bind(this)} /> : null}
+        {this.state.showRegistration ? <UserRegistrationForm  fullName = {this.state.fullName} city={this.state.city} email={this.state.email} onClose={this.onClose.bind(this)} onSubmit={this.onSubmit.bind(this)} offices={this.props.offices} /> : null}
         <Button disabled={this.state.showRegistration} onClick={this.registerUser.bind(this)} className="register-user-button" variant="contained" color="secondary">
             <div className ='bigger-font'>Register user</div>
         </Button>
@@ -90,6 +93,7 @@ class UserManager extends React.Component {
             editEmployee={this.editEmployee.bind(this)}
             disable={this.state.showRegistration}
             removeUser={this.props.removeUser}
+            offices={this.props.offices}
           />
       </div>
     );
@@ -97,10 +101,12 @@ class UserManager extends React.Component {
 }
 
 export default connect(
-  (state) => ({employees: state.UserManager.employees}),
+  (state) => ({ employees: state.UserManager.employees,
+                offices: state.Offices.offices,}),
   (dispatch) => bindActionCreators(
     {
       getAllEmployees: actions.getAllEmployees,
+      getOffices: getOffices,
       removeUser: actions.removeUser,
       updateUser: actions.updateUser,
       registerUser: actions.registerUser,
@@ -117,4 +123,9 @@ UserManager.propTypes = {
   removeUser: PropTypes.func,
   updateUser: PropTypes.func,
   registerUser: PropTypes.func,
+  offices: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    city: PropTypes.string,
+    address: PropTypes.string
+  })),
 };

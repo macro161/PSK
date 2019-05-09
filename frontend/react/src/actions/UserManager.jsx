@@ -36,9 +36,9 @@ export const updateUser = (Id) => {
     Id: Id,
   }
 };
-export const registerUser = (fullName, city, email, password) => dispatch => {
+export const registerUser = (fullName, office, email, password) => dispatch => {
   dispatch({ type: 'SET_LOADING', value: true });
-  utils.registerEmployeeHttp({ fullName, city, email, password })
+  utils.registerEmployeeHttp({ fullName, office, email, password })
     .then(function (response) {
       dispatch({
         type: 'ADD_USER',
