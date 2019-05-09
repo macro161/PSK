@@ -21,14 +21,6 @@ class StatisticsScreen extends React.Component {
     this.props.getStats();
   }
 
-  getStatsByName(name) {
-    this.props.getStatsByName(name);
-  }
-
-  getStatsByDate(date1, date2) {
-    this.props.getStatsByDate(date1, date2);
-  }
-
   render() {
     return (
       <div className='page-frame'>
@@ -46,8 +38,8 @@ class StatisticsScreen extends React.Component {
             longestTripDestination={this.props.stats.longestTripDestination}
             employeeTripQuantity={this.props.stats.employeeTripQuantity}
             periodTripQuantity={this.props.stats.periodTripQuantity}
-            getStatsByName={this.getStatsByName.bind(this)}
-            getStatsByDate={this.getStatsByDate.bind(this)}
+            getStatsByName={this.props.getStatsByName}
+            getStatsByDate={this.props.getStatsByDate}
           />
       } 
       </div>)

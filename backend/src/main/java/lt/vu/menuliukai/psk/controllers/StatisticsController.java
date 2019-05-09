@@ -22,12 +22,12 @@ public class StatisticsController {
     }
 
     @RequestMapping(value = "/{fullName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Statistics getName(@PathVariable String fullName) {
+    public long getName(@PathVariable String fullName) {
         return statisticsDao.getEmployeeTripQuantity(fullName);
     }
 
     @RequestMapping(value = "/{leavingDate}/{returningDate}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Statistics getDate(@PathVariable("leavingDate") String leavingDate, @PathVariable("returningDate") String returningDate) {
+    public long getDate(@PathVariable("leavingDate") String leavingDate, @PathVariable("returningDate") String returningDate) {
         return statisticsDao.getPeriodTripQuantity(leavingDate, returningDate);
     }
 

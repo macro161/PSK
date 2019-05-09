@@ -8,10 +8,10 @@ import org.mybatis.cdi.Mapper;
 public interface StatisticsMapper {
 
     String selectMostCommonDestination();
-    String selectShortestTrip();
-    String selectLongestTrip();
-    String selectMostExpensiveTrip();
-    String selectCheapestTrip();
-    Integer selectEmployeeTripQuantity(String fullName);
-    Integer selectPeriodTripQuantity(@Param("leavingDate") String leavingDate, @Param("returningDate") String returningDate);
+    Statistics selectShortestTrip();
+    Statistics selectLongestTrip();
+    Statistics selectMostExpensiveTrip();
+    Statistics selectCheapestTrip();
+    Long selectEmployeeTripQuantity(String fullName);
+    Long selectPeriodTripQuantity(@Param("leavingDate") String leavingDate, @Param("returningDate") String returningDate);
 }

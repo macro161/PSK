@@ -3,60 +3,52 @@ package lt.vu.menuliukai.psk.dao;
 import lt.vu.menuliukai.psk.entities.Statistics;
 import lt.vu.menuliukai.psk.mappers.StatisticsMapper;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.stereotype.Component;
-
-import java.beans.FeatureDescriptor;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Component
-public class StatisticsDao {
+@RequestScope
+public class StatisticsDao implements StatisticsInterface {
+
     private final SqlSession sqlSession;
 
     private final StatisticsMapper statisticsMapper;
+
+    private Statistics statistics = new Statistics();
 
     public StatisticsDao(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
         statisticsMapper = this.sqlSession.getMapper(StatisticsMapper.class);
     }
 
-    private Statistics statistics = new Statistics();
-
-
     public Statistics calculateStatistics() {
-        //statistics.setCheapestTripDestination(statisticsMapper.selectMostCommonDestination());
-        Statistics temp;
 
+        statistics.setMostCommonTripDestination(statisticsMapper.selectMostCommonDestination());
 
-        BeanUtils.copyProperties(temp = this.sqlSession.selectOne("selectCheapestTrip"), statistics, getNullPropertyNames(temp));
-        BeanUtils.copyProperties(temp = this.sqlSession.selectOne("selectCheapestTrip"), statistics, getNullPropertyNames(temp));
-        BeanUtils.copyProperties(temp = this.sqlSession.selectOne("selectMostCommonDestination"), statistics, getNullPropertyNames(temp));
-        BeanUtils.copyProperties(temp = this.sqlSession.selectOne("selectShortestTrip"), statistics, getNullPropertyNames(temp));
-        BeanUtils.copyProperties(temp = this.sqlSession.selectOne("selectLongestTrip"), statistics, getNullPropertyNames(temp));
-        BeanUtils.copyProperties(temp = this.sqlSession.selectOne("selectMostExpensiveTrip"), statistics, getNullPropertyNames(temp));
+        Statistics temp = statisticsMapper.selectCheapestTrip();
+        statistics.setCheapestTripOrigin(temp.getCheapestTripOrigin());
+        statistics.setCheapestTripDestination(temp.getCheapestTripDestination());
+
+        temp = statisticsMapper.selectMostExpensiveTrip();
+        statistics.setMostExpensiveTripDestination(temp.getMostExpensiveTripDestination());
+        statistics.setMostExpensiveTripOrigin(temp.getMostExpensiveTripOrigin());
+
+        temp = statisticsMapper.selectShortestTrip();
+        statistics.setShortestTripOrigin(temp.getShortestTripOrigin());
+        statistics.setShortestTripDestination(temp.getShortestTripDestination());
+
+        temp = statisticsMapper.selectLongestTrip();
+        statistics.setLongestTripDestination(temp.getLongestTripDestination());
+        statistics.setLongestTripOrigin(temp.getLongestTripOrigin());
+
         return statistics;
     }
 
-    public Statistics getEmployeeTripQuantity(String fullName) {
-        return this.sqlSession.selectOne("selectEmployeeTripQuantity", fullName.replace('_', ' '));
+    public long getEmployeeTripQuantity(String fullName) {
+        return statisticsMapper.selectEmployeeTripQuantity(fullName.replace('_', ' '));
     }
 
-    public Statistics getPeriodTripQuantity(String leavingDate, String returningDate) {
-        Map<String, String> dates = new HashMap<>();
-        dates.put("leavingDate", leavingDate);
-        dates.put("returningDate", returningDate);
-        return this.sqlSession.selectOne("selectPeriodTripQuantity", dates);
-    }
-
-    public static String[] getNullPropertyNames(Object source) {
-        final BeanWrapper wrappedSource = new BeanWrapperImpl(source);
-        return Stream.of(wrappedSource.getPropertyDescriptors())
-                .map(FeatureDescriptor::getName)
-                .filter(propertyName -> wrappedSource.getPropertyValue(propertyName) == null)
-                .toArray(String[]::new);
+    public long getPeriodTripQuantity(String leavingDate, String returningDate) {
+        return statisticsMapper.selectPeriodTripQuantity(leavingDate, returningDate);
     }
 }

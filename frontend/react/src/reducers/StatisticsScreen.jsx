@@ -14,14 +14,14 @@ const initialState = {
             return{
                 ...state, stats: {
                     ...state.stats,
-                    employeeTripQuantity: action.stats.employeeTripQuantity
+                    employeeTripQuantity: action.stats
                 }
             };
         case 'GET_STAT_BY_DATE':
             return{
                 ...state, stats: {
                     ...state.stats,
-                    periodTripQuantity: action.stats.periodTripQuantity
+                    periodTripQuantity: action.stats
                 }
             };
         }

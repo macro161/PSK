@@ -15,7 +15,7 @@
     <result column="periodTripQuantity" jdbcType="BIGINT" property="periodTripQuantity" />
   </resultMap>
 
-    <select id="selectMostCommonDestination" resultMap="BaseResultMap">
+    <select id="selectMostCommonDestination" resultType="java.lang.String">
         select CITY as mostCommonTripDestination
         from OFFICE o, TRIP t
         where o.ID = t.TO_OFFICE_ID
@@ -82,14 +82,14 @@
         limit 1
     </select>
 
-    <select id="selectEmployeeTripQuantity" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectEmployeeTripQuantity" parameterType="java.lang.String" resultType="java.lang.Long">
         select distinct count(*) as employeeTripQuantity, e.FULL_NAME
         from EMPLOYEE_TRIP et, EMPLOYEE e
         where et.EMPLOYEE_ID = e.ID
         and e.FULL_NAME = #{fullName, jdbcType=VARCHAR}
     </select>
 
-    <select id="selectPeriodTripQuantity" parameterType="map" resultMap="BaseResultMap">
+    <select id="selectPeriodTripQuantity" parameterType="map" resultType="java.lang.Long">
         select distinct count(*) as periodTripQuantity
         from TRIP
         where LEAVING_DATE between Cast(#{leavingDate} as date) and cast(#{returningDate} as date)
