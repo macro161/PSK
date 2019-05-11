@@ -7,7 +7,7 @@ export const Login = (email, password) => dispatch => {
   Log(email, password)
     .then(function (response) {
       console.log(response)
-      if (response.responseCode == 302) {
+      if (response.responseCode == 200) {
         dispatch({ type: 'LOGIN_SUCCESS' });
       } else {
         dispatch({ type: 'LOGIN_ERROR', code: response.responseCode });
