@@ -2,17 +2,15 @@
 import * as utils from '../utils/api/user'
 
 export const getAllTravels = () => dispatch => {
-    dispatch({ type: 'SET_LOADING', value: true });
     utils.getUserTrips()
         .then(function (response) {
             if (response.responseCode != 200) {
-                alert("As tikrai gausiu dusimtini")
+                alert(";(")
             }
             dispatch({
-                type: 'SET_LOADING',
+                type: 'GET_TRAVELS_BY_ID',
                 employeeTrips: response.responseValue,
             });
-            dispatch({ type: 'SET_LOADING', value: false });
         })
 }
 

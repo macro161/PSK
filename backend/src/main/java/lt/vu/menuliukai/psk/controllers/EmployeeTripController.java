@@ -42,6 +42,13 @@ public class EmployeeTripController {
         return employeeTripDao.findAll();
     }
 
+    @RequestMapping(value = "/{employeeId}/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeTripBasicDto get(@PathVariable long employeeId) {
+        Iterable<EmployeeTrip> et = employeeTripDao.findAll();
+        return new EmployeeTripBasicDto(et.getId(), et.getEmployee().getFullName(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), et.getTrip().getFromOffice().getCity(), et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved()))
+                .collect(Collectors.toList());
+    }
+
     @RequestMapping(value = "/{employeeId}/{tripId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeTrip get(@PathVariable long employeeId, @PathVariable long tripId) {
         return employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);

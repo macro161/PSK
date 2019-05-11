@@ -1,7 +1,7 @@
 import { getAll, getById } from './http';
 const userUrl = 'http://localhost:8080/user';
 const userTripsUrl = 'http://localhost:8080/employeetrip/employees';
-const userId = "1656"
+const userId = 1720
 
 export function getUserInfo() {
   let responseCode;

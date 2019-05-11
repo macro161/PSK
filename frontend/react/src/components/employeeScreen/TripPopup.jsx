@@ -37,46 +37,42 @@ export default class TripPopup extends React.Component{
                         <span className="form-header-close" onClick={this.props.onClose}>✖</span>
                     </header>
                     <div className="form-container">
-                        <TextField
-                            id="fullName"
-                            label="Full name"
-                            defaultValue = {this.props.travel.name}
-                            className="form-text-field"
-                            type="text"
-                            margin="normal"
-                            onChange={this.inputChange.bind(this)}
-                            />
-                        <br />
-                        <br/>
-                        <TextField
-                            id="departureTime"
-                            label="Departure time"
-                            defaultValue = {this.props.travel.departureTime}
-                            className="form-text-field"
-                            type="text"
-                            margin="normal"
-                            onChange={this.inputChange.bind(this)}
-                            />
-                        <br/>
-                        <TextField
-                            id="accomodation"
-                            label="Accomodation"
-                            defaultValue = {this.props.travel.accomodation}
-                            className="form-text-field-wide"
-                            type="text"
-                            margin="normal"
-                            onChange={this.inputChange.bind(this)}
-                        />
-                        <br/>
-                        <TextField
-                            id="city"
-                            label="City"
-                            defaultValue = {this.props.travel.city}
-                            className="form-text-field-wide"
-                            type="text"
-                            margin="normal"
-                            onChange={this.inputChange.bind(this)}
-                        />
+                         <FormControl component="fieldset">
+                                <FormLabel component="legend">Your trip will include:</FormLabel>
+                                <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                    <Switch
+                                        checked={this.state.wantsAccommodation}
+                                        onChange={this.handleChange('wantsAccommodation')}
+                                        value="wantsAccommodation"
+                                    />
+                                    }
+                                    label="Accommodation"
+                                />
+                                <FormControlLabel
+                                    control={
+                                    <Switch
+                                        checked={this.state.wantsCar}
+                                        onChange={this.handleChange('wantsCar')}
+                                        value="wantsCar"
+                                    />
+                                    }
+                                    label="Car"
+                                />
+                                <FormControlLabel
+                                    control={
+                                    <Switch
+                                        checked={this.state.wantsTicets}
+                                        onChange={this.handleChange('wantsTickets')}
+                                        value="wantsTickets"
+                                    />
+                                    }
+                                    label="Plane Ticket"
+                                />
+                                </FormGroup>
+                                <FormHelperText>Be careful</FormHelperText>
+                            </FormControl>
                         <div className="register-form-buttons">
                         <Button variant="contained" size="large" color="primary" onClick={this.onEditSave.bind(this)}>
                         Save

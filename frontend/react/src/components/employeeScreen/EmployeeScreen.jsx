@@ -16,7 +16,7 @@ class EmployeeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = initialState;
-    this.props.getAllTravels(1);
+    this.props.getAllTravels();
   }
 
   showInfo(id){
