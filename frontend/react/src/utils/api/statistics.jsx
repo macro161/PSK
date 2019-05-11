@@ -1,9 +1,9 @@
 import { getAll, getById, getByParams } from './http';
-const statsUrl = "http://localhost:8080/statistics/";
+const statsUrl = "http://localhost:8080/statistics";
 
 export function getStatsHttp(){
     let responseCode;
-    return getAll(statsUrl)
+    return getAll(statsUrl + '/')
         .then(function(response){
             responseCode = response.status;
             if(responseCode === 200){
