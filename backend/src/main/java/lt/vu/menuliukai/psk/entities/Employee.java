@@ -30,7 +30,8 @@ public class Employee {
 
     String fullName;
     String email;
-    String password; // lul
+    String password;
+    String role;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JsonSerialize(converter = IdObjectToLongConverter.class)

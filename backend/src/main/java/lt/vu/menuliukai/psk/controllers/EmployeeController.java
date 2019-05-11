@@ -2,7 +2,9 @@ package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.EmployeeDao;
+import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.entities.Employee;
+import lt.vu.menuliukai.psk.entities.Office;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class EmployeeController {
     @Autowired
     private EmployeeDao employeeDao;
 
+    @Autowired
+    private OfficeDao officeDao;
+
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Employee> index() {
         return employeeDao.findAll();
@@ -31,6 +36,9 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Employee add(@RequestBody Employee employee) {
+        if (employee.getOffice() == null) {
+            employee.setOffice(officeDao.save(new Office()));
+        }
         return employeeDao.save(employee);
     }
 

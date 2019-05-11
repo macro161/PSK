@@ -9,6 +9,7 @@ export default class EmployeesDataTable extends React.Component {
 
   render() {
     const employees = this.props.employees;
+    const offices = this.props.offices;
     return (
       <table>
         <tbody>
@@ -25,10 +26,11 @@ export default class EmployeesDataTable extends React.Component {
                 Id={employee.id}
                 fullName = {employee.fullName}
                 email={employee.email}
-                city={employee.city}
+                city={employee.office}
                 disableButtons={this.props.disableButtons}
                 editEmployee={this.props.editEmployee}
                 removeUser={this.props.removeUser}
+                offices={this.props.offices}
               />);
         })}
         </tbody>
@@ -41,10 +43,15 @@ EmployeesDataTable.propTypes = {
   employees: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
     fullName: PropTypes.any,
-    city: PropTypes.string,
+    office: PropTypes.string,
     email: PropTypes.string,
   })),
   editEmployee: PropTypes.func.isRequired,
   removeUser: PropTypes.func.isRequired,
   disableButtons: PropTypes.any,
+  offices: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.any,
+    city: PropTypes.string,
+    address: PropTypes.string
+  }))
 };

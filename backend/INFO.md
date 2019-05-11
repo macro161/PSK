@@ -4,3 +4,4 @@ Informacija:
 - [Mybatis pavyzdys](http://www.mybatis.org/spring/sample.html)
 - [data transfer objects](https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application)
 - [Mybatis su spring](https://github.com/mybatis/spring-boot-starter)
+- [Spring login](http://juhahinkula.github.io/2016-12-05-reactsecurity/)
