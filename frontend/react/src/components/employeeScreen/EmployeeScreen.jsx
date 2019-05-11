@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions/EmployeeScreen';
-import DataTabel from './EmployeeDatatable';
+import DataTable from './EmployeeDatatable';
 import InfoScreen from  './InfoScreen';
 
 const initialState = {
@@ -35,7 +35,7 @@ class EmployeeScreen extends React.Component {
         <div>
           {this.state.show ? <InfoScreen onClose={this.onClose.bind(this)} /> : null}
         </div>
-        <DataTabel 
+        <DataTable 
             travels={this.props.travels}
             approveTravel={this.props.approveTravel}
             cancelTravel={this.props.cancelTravel}
