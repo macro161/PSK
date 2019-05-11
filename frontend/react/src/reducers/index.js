@@ -8,9 +8,18 @@ import EmployeeScreen from './EmployeeScreen';
 import TravelScreen from './TravelScreen';
 import Login from './Login';
 import User from './User';
+import Logout from './Logout';
 
 const rootReducer = combineReducers({ 
-  routing: routerReducer, number, UserManager, StatisticScreen, EmployeeScreen, Offices, TravelScreen, Login, User
+  routing: routerReducer,
+  number, UserManager,
+  StatisticScreen,
+  EmployeeScreen,
+  Offices,
+  TravelScreen,
+  Login,
+  User,
+  Logout
 });
 
 export default rootReducer;
