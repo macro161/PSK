@@ -7,11 +7,15 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,16 +46,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
             .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
                 .permitAll()
+                .successHandler(successHandler())
+                .failureHandler(failureHandler())
                 .and()
             .httpBasic()
                 .and()
             .csrf().disable()
             .logout()
         .logoutSuccessUrl("/")
+                .logoutSuccessHandler(logoutSuccessHandler())
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");
+    }
+
+    private AuthenticationSuccessHandler successHandler() {
+        return (httpServletRequest, httpServletResponse, authentication) -> {
+            User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Object role = user.getAuthorities().toArray()[0];
+
+            String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+            String responseJson = String.format("{ \"JSESSIONID\": \"%s\", \"role\": \"%s\" }", sessionId, role);
+
+
+            httpServletResponse.setContentType("application/json");
+            httpServletResponse.setCharacterEncoding("UTF-8");
+            httpServletResponse.setStatus(200);
+
+
+            httpServletResponse.getWriter().append(responseJson);
+        };
+    }
+
+    private AuthenticationFailureHandler failureHandler() {
+        return (httpServletRequest, httpServletResponse, e) -> {
+            httpServletResponse.getWriter().append("Authentication failure");
+            httpServletResponse.setStatus(401);
+        };
     }
 
     @Bean
@@ -59,12 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {
-        return new SimpleUrlLogoutSuccessHandler();
+        return (httpServletRequest, httpServletResponse, e) -> {
+            httpServletResponse.setStatus(200);
+        };
     }
-
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

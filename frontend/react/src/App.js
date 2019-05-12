@@ -33,7 +33,7 @@ const App = () => (
         <Route exact path="/offices" render={() => { return (<div> <Header /> <OrgHeader /> <Spinner /> <Offices /> </div>) }} />
         <Route exact path="/travels" render={() => { return (<div><Header /> <Spinner /> <EmployeeScreen /></div>) }} />
         <Route exact path="/orgTravels" render={() => { return (<div><Header /> <OrgHeader /> <Spinner /> <TravelScreen /></div>) }} />
-        <Route exact path="/login" render={() => { return (<div><Header />  <Spinner /> <LogIn/></div>)}}/>
+        <Route exact path="/login" render={() => { return (<div><LogIn/></div>)}}/>
 
         <Route path="*" component={Error}/>
       </Switch>

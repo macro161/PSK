@@ -39,10 +39,10 @@ class Login extends React.Component {
         </div>;
     }
     render() {
-        if (this.props.loginSuccess)
-    {
-      return <Redirect to='/usermanager' />;
-    }
+        if (this.props.loginSuccess) {
+            return <Redirect to='/usermanager' />;
+        }
+
         return (
             <div className="page-frame">
                 <div className="form-container center">

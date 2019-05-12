@@ -1,4 +1,4 @@
-import { Log } from '../utils/api/login';
+import { Log, Out } from '../utils/api/login';
 import { getUserInfo } from '../utils/api/user';
 import { history } from '../store';
 
@@ -7,13 +7,26 @@ export const Login = (email, password) => dispatch => {
   Log(email, password)
     .then(function (response) {
       console.log(response)
-      if (response.responseCode == 302) {
+      if (response.responseCode == 200) {
         dispatch({ type: 'LOGIN_SUCCESS' });
       } else {
         dispatch({ type: 'LOGIN_ERROR', code: response.responseCode });
       }
       dispatch({ type: 'SET_LOADING', value: false });
     });
+}
+
+export const Logout = () => dispatch => {
+  dispatch({ type: 'SET_LOADING', value: true })
+  Out()
+  .then(response => {
+    if (response.responseCode == 200) {
+      dispatch({ type: 'LOGOUT_SUCCESS' })
+    } else {
+      dispatch({ type: 'LOGOUT_ERROR', code: response.responseCode })
+    }
+    dispatch({ type: 'SET_LOADING', value: false });
+  })
 }
 
 export const GetMe = () => (dispatch) => {
