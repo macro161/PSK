@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import logo from '../../../public/logo.png';
 import Tabs from './AdminHeaderTabs.jsx';
 import { connect } from 'react-redux';
@@ -59,10 +59,6 @@ class AdminHeader extends React.Component {
     const { classes } = this.props;
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
-
-    if (this.props.logoutSuccess) {
-      return <Redirect to='/' />;
-    }
 
     return (
       <div className={classes.root}>

@@ -21,6 +21,8 @@ export const Logout = () => dispatch => {
   .then(response => {
     if (response.responseCode == 200) {
       dispatch({ type: 'LOGOUT_SUCCESS' })
+      dispatch({ type: 'LOGOUT' })
+      history.push('');
     } else {
       dispatch({ type: 'LOGOUT_ERROR', code: response.responseCode })
     }

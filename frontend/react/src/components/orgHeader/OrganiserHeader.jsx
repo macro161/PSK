@@ -60,9 +60,6 @@ class OrganiserHeader extends React.Component {
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
-    if (this.props.logoutSuccess) {
-      return <Redirect to='/' />;
-    }
 
     return (
       <div className={classes.root}>
