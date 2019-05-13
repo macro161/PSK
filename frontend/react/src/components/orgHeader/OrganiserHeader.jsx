@@ -10,10 +10,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Link } from 'react-router-dom';
 import logo from '../../../public/logo.png';
-import Tabs from './HeaderTabs.jsx';
+import Tabs from './HeaderTabs.jsx'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/Login';
+
 
 const styles = {
   root: {flexGrow: 1},
@@ -27,7 +28,7 @@ const styles = {
   }
 };
 
-class AdminHeader extends React.Component {
+class OrganiserHeader extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -37,7 +38,7 @@ class AdminHeader extends React.Component {
     this.handleMenu = this.handleMenu.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleClose = this.handleClose.bind(this)
-    this.props.getUser()
+    this.props.getUser();
   }
   
   handleChange (event){
@@ -62,7 +63,7 @@ class AdminHeader extends React.Component {
         <AppBar position="static" className={classes.color}>
           <Toolbar>
             <Typography variant="h6" color="inherit" className={classes.grow}>
-            <Link to="/admin">
+            <Link to="/organiser">
       <img className="header-image back" src={logo} width = "18%"/>   
     </Link>
             </Typography>
@@ -104,7 +105,7 @@ class AdminHeader extends React.Component {
   }
 }
 
-AdminHeader.propTypes = {
+OrganiserHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   getUser : PropTypes.func
 };
@@ -114,5 +115,5 @@ export default withStyles(styles)(connect(
      // logoutSuccess: state.Logout.success,
   }),
   (dispatch) => bindActionCreators({
-    getUser: actions.GetMeAdmin,
-  }, dispatch))(AdminHeader));
+    getUser: actions.GetMeOrganiser,
+  }, dispatch))(OrganiserHeader));

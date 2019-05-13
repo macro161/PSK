@@ -20,7 +20,6 @@ class Login extends React.Component {
         this.resolveErrorMessage.bind(this);
     }
     login = () => {
-        console.log(this.state.email, this.state.password);
         this.props.login(this.state.email, this.state.password);
     }
     inputChange = (e) => {
@@ -40,7 +39,16 @@ class Login extends React.Component {
     }
     render() {
         if (this.props.loginSuccess) {
-            return <Redirect to='/usermanager' />;
+            if (this.props.role == 'USER') {
+                return <Redirect to='/travels' />; 
+            } else if (this.props.role == 'ORGANISER') {
+                return <Redirect to='/organiser' />; 
+            } else if (this.props.role == 'ADMIN') {
+                return <Redirect to='/admin' />; 
+            } else {
+                alert("Something went very wrong")
+            }
+            
         }
 
         return (
@@ -92,6 +100,7 @@ export default connect(
     (state) => ({
         errorCode: state.Login.errorCode,
         loginSuccess: state.Login.success,
+        role: state.Login.role,
     }),
     (dispatch) => bindActionCreators({
         login: actions.Login,
@@ -100,5 +109,6 @@ export default connect(
 Login.propTypes = {
     errorCode: PropTypes.number,
     loginSuccess: PropTypes.bool,
+    role: PropTypes.string,
     login: PropTypes.func.isRequired,
 };

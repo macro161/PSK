@@ -5,7 +5,8 @@ import { Router, Route, Switch } from 'react-router';
 import { Provider } from 'react-redux';
 import store, { history } from './store';
 import Header from './components/header/Header';
-import OrgHeader from './components/orgHeader/OrgHeader';
+import EmployeeHeader from './components/header/EmployeeHeader'
+import OrganiserHeader from './components/orgHeader/OrganiserHeader';
 import UserManager from './components/adminPage/UserManager';
 import Error from './components/Error';
 import Stats from './components/statisticsPage/StatisticsScreen';
@@ -22,18 +23,18 @@ const App = () => (
   <Provider store={store}>
     <Router history={history}>
       <Switch>
-        <Route exact path="/" render={() => { return (<div> <Header /> <OrgHeader /> <Spinner /> <UserManager /> </div>) }} />
-        <Route exact path="/admin" render={() => { return (<div> <AdminHeader /> <Spinner /> <EmployeeScreen /> </div>) }} />
-        <Route exact path="/usermanager" render={() => { return (<div> <Header /> <Spinner /> <OrgHeader /> <UserManager /> </div>) }} />
-        <Route exact path="/admin/usermanager" render={() => { return (<div> <AdminHeader /> <Spinner /> <UserManager /> </div>) }} />
-        {/*<Route exact path="/admin/travels" render={() => { return (<div> <AdminHeader /> <Spinner /> <EmployeeScreen /> </div>) }} />*/}
-        <Route exact path="/admin/offices" render={() => { return (<div> <AdminHeader />  <Spinner /> <Offices /> </div>) }} />
-        <Route exact path="/admin/stats" render={() => { return (<div> <AdminHeader /> <Spinner /> <Stats /> </div>) }} />
-        <Route exact path="/stats" render={() => { return (<div> <Header /> <OrgHeader /> <Spinner /> <Stats /> </div>) }} />
-        <Route exact path="/offices" render={() => { return (<div> <Header /> <OrgHeader /> <Spinner /> <Offices /> </div>) }} />
-        <Route exact path="/travels" render={() => { return (<div><Header /> <Spinner /> <EmployeeScreen /></div>) }} />
-        <Route exact path="/orgTravels" render={() => { return (<div><Header /> <OrgHeader /> <Spinner /> <TravelScreen /></div>) }} />
-        <Route exact path="/login" render={() => { return (<div><LogIn/></div>)}}/>
+        <Route exact path="/" render={() => { return (<div><Spinner /> <LogIn /> </div>) }} />
+
+        <Route exact path="/admin" render={() => { return (<div> <AdminHeader /> <Spinner /> <TravelScreen /> </div>) }} />
+        <Route exact path="/admin-travels" render={() => { return (<div> <AdminHeader /> <Spinner /> <EmployeeScreen /> </div>) }} /> {/* not sure if needed*/}
+        <Route exact path="/admin-usermanager" render={() => { return (<div> <AdminHeader /> <Spinner /> <UserManager/> </div>) }} />
+        <Route exact path="/admin-offices" render={() => { return (<div> <AdminHeader />  <Spinner /> <Offices /> </div>) }} />
+        <Route exact path="/admin-stats" render={() => { return (<div> <AdminHeader /> <Spinner /> <Stats /> </div>) }} />
+
+        <Route exact path="/organiser" render={() => { return (<div> <OrganiserHeader /> <Spinner /> <TravelScreen /> </div>) }} />
+        <Route exact path="/organiser-travels" render={() => { return (<div> <OrganiserHeader /> <Spinner /> <EmployeeScreen /> </div>) }} />
+
+        <Route exact path="/travels" render={() => { return (<div><EmployeeHeader /> <Spinner /> <EmployeeScreen /></div>) }} />
 
         <Route path="*" component={Error}/>
       </Switch>

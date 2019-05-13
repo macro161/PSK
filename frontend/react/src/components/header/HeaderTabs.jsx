@@ -41,7 +41,7 @@ class HeaderTabs extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      value: 2,
+      value: 0,
     };
     this.handleChange = this.handleChange.bind(this)
   }
@@ -59,26 +59,10 @@ class HeaderTabs extends React.Component {
       <div className={classes.root}>
         <AppBar position="static" className={classes.color}>
           <Tabs value={value} onChange={this.handleChange}>
-          <Tab label="My travels" 
+            <Tab label="My travels" 
                 component={Link} 
                 className={classes.link}
-                to={'/admin-travels'}/>
-            <Tab label="Offices" 
-                component={Link} 
-                className={classes.link}
-                to={'/admin-offices'}/>
-            <Tab label="Travels" 
-                component={Link} 
-                className={classes.link}
-                to={'/admin'}/>
-            <Tab label="Employees" 
-                component={Link} 
-                className={classes.link}
-                to={'/admin-usermanager'}/>
-            <Tab label="Statistics" 
-                component={Link} 
-                className={classes.link}
-                to={'/admin-stats'}/>
+                to={'/travels'}/>
           </Tabs>
         </AppBar>
       </div>

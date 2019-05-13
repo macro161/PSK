@@ -1,6 +1,7 @@
 const initialState = {
   success: null,
   errorCode: null,
+  role: null,
 };
 
 export default (state = initialState, action) => {
@@ -10,6 +11,7 @@ export default (state = initialState, action) => {
         ...state,
         success: true,
         errorCode: null,
+        role: action.role
       };
     }
     case 'LOGIN_ERROR': {
@@ -17,6 +19,7 @@ export default (state = initialState, action) => {
         ...state,
         success: false,
         errorCode: action.code,
+        
       };
     }
     default:
