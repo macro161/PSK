@@ -34,9 +34,9 @@ export const GetMeAdmin = () => (dispatch) => {
       if (response.responseCode === 401) {
         history.push('');
       }
-      if (response.responseCode == 200 && response.responseValue.role != "ADMIN") {
-        alert("You have no right to go to this page")
+      if (response.responseCode === 200 && response.responseValue.role !== "ADMIN") {
         history.push('');
+        alert("You have no right to go to this page")
       }
       dispatch({ type: 'SET_LOADING', value: false });
     });
@@ -49,9 +49,9 @@ export const GetMeOrganiser = () => (dispatch) => {
       if (response.responseCode === 401) {
         history.push('');
       }
-      if (response.responseCode == 200 && response.responseValue.role != "ORGANISER") {
-        alert("You have no right to go to this page")
+      if (response.responseCode === 200 && response.responseValue.role !== "ORGANISER") {
         history.push('');
+        alert("You have no right to go to this page")
       }
       dispatch({ type: 'SET_LOADING', value: false });
     });

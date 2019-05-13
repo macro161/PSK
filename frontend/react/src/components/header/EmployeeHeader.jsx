@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import logo from '../../../public/logo.png';
 import Tabs from './HeaderTabs.jsx'
 import { connect } from 'react-redux';
@@ -44,6 +44,9 @@ class EmployeeHeader extends React.Component {
     this.setState({ auth: event.target.checked });
   };
 
+  logout() {
+    this.props.logout();
+  }
   handleMenu (event) {
     this.setState({ anchorEl: event.currentTarget });
   };
@@ -56,6 +59,10 @@ class EmployeeHeader extends React.Component {
     const { classes } = this.props;
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
+
+    if (this.props.logoutSuccess) {
+      return <Redirect to='/' />;
+    }
 
     return (
       <div className={classes.root}>
@@ -92,7 +99,7 @@ class EmployeeHeader extends React.Component {
                 >
                   <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                   <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                  <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                  <MenuItem onClick={this.logout.bind(this)}>Logout</MenuItem>
                 </Menu>
               </div>
             )}
@@ -106,13 +113,17 @@ class EmployeeHeader extends React.Component {
 
 EmployeeHeader.propTypes = {
   classes: PropTypes.object.isRequired,
-  getUser : PropTypes.func
+  getUser: PropTypes.func,
+  errorCode: PropTypes.number,
+  logoutSuccess: PropTypes.bool,
+  logout: PropTypes.func.isRequired,
 };
 export default withStyles(styles)(connect(
   (state) => ({
-     // errorCode: state.Logout.errorCode,
-     // logoutSuccess: state.Logout.success,
+      errorCode: state.Logout.errorCode,
+      logoutSuccess: state.Logout.success,
   }),
   (dispatch) => bindActionCreators({
     getUser: actions.GetMe,
+    logout: actions.Logout,
   }, dispatch))(EmployeeHeader));

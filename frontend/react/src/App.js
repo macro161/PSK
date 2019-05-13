@@ -4,7 +4,6 @@ import './styles.css';
 import { Router, Route, Switch } from 'react-router';
 import { Provider } from 'react-redux';
 import store, { history } from './store';
-import Header from './components/header/Header';
 import EmployeeHeader from './components/header/EmployeeHeader'
 import OrganiserHeader from './components/orgHeader/OrganiserHeader';
 import UserManager from './components/adminPage/UserManager';

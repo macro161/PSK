@@ -10,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { Link } from 'react-router-dom';
 import logo from '../../../public/logo.png';
-import Tabs from './HeaderTabs.jsx';
+import Tabs from './AdminHeaderTabs.jsx';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions/Login';
@@ -43,6 +43,9 @@ class AdminHeader extends React.Component {
   handleChange (event){
     this.setState({ auth: event.target.checked });
   };
+  logout() {
+    this.props.logout();
+  }
 
   handleMenu (event) {
     this.setState({ anchorEl: event.currentTarget });
@@ -56,6 +59,10 @@ class AdminHeader extends React.Component {
     const { classes } = this.props;
     const { auth, anchorEl } = this.state;
     const open = Boolean(anchorEl);
+
+    if (this.props.logoutSuccess) {
+      return <Redirect to='/' />;
+    }
 
     return (
       <div className={classes.root}>
@@ -92,7 +99,7 @@ class AdminHeader extends React.Component {
                 >
                   <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                   <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                  <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                  <MenuItem onClick={this.logout.bind(this)}>Logout</MenuItem>
                 </Menu>
               </div>
             )}
@@ -106,13 +113,17 @@ class AdminHeader extends React.Component {
 
 AdminHeader.propTypes = {
   classes: PropTypes.object.isRequired,
-  getUser : PropTypes.func
+  getUser : PropTypes.func,
+  errorCode: PropTypes.number,
+  logoutSuccess: PropTypes.bool,
+  logout: PropTypes.func.isRequired,
 };
 export default withStyles(styles)(connect(
   (state) => ({
-     // errorCode: state.Logout.errorCode,
-     // logoutSuccess: state.Logout.success,
+      errorCode: state.Logout.errorCode,
+      logoutSuccess: state.Logout.success,
   }),
   (dispatch) => bindActionCreators({
     getUser: actions.GetMeAdmin,
+    logout: actions.Logout,
   }, dispatch))(AdminHeader));
