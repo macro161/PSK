@@ -1,7 +1,7 @@
 import { getAll, getById } from './http';
 const userUrl = 'http://localhost:8080/user';
-const userTripsUrl = 'http://localhost:8080/employeetrip/employees';
-const userId = 1720
+const userTripsUrl = 'http://localhost:8080/employeetrip';
+const userId = 1735
 
 export function getUserInfo() {
   let responseCode;
@@ -21,7 +21,7 @@ export function getUserInfo() {
 
 export function getUserTrips() {
   let responseCode;
-  return getById(userTripsUrl,userId).then((response) => {
+  return getById(userTripsUrl,"1735").then((response) => {
     responseCode = response.status;
     if (responseCode === 200) {
       return response.json();

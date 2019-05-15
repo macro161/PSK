@@ -2,6 +2,7 @@
 import * as utils from '../utils/api/user'
 
 export const getAllTravels = () => dispatch => {
+    console.log("actions")
     utils.getUserTrips()
         .then(function (response) {
             if (response.responseCode != 200) {

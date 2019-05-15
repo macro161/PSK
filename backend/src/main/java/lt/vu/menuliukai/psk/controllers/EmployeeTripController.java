@@ -4,10 +4,7 @@ import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.EmployeeDao;
 import lt.vu.menuliukai.psk.dao.EmployeeTripDao;
 import lt.vu.menuliukai.psk.dao.TripDao;
-import lt.vu.menuliukai.psk.dto.EmployeeTripBasicDto;
-import lt.vu.menuliukai.psk.dto.EmployeeTripDto;
-import lt.vu.menuliukai.psk.dto.TripsDto;
-import lt.vu.menuliukai.psk.dto.TripsGroupingDto;
+import lt.vu.menuliukai.psk.dto.*;
 import lt.vu.menuliukai.psk.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,11 +41,17 @@ public class EmployeeTripController {
         return employeeTripDao.findAll();
     }
 
-    @RequestMapping(value = "/{employeeId}/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeTripBasicDto get(@PathVariable long employeeId) {
-        Iterable<EmployeeTrip> et = employeeTripDao.findAll();
-        return new EmployeeTripBasicDto(et.getId(), et.getEmployee().getFullName(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), et.getTrip().getFromOffice().getCity(), et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved()))
-                .collect(Collectors.toList());
+    @RequestMapping(value = "/{employeeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EmployeeTripPageDto> get(@PathVariable Long employeeId) {
+        List<EmployeeTrip> etList = employeeTripDao.findByIdEmployeeId(employeeId);
+        List<EmployeeTripPageDto> list =
+                etList.stream().map(et -> new EmployeeTripPageDto(
+                        et.getId(), et.getEmployee().getFullName(),
+                        et.getTrip().getLeavingDate().toString(), et.getTrip().getReturningDate().toString(),
+                        et.getEmployee().getOffice().getAptAddress(), et.getTrip().getFromOffice().getCity(),
+                        et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved()))
+                        .collect(Collectors.toList());
+        return list;
     }
 
     @RequestMapping(value = "/{employeeId}/{tripId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

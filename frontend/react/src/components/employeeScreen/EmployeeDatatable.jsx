@@ -181,10 +181,7 @@ class EmployeeDataTable extends React.Component {
     this.state = {
       order: 'asc',
       orderBy: 'calories',
-      data: [
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Donut', 452, 25.0, 51, 4.9),
-      ],
+      data: [],
       page: 0,
       rowsPerPage: 5,
     };
@@ -216,7 +213,12 @@ class EmployeeDataTable extends React.Component {
     const { classes } = this.props;
     const { order, orderBy, rowsPerPage, page } = this.state;
     let data = this.props.travels;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    console.log(data)
+    var length
+    if(data==undefined)
+       length = 0;
+       else length = data.length
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
@@ -234,7 +236,7 @@ class EmployeeDataTable extends React.Component {
               order={order}
               orderBy={orderBy}
               onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
+              rowCount={length}
             />
             <TableBody>
               {stableSort(data, getSorting(order, orderBy))
@@ -249,11 +251,11 @@ class EmployeeDataTable extends React.Component {
                       key={n.id}
                     >
                       <TableCell align="center" omponent="th" scope="row" >
-                        {n.departureTime}
+                        {n.leavingDate}
                       </TableCell>
-                      <TableCell align="center">{n.returnTime}</TableCell>
-                      <TableCell align="center">{n.accomodation}</TableCell>
-                      <TableCell align="center" >{n.approved}</TableCell>
+                      <TableCell align="center">{n.returningDate}</TableCell>
+                      <TableCell align="center">{n.accommodation}</TableCell>
+                      <TableCell align="center" >{ n.approved? <div>True</div> : <div>False</div> }</TableCell>
                       <TableCell align="center">
                         <IconButton aria-label="Info"><InfoIcon/></IconButton>
                       </TableCell>
@@ -271,7 +273,7 @@ class EmployeeDataTable extends React.Component {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={data.length}
+          count={length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
