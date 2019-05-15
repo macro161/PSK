@@ -10,6 +10,12 @@ export function getById(url, Id) {
   });
 }
 
+export function getByParams(url, Param, Param2) {
+  return fetch(url + '/' + Param + '/' + Param2, {
+    credentials: 'include',
+  });
+}
+
 export function post(url, object) {
   return fetch(url, {
     body: JSON.stringify(object),

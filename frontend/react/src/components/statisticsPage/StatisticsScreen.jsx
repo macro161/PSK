@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/StatisticsScreen';
-import Stats from './Stats';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import Test from './Data';
+import Data from './Data';
 
 
 
@@ -12,31 +11,37 @@ class StatisticsScreen extends React.Component {
 
   constructor(props){
     super(props);
-    
+    this.state = {
+      stats: {},
+      traveldata: {}
+    }
   }
+  
   componentDidMount() {
     this.props.getStats();
-    this.props.getStats();
-    this.props.getStatsByName('Justas')
-
   }
 
   render() {
-    const { stats } = this.props;
-   
-    return(
+    return (
       <div className='page-frame'>
-      {stats.map(stat => {
-        return (
-        <Test mostTrips={stat.mostTrips}
-              mostExpensive={stat.mostExpensive}
-              cheapest={stat.cheapest}
-              shortest={stat.shortest}
-              longest={stat.shortest}
-              getStatsByName={this.props.getStatsByName}
-              travelCount={this.props.traveldata.map(data => {return(data.travelCount)})}/>);
-      })}
-            
+      
+        { 
+          
+           <Data mostCommonTripDestination={this.props.stats.mostCommonTripDestination}
+            mostExpensiveTripOrigin={this.props.stats.mostExpensiveTripOrigin}
+            mostExpensiveTripDestination={this.props.stats.mostExpensiveTripDestination}
+            cheapestTripOrigin={this.props.stats.cheapestTripOrigin}
+            cheapestTripDestination={this.props.stats.cheapestTripDestination}
+            shortestTripOrigin={this.props.stats.shortestTripOrigin}
+            shortestTripDestination={this.props.stats.shortestTripDestination}
+            longestTripOrigin={this.props.stats.longestTripOrigin}
+            longestTripDestination={this.props.stats.longestTripDestination}
+            employeeTripQuantity={this.props.stats.employeeTripQuantity}
+            periodTripQuantity={this.props.stats.periodTripQuantity}
+            getStatsByName={this.props.getStatsByName}
+            getStatsByDate={this.props.getStatsByDate}
+          />
+      } 
       </div>)
   } 
 }
@@ -48,20 +53,25 @@ export default connect(
   (dispatch) => bindActionCreators({
     getStats: actions.getStats,
     getStatsByName: actions.getStatsByName,
+    getStatsByDate: actions.getStatsByDate,
   }, dispatch))(StatisticsScreen);
 
 
   StatisticsScreen.propTypes =  {
-    stats: PropTypes.arrayOf(PropTypes.shape({
-      mostTrips: PropTypes.string,
-      mostExpensive: PropTypes.string,
-      cheapest: PropTypes.string,
-      shortest: PropTypes.string,
-      longest: PropTypes.string,
-    })),
-    traveldata: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-      travelCount: PropTypes.number})),
+    stats: PropTypes.shape({
+      mostCommonTripDestination: PropTypes.string,
+      mostExpensiveTripOrigin: PropTypes.string,
+      mostExpensiveTripDestination: PropTypes.string,
+      cheapestTripOrigin: PropTypes.string,
+      cheapestTripDestination: PropTypes.string,
+      shortestTripOrigin: PropTypes.string,
+      shortestTripDestination: PropTypes.string,
+      longestTripOrigin: PropTypes.string,
+      longestTripDestination: PropTypes.string,
+      employeeTripQuantity: PropTypes.number,
+      periodTripQuantity: PropTypes.number,
+    }),
     getStats: PropTypes.func,
-    getStatsByName: PropTypes.func
+    getStatsByName: PropTypes.func,
+    getStatsByDate: PropTypes.func,
   };

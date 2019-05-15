@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .csrf().disable()
             .logout()
         .logoutSuccessUrl("/")
+                .logoutSuccessHandler(logoutSuccessHandler())
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");
     }
@@ -96,12 +97,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {
-        return new SimpleUrlLogoutSuccessHandler();
+        return (httpServletRequest, httpServletResponse, e) -> {
+            httpServletResponse.setStatus(200);
+        };
     }
-
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
