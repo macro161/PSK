@@ -2,7 +2,6 @@
 import * as utils from '../utils/api/user'
 
 export const getAllTravels = () => dispatch => {
-    console.log("actions")
     utils.getUserTrips()
         .then(function (response) {
             if (response.responseCode != 200) {
@@ -15,16 +14,21 @@ export const getAllTravels = () => dispatch => {
         })
 }
 
-export const approveTravel = (travelId) =>{
-    return {
-        type: 'APPROVE_TRAVEL',
-        Id: travelId,
-    }
+export const approveTravel = (travelId, checklist) => dispatch =>{
+    utils.approveTrip(travelId)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert(";(")
+            }
+            dispatch({
+                type: 'APPROVE_TRAVEL',
+                Id: travelId,
+            });
+        })
+    utils.updateTripChecklist(checklist)
+    .then(function (response) {
+        if (response.responseCode != 200) {
+            alert(";(")
+        }
+    })
 };
-
-export const cancelTravel = (travelId) => {
-    return {
-        type: 'CANCEL_TRAVEL',
-        Id: travelId,
-    }
-}

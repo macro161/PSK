@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lt.vu.menuliukai.psk.entities.ApartmentRoom;
 import lt.vu.menuliukai.psk.entities.EmployeeTripId;
 import lt.vu.menuliukai.psk.entities.TripChecklist;
 
@@ -16,6 +17,8 @@ public class EmployeeTripPageDto {
     EmployeeTripId id;
 
     String fullName;
+
+    Integer roomNr;
 
     String leavingDate;
 

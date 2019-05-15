@@ -39,7 +39,6 @@ class EmployeeScreen extends React.Component {
         <DataTable 
             travels={this.props.travels}
             approveTravel={this.props.approveTravel}
-            cancelTravel={this.props.cancelTravel}
             showInfo={this.showInfo.bind(this)}
             show={this.state.show}/> 
       </div>
@@ -53,7 +52,6 @@ export default connect(
     {
       getAllTravels: actions.getAllTravels,
       approveTravel: actions.approveTravel,
-      cancelTravel: actions.cancelTravel
   }, dispatch))(EmployeeScreen);
 
 EmployeeScreen.propTypes = {
@@ -67,6 +65,5 @@ EmployeeScreen.propTypes = {
   show: PropTypes.bool,
   getAllTravels: PropTypes.func,
   approveTravel: PropTypes.func,
-  cancelTravel: PropTypes.func,
   seeTravelDetails: PropTypes.func,
 };

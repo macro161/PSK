@@ -8,7 +8,7 @@ export function Log(email, password) {
     .then(function (response) {
       responseCode = response.status;
       if (responseCode != null) {
-        return response;
+        return response.json();
       }
     })
     .then(function (responseValue) {

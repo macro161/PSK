@@ -9,9 +9,7 @@ export default(state = initialState, action) => {
                 ...state, travels: action.employeeTrips
             };
         case 'APPROVE_TRAVEL':
-            return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: true} : travel)}
-        case 'CANCEL_TRAVEL':
-            return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: false} : travel)}
+            return {...state, travels: state.travels.map(travel => travel.id.tripId === action.Id ? {...travel, approved: true} : travel)}
         default: 
             return state;
     }

@@ -1,7 +1,9 @@
-import { getAll, getById } from './http';
+import { getAll, getById, put } from './http';
 const userUrl = 'http://localhost:8080/user';
 const userTripsUrl = 'http://localhost:8080/employeetrip';
 const userId = 1735
+const approveTripUrl = 'http://localhost:8080/employeetrip/approve/';
+const checklistUrl = 'http://localhost:8080/trip/checklist/update';
 
 export function getUserInfo() {
   let responseCode;
@@ -21,7 +23,39 @@ export function getUserInfo() {
 
 export function getUserTrips() {
   let responseCode;
-  return getById(userTripsUrl,"1735").then((response) => {
+  return getById(userTripsUrl,userId).then((response) => {
+    responseCode = response.status;
+    if (responseCode === 200) {
+      return response.json();
+    }
+  }).then((responseValue) => {
+    console.log('t' + responseValue)
+    return {
+      responseCode,
+      responseValue,
+    };
+  });
+}
+
+export function approveTrip(tripId) {
+  let responseCode;
+  return put(approveTripUrl + userId +"/"+ tripId).then((response) => {
+    responseCode = response.status;
+    if (responseCode === 200) {
+      return response.json();
+    }
+  }).then((responseValue) => {
+    console.log('t' + responseValue)
+    return {
+      responseCode,
+      responseValue,
+    };
+  });
+}
+
+export function updateTripChecklist(checklist) {
+  let responseCode;
+  return put(checklistUrl,checklist).then((response) => {
     responseCode = response.status;
     if (responseCode === 200) {
       return response.json();

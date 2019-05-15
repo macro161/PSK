@@ -17,6 +17,7 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -47,6 +48,7 @@ public class EmployeeTripController {
         List<EmployeeTripPageDto> list =
                 etList.stream().map(et -> new EmployeeTripPageDto(
                         et.getId(), et.getEmployee().getFullName(),
+                        et.getApartmentRoom().getRoomNo(),
                         et.getTrip().getLeavingDate().toString(), et.getTrip().getReturningDate().toString(),
                         et.getEmployee().getOffice().getAptAddress(), et.getTrip().getFromOffice().getCity(),
                         et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved()))
@@ -92,6 +94,37 @@ public class EmployeeTripController {
     @RequestMapping(value = "/employees/{employeeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeTrip> getByEmployee(@PathVariable long employeeId) {
         return employeeTripDao.findByIdEmployeeId(employeeId);
+    }
+
+    @RequestMapping(value = "/approve/{employeeId}/{tripId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeTrip update(@PathVariable long employeeId, @PathVariable long tripId) {
+        List<EmployeeTrip> userTrips = employeeTripDao.findByIdEmployeeId(employeeId);
+        EmployeeTrip approvedTrip = null;
+        for (EmployeeTrip trip:userTrips) {
+            if(trip.getTrip().getId() == tripId)
+                approvedTrip = trip;
+        }
+        approvedTrip.setApproved(true);
+
+        ApartmentRoom availableRoom = null;
+
+        for (ApartmentRoom room:approvedTrip.getTrip().getToOffice().getApartmentRooms()) {
+             Set<EmployeeTrip> trips = room.getEmployeeTrips();
+             int tripCount = trips.size();
+             int count = 0;
+             for(EmployeeTrip trip: trips){
+                 if(trip.getTrip().getLeavingDate().compareTo(approvedTrip.getTrip().getReturningDate())>0
+                         || trip.getTrip().getReturningDate().compareTo(approvedTrip.getTrip().getLeavingDate())<0){
+                     count++;
+                 }
+             }
+             if(count == tripCount)
+                 availableRoom = room;
+        }
+
+        approvedTrip.setApartmentRoom(availableRoom);
+
+        return employeeTripDao.save(approvedTrip);
     }
 
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -13,11 +13,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import TripPopup from "./TripPopup.jsx"
 
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -184,7 +186,12 @@ class EmployeeDataTable extends React.Component {
       data: [],
       page: 0,
       rowsPerPage: 5,
+      showInfo :false,
+      activeTrip: null,
     };
+    this.onShowInfo = this.onShowInfo.bind(this)
+    this.onApprove = this.onApprove.bind(this)
+    this.onDecline = this.onDecline.bind(this)
   }
   
 
@@ -199,6 +206,17 @@ class EmployeeDataTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
+  onApprove = (e, trip) =>{
+    this.setState({showApprovalPopup: true, activeTrip: trip})
+  }
+
+  onDecline = (e, trip) =>{
+
+  }
+
+  onShowInfo =(e, trip)=>{
+    this.setState({showInfo: true, activeTrip: trip})
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -208,6 +226,25 @@ class EmployeeDataTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  onCloseEdit=(e)=>{
+    this.setState({showInfo:false})
+  }
+
+  onApprovalSubmit = (trip, wantsAccommodation, wantsCar, wantsTicets) =>{
+    var apt = wantsAccommodation ? 1 : 0;
+    var car = wantsCar ? 1 : 0;
+    var tickets = wantsTicets ? 1 : 0;
+    console.log(trip)
+    var tripChecklist = {
+      apartments: apt,
+      car: car,
+      id: trip.tripChecklist.id,
+      plainTickets: tickets
+    }
+    console.log(trip.id.tripId)
+    console.log( tripChecklist)
+    this.props.approveTravel(trip.id.tripId, tripChecklist)
+  }
 
   render() {
     const { classes } = this.props;
@@ -221,6 +258,9 @@ class EmployeeDataTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, length - page * rowsPerPage);
 
     return (
+      <div>
+      {this.state.showInfo ? <TripPopup trip={this.state.activeTrip} onClose={this.onCloseEdit.bind(this)} /> : null}
+      {this.state.showApprovalPopup ? <TripPopup trip={this.state.activeTrip} onClose={this.onCloseEdit.bind(this)} onApprovalSubmit = {this.onApprovalSubmit.bind(this)} /> : null}
       <Paper className={classes.root}>
         <EnhancedTableToolbar />
         <div className={classes.tableWrapper}>
@@ -250,14 +290,12 @@ class EmployeeDataTable extends React.Component {
                       tabIndex={-1}
                       key={n.id}
                     >
-                      <TableCell align="center" omponent="th" scope="row" >
-                        {n.leavingDate}
-                      </TableCell>
-                      <TableCell align="center">{n.returningDate}</TableCell>
+                      <TableCell align="center" omponent="th" scope="row" >{n.leavingDate.substring(0, 10)}</TableCell>
+                      <TableCell align="center">{n.returningDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">{n.accommodation}</TableCell>
-                      <TableCell align="center" >{ n.approved? <div>True</div> : <div>False</div> }</TableCell>
+                      <TableCell align="center" >{ n.approved? <Button>Approved</Button> : <Button onClick={event => this.onApprove(event, n)}>Approve</Button> }</TableCell>
                       <TableCell align="center">
-                        <IconButton aria-label="Info"><InfoIcon/></IconButton>
+                        <IconButton aria-label="Info" onClick={event => this.onShowInfo(event, n)}><InfoIcon/></IconButton>
                       </TableCell>
                     </TableRow>
                   );
@@ -286,6 +324,7 @@ class EmployeeDataTable extends React.Component {
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
       </Paper>
+      </div>
     );
   }
 }
@@ -300,10 +339,13 @@ EmployeeDataTable.propTypes = {
       })),
       show: PropTypes.bool,
       getAllTravels: PropTypes.func,
+      onShowInfo: PropTypes.func,
       approveTravel: PropTypes.func,
       cancelTravel: PropTypes.func,
       seeTravelDetails: PropTypes.func,
       showInfo: PropTypes.func,
+      onApprove: PropTypes.func,
+      onDecline: PropTypes.func,
       classes: PropTypes.object.isRequired,
 };
 

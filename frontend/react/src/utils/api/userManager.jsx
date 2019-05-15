@@ -1,5 +1,5 @@
 import { getAll, post, put, deleteById } from './http';
-const userManagerUrl = "http://localhost:8080/employeetrip/1735";
+const userManagerUrl = "http://localhost:8080/employee/";
 
 export function removeEmployeeHttp(id) {
   let responseCode;
