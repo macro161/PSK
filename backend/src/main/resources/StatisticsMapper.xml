@@ -30,7 +30,7 @@
             (select CITY from OFFICE where ID = t.FROM_OFFICE_ID) as shortestTripOrigin,
             (select CITY from OFFICE where ID = t.TO_OFFICE_ID) as shortestTripDestination
         from TRIP t, (select
-                          (select ID from TRIP order by DATEDIFF(day, LEAVING_DATE, RETURNING_DATE) desc limit 1) as TRIPID
+                          (select ID from TRIP order by DATEDIFF(day, LEAVING_DATE, RETURNING_DATE) asc limit 1) as TRIPID
                       from dual) tmp
         where t.ID = tmp.TRIPID;
     </select>
@@ -41,7 +41,7 @@
             (select CITY from OFFICE where ID = t.FROM_OFFICE_ID) as longestTripOrigin,
             (select CITY from OFFICE where ID = t.TO_OFFICE_ID) as longestTripDestination
         from TRIP t, (select
-                          (select ID from TRIP order by DATEDIFF(day, LEAVING_DATE, RETURNING_DATE) asc limit 1) as TRIPID
+                          (select ID from TRIP order by DATEDIFF(day, LEAVING_DATE, RETURNING_DATE) desc limit 1) as TRIPID
                       from dual) tmp
         where t.ID = tmp.TRIPID;
     </select>
