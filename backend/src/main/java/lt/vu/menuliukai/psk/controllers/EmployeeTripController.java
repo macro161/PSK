@@ -46,12 +46,20 @@ public class EmployeeTripController {
     public List<EmployeeTripPageDto> get(@PathVariable Long employeeId) {
         List<EmployeeTrip> etList = employeeTripDao.findByIdEmployeeId(employeeId);
         List<EmployeeTripPageDto> list =
-                etList.stream().map(et -> new EmployeeTripPageDto(
+                etList.stream().map(et -> {
+                    if(et.getApartmentRoom()!=null) 
+                        return new EmployeeTripPageDto(
                         et.getId(), et.getEmployee().getFullName(),
                         et.getApartmentRoom().getRoomNo(),
                         et.getTrip().getLeavingDate().toString(), et.getTrip().getReturningDate().toString(),
                         et.getEmployee().getOffice().getAptAddress(), et.getTrip().getFromOffice().getCity(),
-                        et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved()))
+                        et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved());
+                else return new EmployeeTripPageDto(
+                            et.getId(), et.getEmployee().getFullName(),
+                            -1,
+                            et.getTrip().getLeavingDate().toString(), et.getTrip().getReturningDate().toString(),
+                            et.getEmployee().getOffice().getAptAddress(), et.getTrip().getFromOffice().getCity(),
+                            et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved());})
                         .collect(Collectors.toList());
         return list;
     }

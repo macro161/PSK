@@ -19,7 +19,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import TripPopup from "./TripPopup.jsx"
+import ApprovalPopup from "./ApprovalPopup.jsx"
+import InfoPopup from "./InfoPopup.jsx"
 
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -55,7 +56,7 @@ const rows = [
   { id: 'departureTime', numeric: false, disablePadding: false, label: 'Departure time' },
   { id: 'returnTime', numeric: true, disablePadding: false, label: 'Return time' },
   { id: 'accommodation', numeric: true, disablePadding: false, label: 'Accommodation' },
-  { id: 'Status', numeric: true, disablePadding: false, label: 'Status' },
+  { id: 'Status', numeric: true, disablePadding: false, label: '' },
   { id: 'popup', numeric: false, disablePadding: false, label: '' },
 ];
 
@@ -187,6 +188,7 @@ class EmployeeDataTable extends React.Component {
       page: 0,
       rowsPerPage: 5,
       showInfo :false,
+      showApprovalPopup :false,
       activeTrip: null,
     };
     this.onShowInfo = this.onShowInfo.bind(this)
@@ -227,7 +229,11 @@ class EmployeeDataTable extends React.Component {
   };
 
   onCloseEdit=(e)=>{
-    this.setState({showInfo:false})
+    this.setState({showApprovalPopup:false, activeTrip :null})
+  }
+
+  onCloseInfo=(e)=>{
+    this.setState({showInfo:false, activeTrip:null})
   }
 
   onApprovalSubmit = (trip, wantsAccommodation, wantsCar, wantsTicets) =>{
@@ -241,8 +247,6 @@ class EmployeeDataTable extends React.Component {
       id: trip.tripChecklist.id,
       plainTickets: tickets
     }
-    console.log(trip.id.tripId)
-    console.log( tripChecklist)
     this.props.approveTravel(trip.id.tripId, tripChecklist)
   }
 
@@ -259,8 +263,8 @@ class EmployeeDataTable extends React.Component {
 
     return (
       <div>
-      {this.state.showInfo ? <TripPopup trip={this.state.activeTrip} onClose={this.onCloseEdit.bind(this)} /> : null}
-      {this.state.showApprovalPopup ? <TripPopup trip={this.state.activeTrip} onClose={this.onCloseEdit.bind(this)} onApprovalSubmit = {this.onApprovalSubmit.bind(this)} /> : null}
+      {this.state.showInfo ? <InfoPopup trip={this.state.activeTrip} onClose={this.onCloseInfo.bind(this)} /> : null}
+      {this.state.showApprovalPopup ? <ApprovalPopup trip={this.state.activeTrip} onClose={this.onCloseEdit.bind(this)} onApprovalSubmit = {this.onApprovalSubmit.bind(this)} /> : null}
       <Paper className={classes.root}>
         <EnhancedTableToolbar />
         <div className={classes.tableWrapper}>
@@ -285,15 +289,14 @@ class EmployeeDataTable extends React.Component {
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
                       tabIndex={-1}
-                      key={n.id}
+                      key={n.id.tripId}
                     >
                       <TableCell align="center" omponent="th" scope="row" >{n.leavingDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">{n.returningDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">{n.accommodation}</TableCell>
-                      <TableCell align="center" >{ n.approved? <Button>Approved</Button> : <Button onClick={event => this.onApprove(event, n)}>Approve</Button> }</TableCell>
+                      <TableCell align="center" >{ n.approved? <Button disabled>Approved</Button> : <Button onClick={event => this.onApprove(event, n)} color="primary">Approve</Button> }</TableCell>
                       <TableCell align="center">
                         <IconButton aria-label="Info" onClick={event => this.onShowInfo(event, n)}><InfoIcon/></IconButton>
                       </TableCell>
@@ -340,6 +343,8 @@ EmployeeDataTable.propTypes = {
       show: PropTypes.bool,
       getAllTravels: PropTypes.func,
       onShowInfo: PropTypes.func,
+      onCloseEdit: PropTypes.func,
+      onCloseInfo: PropTypes.func,
       approveTravel: PropTypes.func,
       cancelTravel: PropTypes.func,
       seeTravelDetails: PropTypes.func,

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lt.vu.menuliukai.psk.entities.ApartmentRoom;
 import lt.vu.menuliukai.psk.entities.EmployeeTripId;
 import lt.vu.menuliukai.psk.entities.TripChecklist;
+import org.springframework.lang.Nullable;
 
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public class EmployeeTripPageDto {
 
     String fullName;
 
-    Integer roomNr;
+    Integer aptRoom;
 
     String leavingDate;
 
