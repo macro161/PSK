@@ -12,11 +12,11 @@ export default(state = initialState, action) => {
             }
         case 'ADD_EMPLOYEE_TRIPS_BASIC': {
             return {
-                ...state, employeeTrips : [...state.employeeTrips, action.employeeTrip]
+                ...state, trips : [...state.trips, action.employeeTrip]
             }
         }
         case 'ADD_FLIGHT_TO_ET': {
-            return { ...state, employeeTrips: state.employeeTrips.map(et => et.id === action.et ? { ...et, tripChecklist : { ...tripChecklist, plainTickets : 2 } } : et)}
+            return { ...state, trips: state.trips.map(et => et.id === action.et ? { ...et, tripChecklist : { ...tripChecklist, plainTickets : 2 } } : et)}
             }
         case 'APPROVE_TRAVEL':
             return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: true} : travel)}

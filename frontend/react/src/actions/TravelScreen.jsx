@@ -128,8 +128,11 @@ export const groupTrips = (data) => dispatch => {
             if (response.responseCode != 200) {
                 alert("failed to group!")
             }
+            dispatch({
+                type: 'GET_TRIPS',
+                trips: response.responseValue,
+            });
             dispatch({ type: 'SET_LOADING', value: false });
-            getAllTrips();
     });
 }
 export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
@@ -140,6 +143,7 @@ export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
             dispatch({ type: 'SET_LOADING', value: false });
 
         })
+   
 }
 export const clearEmployeeTrip = () => dispatch => {
     dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: {} });

@@ -37,7 +37,7 @@ class GroupingForm extends React.Component {
   };
 
   onSubmit() {
-    this.props.onSubmit(this.state.dateFrom.replace('-', '/'), this.state.dateTo.replace('-', '/'));
+    this.props.onSubmit(new Date(this.state.dateFrom.replace('-', '/')).toISOString(), new Date(this.state.dateTo.replace('-', '/')).toISOString());
   }
 
   render() {
