@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
@@ -33,12 +35,25 @@ public class EmployeeController {
     public Employee get(@PathVariable long id) {
         return Converter.convert(employeeDao, objectName, id);
     }
+
+    private String encryptPassword(String password) {
+        BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
+        return bc.encode(password);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Employee add(@RequestBody Employee employee) {
+    public Employee add(@RequestBody Employee employee) throws ResponseStatusException {
         if (employee.getOffice() == null) {
             employee.setOffice(officeDao.save(new Office()));
         }
+
+        if (employee.getPassword() != null) {
+            employee.setPassword(encryptPassword(employee.getPassword()));
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password can not be empty");
+        }
+
         return employeeDao.save(employee);
     }
 
