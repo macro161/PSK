@@ -1,5 +1,6 @@
 package lt.vu.menuliukai.psk.controllers;
 
+import lt.vu.menuliukai.psk.PskApplication;
 import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.EmployeeDao;
 import lt.vu.menuliukai.psk.dao.OfficeDao;
@@ -47,6 +48,11 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Employee add(@RequestBody Employee employee) throws ResponseStatusException {
+        String role = PskApplication.getUserRole();
+        if (role == null || !role.equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "user needs to have ADMIN role to create users");
+        }
+
         if (employee.getOffice() == null) {
             employee.setOffice(officeDao.save(new Office()));
         }
