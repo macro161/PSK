@@ -51,6 +51,10 @@ public class EmployeeController {
             employee.setOffice(officeDao.save(new Office()));
         }
 
+        if (employee.getRole() == null) {
+            employee.setRole("USER");
+        }
+
         if (employee.getPassword() != null) {
             employee.setPassword(encryptPassword(employee.getPassword()));
         } else {
