@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface EventService {
 
-    boolean addEvent(String email, Event event);
+    boolean addEvent(String email, Date startDate, Date endDate, String eventType);
 
     List<Event> getEvents(String email);
 
-    List<Event> getEvents(String email, Date startDate, Date endDate);
+    List<Event> getEvents(String email, Date intervalStart, Date intervalEnd);
 
-    boolean isFree(String email, Date startDate, Date endDate);
+    boolean isFree(String email, Date intervalStart, Date intervalEnd);
 
-    void deleteEvent(String email, Event event);
+    void deleteEvent(String email, Date startDate);
 
 }

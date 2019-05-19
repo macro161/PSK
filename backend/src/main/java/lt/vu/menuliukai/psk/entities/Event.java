@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.util.Date;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name="EVENT")
 public class Event {
 
@@ -38,5 +40,12 @@ public class Event {
     private Date endDate;
 
     private String eventType;
+
+    public Event(Employee employee, Date startDate, Date endDate, String eventType){
+        this.employee = employee;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.eventType = eventType;
+    }
 
 }

@@ -9,6 +9,7 @@ import lt.vu.menuliukai.psk.dto.EmployeeTripDto;
 import lt.vu.menuliukai.psk.dto.TripsDto;
 import lt.vu.menuliukai.psk.dto.TripsGroupingDto;
 import lt.vu.menuliukai.psk.entities.*;
+import lt.vu.menuliukai.psk.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,8 @@ public class EmployeeTripController {
     @Autowired
     EmployeeDao employeeDao;
 
+    @Autowired
+    EventService eventService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<EmployeeTrip> index() {
@@ -64,6 +67,8 @@ public class EmployeeTripController {
             }
             for (EmployeeTrip empTrip : tripsToGroup) {
                 EmployeeTrip et = new EmployeeTrip(empTrip.getEmployee(), trip, empTrip.getTripChecklist(), empTrip.getApartmentRoom(), empTrip.getHotel(), empTrip.getFlight(), empTrip.getCarRent(), false);
+                eventService.addEvent(et.getEmployee().getEmail(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), "Trip");
+                eventService.deleteEvent(empTrip.getEmployee().getEmail(), empTrip.getTrip().getLeavingDate());
                 employeeTripDao.save(et);
             }
             for (Long id: tripsGroupingDto.getTripsToGroup()){
@@ -89,16 +94,21 @@ public class EmployeeTripController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeTrip add(@RequestBody EmployeeTrip employeeTrip) {
+    public EmployeeTripBasicDto add(@RequestBody EmployeeTrip employeeTrip) {
         employeeTrip.setId(new EmployeeTripId(employeeTrip.getEmployee().getId(), employeeTrip.getTrip().getId()));
-        employeeTripDao.save(employeeTrip);
-        return employeeTrip;
+        eventService.addEvent(employeeTrip.getEmployee().getEmail(), employeeTrip.getTrip().getLeavingDate(), employeeTrip.getTrip().getReturningDate(), "Trip");
+        EmployeeTrip empTrip = employeeTripDao.save(employeeTrip);
+        return new EmployeeTripBasicDto(empTrip.getId(), empTrip.getEmployee().getFullName(), empTrip.getTrip().getLeavingDate(),empTrip.getTrip().getReturningDate(), empTrip.getTrip().getFromOffice().getCity() ,empTrip.getTrip().getToOffice().getCity(), empTrip.getTripChecklist(), Boolean.FALSE);
     }
 
     @RequestMapping(value = "/delete/{employeeId}/{tripId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable long employeeId, @PathVariable long tripId) {
         try {
+            EmployeeTrip employeeTrip = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
             employeeTripDao.deleteById(new EmployeeTripId(employeeId, tripId));
+            if (employeeTrip != null){
+                eventService.deleteEvent(employeeTrip.getEmployee().getEmail(), employeeTrip.getTrip().getLeavingDate());
+            }
         } catch (EmptyResultDataAccessException exception) {
             Converter.throwException(objectName, employeeId);
         }

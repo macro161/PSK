@@ -21,10 +21,10 @@ public class SimpleEventService implements EventService {
     EmployeeDao employeeDao;
 
     @Override
-    public boolean addEvent(String email, Event event) {
+    public boolean addEvent(String email, Date startDate, Date endDate, String eventType) {
         Employee emp = employeeDao.findByEmail(email);
         if (emp != null){
-            event.setEmployee(emp);
+            Event event = new Event(emp, startDate, endDate, eventType);
             eventDao.save(event);
             return true;
         }
@@ -63,10 +63,10 @@ public class SimpleEventService implements EventService {
     }
 
     @Override
-    public void deleteEvent(String email, Event event) {
+    public void deleteEvent(String email, Date startDate) {
         Employee emp = employeeDao.findByEmail(email);
         if (emp != null){
-            event.setEmployee(emp);
+            Event event = eventDao.findByEmployeeAndStartDate(emp, startDate);
             eventDao.delete(event);
         }
     }
