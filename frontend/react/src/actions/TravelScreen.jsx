@@ -145,6 +145,12 @@ export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
         })
    
 }
+export const getEmployeeCalendar = (email) => dispatch => {
+    utils.getEmployeeEvents(email)
+        .then(function (response) {
+            dispatch({ type: 'GET_CALENDAR', calendar: response.responseValue })
+        });
+}
 export const clearEmployeeTrip = () => dispatch => {
     dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: {} });
 }

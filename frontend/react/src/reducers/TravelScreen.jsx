@@ -2,6 +2,7 @@ const initialState = {
     trips: [],
     employeeTrips: [],
     employeeTrip: {},
+    calendar: [],
 };
 
 export default(state = initialState, action) => {
@@ -13,6 +14,11 @@ export default(state = initialState, action) => {
         case 'ADD_EMPLOYEE_TRIPS_BASIC': {
             return {
                 ...state, trips : [...state.trips, action.employeeTrip]
+            }
+        }
+        case 'GET_CALENDAR': {
+            return {
+                ...state, calendar : action.calendar
             }
         }
         case 'ADD_FLIGHT_TO_ET': {

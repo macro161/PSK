@@ -228,6 +228,7 @@ class TravelRegisterForm extends React.Component {
       checkedCar: true,
       checkedAcomondation: true,
     };
+    this.dateCheck.bind(this)
   }
   handleChangeCheckBox(e) {
     this.setState({ [e.target.value]: e.target.checked });
@@ -237,6 +238,7 @@ class TravelRegisterForm extends React.Component {
       selectedEmployee: e.value,
       fullName: e.value.fullName,
     });
+    this.props.getEmployeeCalendar(e.value.email);
   };
   handleChangeLeaving(e) {
     this.setState({
@@ -267,9 +269,32 @@ class TravelRegisterForm extends React.Component {
   onSubmit() {
     this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {plainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
   }
+  dateCheck(from,to,check) {
+
+    var fDate,lDate,cDate;
+    fDate = Date.parse(from);
+    lDate = Date.parse(to);
+    cDate = Date.parse(check);
+
+    if((cDate <= lDate && cDate >= fDate)) {
+        return true;
+    }
+    return false;
+}
+disableDay = (date) => {
+  let calendar = this.props.calendar
+  var c = false;
+  var i;
+    for (i = 0; i < calendar.length; i++) { 
+      if (this.dateCheck(calendar[i].startDate, calendar[i].endDate, date)) {
+        c = true;
+        break;
+       }
+    }
+    return c;
+  }
 
   render() {
-    
     const { classes, theme } = this.props;
     const selectStyles = {
       input: base => ({
@@ -309,11 +334,19 @@ class TravelRegisterForm extends React.Component {
             />
             <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker id="departureTime" value={this.state.departureTime} onChange={this.handleChangeLeavingTime.bind(this)}/>
+              <DatePicker
+                value={this.state.departureTime}
+                onChange={this.handleChangeLeavingTime.bind(this)}
+                minDate={new Date()}
+                shouldDisableDate={this.disableDay.bind(this)}/>
             </MuiPickersUtilsProvider>
             &nbsp;&nbsp;&nbsp;
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker id="returningTime" value={this.state.returningTime} onChange={this.handleChangeReturningTime.bind(this)}/>
+              <DatePicker
+                value={this.state.returningTime}
+                onChange={this.handleChangeReturningTime.bind(this)}
+                minDate={new Date()}
+                shouldDisableDate={this.disableDay.bind(this)}/>
             </MuiPickersUtilsProvider>
             <br /> <br />
             <Select
@@ -353,6 +386,7 @@ class TravelRegisterForm extends React.Component {
               }}
               isClearable
             />
+            <br />
               <FormGroup row>
               <FormControlLabel
           control={
@@ -417,6 +451,8 @@ class TravelRegisterForm extends React.Component {
 }
 
 TravelRegisterForm.propTypes = {
+  calendar: PropTypes.any,
+  getEmployeeCalendar: PropTypes.func,
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   fullName: PropTypes.string,

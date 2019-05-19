@@ -94,6 +94,8 @@ class TravelScreen extends React.Component {
           /> : null}
         {this.state.showRegister ?
           <RegisterForm
+            getEmployeeCalendar={this.props.getEmployeeCalendar}
+            calendar={this.props.calendar}
             onClose={this.onClose.bind(this)}
             onSubmit={this.onSubmit.bind(this)}
             employees={this.props.employees}
@@ -110,6 +112,7 @@ export default connect(
     employees: state.UserManager.employees,
     offices: state.Offices.offices,
     employeeTrip: state.TravelScreen.employeeTrip,
+    calendar: state.TravelScreen.calendar,
   }),
   (dispatch) => bindActionCreators(
     {
@@ -129,6 +132,7 @@ export default connect(
       groupTrips: actions.groupTrips,
       getEmployeeTrip: actions.getEmployeeTrip,
       clearEmployeeTrip:actions.clearEmployeeTrip,
+      getEmployeeCalendar: actions.getEmployeeCalendar,
     }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
@@ -190,5 +194,7 @@ TravelScreen.propTypes = {
   getTrips: PropTypes.func,
   groupTrips: PropTypes.func,
   getEmployeeTrip: PropTypes.func,
-  clearEmployeeTrip:PropTypes.func,
+  clearEmployeeTrip: PropTypes.func,
+  calendar: PropTypes.any,
+  getEmployeeCalendar: PropTypes.func,
 };
