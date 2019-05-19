@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,6 +27,9 @@ public class EmployeeController {
     @Autowired
     private OfficeDao officeDao;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Employee> index() {
         return employeeDao.findAll();
@@ -37,8 +41,7 @@ public class EmployeeController {
     }
 
     private String encryptPassword(String password) {
-        BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
-        return bc.encode(password);
+        return passwordEncoder.encode(password);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
