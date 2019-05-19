@@ -21,6 +21,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib
+import {
+  DatePicker,
+  TimePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
 
 
 const DialogContent = withStyles(theme => ({
@@ -221,7 +228,6 @@ class TravelRegisterForm extends React.Component {
       checkedCar: true,
       checkedAcomondation: true,
     };
-
   }
   handleChangeCheckBox(e) {
     this.setState({ [e.target.value]: e.target.checked });
@@ -243,17 +249,27 @@ class TravelRegisterForm extends React.Component {
     });
   };
 
+  handleChangeLeavingTime(e) {
+    this.setState({
+      departureTime: e
+    });
+  };
+  handleChangeReturningTime(e) {
+    this.setState({
+      returningTime: e
+    });
+  };
   inputChange(e) {
     this.setState({
       [e.target.id]: e.target.value,
     });
   }
-
   onSubmit() {
     this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {plainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
   }
 
   render() {
+    
     const { classes, theme } = this.props;
     const selectStyles = {
       input: base => ({
@@ -291,32 +307,15 @@ class TravelRegisterForm extends React.Component {
               }}
               isClearable
             />
-            <TextField
-              id="departureTime"
-              label="Departure time"
-              className="form-time-travel"
-              type="date"
-              defaultValue={this.state.departureTime}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={this.inputChange.bind(this)}
-            />
-            &nbsp;&nbsp;&nbsp;
-              <TextField
-              id="returningTime"
-              label="Returning time"
-              className="form-time-travel"
-              type="date"
-              margin="normal"
-              defaultValue={this.state.returningTime}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={this.inputChange.bind(this)}
-            />
             <br />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker id="departureTime" value={this.state.departureTime} onChange={this.handleChangeLeavingTime.bind(this)}/>
+            </MuiPickersUtilsProvider>
+            &nbsp;&nbsp;&nbsp;
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker id="returningTime" value={this.state.returningTime} onChange={this.handleChangeReturningTime.bind(this)}/>
+            </MuiPickersUtilsProvider>
+            <br /> <br />
             <Select
               classes={classes}
               styles={selectStyles}
