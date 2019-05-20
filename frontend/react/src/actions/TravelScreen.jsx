@@ -1,30 +1,4 @@
 import * as utils from '../utils/api/organiser'
-export const getAllTravels = (userId) => dispatch => {
-    dispatch({ type: 'SET_LOADING', value: true });
-    let moc = [
-        {
-            id: '1',
-            fullName: 'Tomas Balta',
-            departureTime: '2018-01-01',
-            accomodation: 'Vilnius chata',
-            city: 'Vilnius',
-            approved: true
-        },
-        {
-            id: '2',
-            fullName: 'Jonas Juoda',
-            departureTime: '2018-01-02',
-            accomodation: 'Vilnius chata',
-            city: 'Vilnius',
-            approved: false
-        }
-    ]
-    dispatch({
-        type: 'GET_TRAVELS',
-        travels: moc,
-    });
-    dispatch({ type: 'SET_LOADING', value: false });
-};
 
 export const approveTravel = (travelId) => {
     return {
@@ -68,6 +42,7 @@ export const registerTravel = (employee, leavingDate, returningDate, fromOffice,
         .then(function (response) {
             utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved: false })
                 .then(function (r) {
+                    dispatch({ type: 'ADD_EMPLOYEE_TRIPS_BASIC', employeeTrip: r.responseValue });
                     dispatch({ type: 'SET_LOADING', value: false });
                 });
         });
@@ -153,8 +128,11 @@ export const groupTrips = (data) => dispatch => {
             if (response.responseCode != 200) {
                 alert("failed to group!")
             }
+            dispatch({
+                type: 'GET_TRIPS',
+                trips: response.responseValue,
+            });
             dispatch({ type: 'SET_LOADING', value: false });
-            getAllTrips();
     });
 }
 export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
@@ -165,6 +143,13 @@ export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
             dispatch({ type: 'SET_LOADING', value: false });
 
         })
+   
+}
+export const getEmployeeCalendar = (email) => dispatch => {
+    utils.getEmployeeEvents(email)
+        .then(function (response) {
+            dispatch({ type: 'GET_CALENDAR', calendar: response.responseValue })
+        });
 }
 export const clearEmployeeTrip = () => dispatch => {
     dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: {} });

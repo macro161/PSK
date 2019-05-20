@@ -8,6 +8,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import classNames from 'classnames';
+import DateFnsUtils from "@date-io/date-fns"; 
+import { DateTimePicker, MuiPickersUtilsProvider,} from "@material-ui/pickers";
 
 const styles = theme => ({
   container: {
@@ -58,7 +60,11 @@ class FlightForm extends React.Component {
       [e.target.id]: e.target.value,
     });
   }
-
+  handleChangeDate(e) {
+    this.setState({
+    date: e,
+  })
+}
   onSubmit() {
     this.props.onSubmit(this.props.id, { airport : this.state.airport, date : this.state.date, price: this.state.price, seatNumber:this.state.seatNumber });
   }
@@ -81,18 +87,15 @@ class FlightForm extends React.Component {
             margin="normal"
             onChange={this.inputChange.bind(this)}
           />
-          <TextField
-            id="date"
-            label="Flight time"
-            type="datetime-local"
-            value={this.state.date}
-            onChange={this.inputChange.bind(this)}
-            className={classes.textField}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-          />
+          <MuiPickersUtilsProvider className={classes.textField} utils={DateFnsUtils}>
+            <DateTimePicker
+              className={classes.textField}
+              value={this.state.date}
+              disablePast
+              onChange={this.handleChangeDate.bind(this)}
+              label="Flight time"
+               showTodayButton/>
+            </MuiPickersUtilsProvider>
           <TextField
           id="seatNumber"
           label="Seat number"
