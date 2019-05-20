@@ -6,16 +6,19 @@ import lt.vu.menuliukai.psk.dao.EmployeeTripDao;
 import lt.vu.menuliukai.psk.dao.TripDao;
 import lt.vu.menuliukai.psk.dto.*;
 import lt.vu.menuliukai.psk.entities.*;
+import lt.vu.menuliukai.psk.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +39,8 @@ public class EmployeeTripController {
     @Autowired
     EmployeeDao employeeDao;
 
+    @Autowired
+    EventService eventService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<EmployeeTrip> index() {
@@ -69,15 +74,16 @@ public class EmployeeTripController {
     }
 
     @RequestMapping(value = "/group", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public boolean group(@RequestBody TripsGroupingDto tripsGroupingDto) {
+    public List<TripsDto> group(@RequestBody TripsGroupingDto tripsGroupingDto) {
         Trip t = tripDao.findById(tripsGroupingDto.getTripsToGroup().get(0)).orElse(null);
         if (t != null){
             Trip trip = new Trip();
             trip.setLeavingDate(tripsGroupingDto.getDateFrom());
-            trip.setReturningDate(tripsGroupingDto.getDateTo());
+            trip.setLeavingDate(DateUtils.addHours(tripsGroupingDto.getDateFrom(), 3));
+            trip.setReturningDate(DateUtils.addHours(tripsGroupingDto.getDateTo(), 3));
             trip.setFromOffice(t.getFromOffice());
             trip.setToOffice(t.getToOffice());
-            trip.setOrganiser(t.getOrganiser());
+            trip.setOrganiser(tripsGroupingDto.getOrganiser());
             tripDao.save(trip);
             List<EmployeeTrip> tripsToGroup = new ArrayList<>();
             for (Long id : tripsGroupingDto.getTripsToGroup()) {
@@ -85,6 +91,8 @@ public class EmployeeTripController {
             }
             for (EmployeeTrip empTrip : tripsToGroup) {
                 EmployeeTrip et = new EmployeeTrip(empTrip.getEmployee(), trip, empTrip.getTripChecklist(), empTrip.getApartmentRoom(), empTrip.getHotel(), empTrip.getFlight(), empTrip.getCarRent(), false);
+                eventService.addEvent(et.getEmployee().getEmail(), et.getTrip().getLeavingDate(), et.getTrip().getReturningDate(), "Trip");
+                eventService.deleteEvent(empTrip.getEmployee().getEmail(), empTrip.getTrip().getLeavingDate());
                 employeeTripDao.save(et);
             }
             for (Long id: tripsGroupingDto.getTripsToGroup()){
@@ -95,7 +103,7 @@ public class EmployeeTripController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "One of trip to group doesnt exist");
         }
-        return true;
+        return getTrips();
     }
 
     @RequestMapping(value = "/employees/{employeeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -145,16 +153,24 @@ public class EmployeeTripController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeTrip add(@RequestBody EmployeeTrip employeeTrip) {
+    public TripsDto add(@RequestBody EmployeeTrip employeeTrip) {
         employeeTrip.setId(new EmployeeTripId(employeeTrip.getEmployee().getId(), employeeTrip.getTrip().getId()));
-        employeeTripDao.save(employeeTrip);
-        return employeeTrip;
+        eventService.addEvent(employeeTrip.getEmployee().getEmail(), employeeTrip.getTrip().getLeavingDate(), employeeTrip.getTrip().getReturningDate(), "Trip");
+        EmployeeTrip empTrip = employeeTripDao.save(employeeTrip);
+        return new TripsDto(empTrip.getTrip().getId(), empTrip.getTrip().getOrganiser().getId(), empTrip.getTrip().getLeavingDate(), empTrip.getTrip().getReturningDate(), empTrip.getTrip().getFromOffice().getCity(), empTrip.getTrip().getToOffice().getCity(),
+                employeeTripDao.findByIdTripId(empTrip.getTrip().getId()).stream()
+                        .map(et -> new EmployeeTripDto(et.getEmployee().getId(), et.getEmployee().getFullName(),
+                                et.getTripChecklist(), et.getApproved())).collect(Collectors.toList()));
     }
 
     @RequestMapping(value = "/delete/{employeeId}/{tripId}", method = RequestMethod.DELETE)
     public void delete(@PathVariable long employeeId, @PathVariable long tripId) {
         try {
+            EmployeeTrip employeeTrip = employeeTripDao.findById(new EmployeeTripId(employeeId, tripId)).orElse(null);
             employeeTripDao.deleteById(new EmployeeTripId(employeeId, tripId));
+            if (employeeTrip != null){
+                eventService.deleteEvent(employeeTrip.getEmployee().getEmail(), employeeTrip.getTrip().getLeavingDate());
+            }
         } catch (EmptyResultDataAccessException exception) {
             Converter.throwException(objectName, employeeId);
         }
@@ -225,7 +241,7 @@ public class EmployeeTripController {
     public List<TripsDto> getTrips(){
         Iterable<Trip> trips = tripDao.findAll();
         return StreamSupport.stream(trips.spliterator(), false).map(trip ->
-                new TripsDto(trip.getId(), trip.getLeavingDate(), trip.getReturningDate(), trip.getFromOffice().getCity(), trip.getToOffice().getCity(),
+                new TripsDto(trip.getId(), trip.getOrganiser().getId(),trip.getLeavingDate(), trip.getReturningDate(), trip.getFromOffice().getCity(), trip.getToOffice().getCity(),
                         employeeTripDao.findByIdTripId(trip.getId()).stream()
                                 .map(et -> new EmployeeTripDto(et.getEmployee().getId(), et.getEmployee().getFullName(),
                                         et.getTripChecklist(), et.getApproved())).collect(Collectors.toList()))).collect(Collectors.toList());

@@ -37,7 +37,7 @@ class GroupingForm extends React.Component {
   };
 
   onSubmit() {
-    this.props.onSubmit(this.state.dateFrom.replace('-', '/'), this.state.dateTo.replace('-', '/'));
+    this.props.onSubmit(new Date(this.state.dateFrom.replace('-', '/')).toISOString(), new Date(this.state.dateTo.replace('-', '/')).toISOString());
   }
 
   render() {
@@ -61,7 +61,7 @@ class GroupingForm extends React.Component {
               >
                 {this.props.datesFrom.map(function (date) {
                   const d = new Date(date);
-                  return <MenuItem  key = {d} value={d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}>{d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}</MenuItem>
+                  return <MenuItem  key = {d} value={d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()}>{d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()}</MenuItem>
                 })}
             </Select>
           </FormControl>
@@ -74,7 +74,7 @@ class GroupingForm extends React.Component {
               >
                 {this.props.datesTo.map(function (date) {
                   const d = new Date(date);
-                  return <MenuItem key = {d} value={d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}>{d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}</MenuItem>
+                  return <MenuItem key = {d} value={d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()}>{d.getFullYear() + '-' + (d.getMonth()+1)  + '-' + d.getDate()}</MenuItem>
                 })}
             </Select>
           </FormControl>

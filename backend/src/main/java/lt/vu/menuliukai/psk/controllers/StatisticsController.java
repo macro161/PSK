@@ -2,7 +2,10 @@ package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.dao.StatisticsDao;
 import lt.vu.menuliukai.psk.entities.Statistics;
+import lt.vu.menuliukai.psk.service.JPAStatisticsService;
+import lt.vu.menuliukai.psk.service.MyBatisStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class StatisticsController {
 
     @Autowired
-    private StatisticsDao statisticsDao;
+    public StatisticsController(@Qualifier("StatisticsService") StatisticsDao statisticsDao){
+        this.statisticsDao = statisticsDao;
+    }
+
+    private final StatisticsDao statisticsDao;
+
+//    @Autowired
+//    private JPAStatisticsService jpaStatisticsService;
+//
+//    @Autowired
+//    private MyBatisStatisticsService myBatisStatisticsService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Statistics index() {
