@@ -35,6 +35,37 @@ export function registerTripHttp(trip) {
             };
         });
 }
+export function deleteTripHttp(tripId) {
+    let responseCode;
+    return deleteById(tripUrl, tripId)
+        .then(function (response) {
+            if (responseCode != null) {
+                return response
+            }
+        })
+        .then(function (responseValue) {
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
+export function editTripHttp(tripId, departureDate, returnDate) {
+    let responseCode;
+    return post(tripUrl + "change/" + tripId + "/" + departureDate + "/" + returnDate)
+        .then(function (response) {
+            responseCode = response.status;
+            if (responseCode === 200) {
+                return response.json();
+            }
+        })
+        .then(function (responseValue) {
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
 
 export function registerEmployeeTripHttp(empTrip) {
     let responseCode;

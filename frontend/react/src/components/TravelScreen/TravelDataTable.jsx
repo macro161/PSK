@@ -12,7 +12,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -30,6 +29,12 @@ import CarRentForm from './CarRentForm';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import GroupingForm from './GroupingForm';
 import AccomodationForm from './AccomodationForm';
+import green from '@material-ui/core/colors/green';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -200,12 +205,22 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit,
 
   },
   table: {
     minWidth: 1020,
   },
+  margin: {
+    marginTop: theme.spacing.unit
+  },
+  check: {
+    color: green[600],
+    '&$checked': {
+      color: green[500],
+    },
+  },
+  checked: {},
   tableWrapper: {
     overflowX: 'auto',
   },
@@ -223,7 +238,6 @@ const styles = theme => ({
 
 const EnhancedTableRow = withStyles({
   root: {
-    
     "&$selected": {
       backgroundColor: "rgba(102,255,153,0.3) !important"
     },
@@ -271,6 +285,7 @@ class TravelDataTable extends React.Component {
       group: false,
       datesTo: [],
       datesFrom: [],
+      showAll: true,
     };
     this.onCloseAdd.bind(this);
     this.addFlight.bind(this);
@@ -284,6 +299,7 @@ class TravelDataTable extends React.Component {
     this.onEditFlight.bind(this);
     this.onEditCar.bind(this);
     this.onEditAccomodation.bind(this);
+    this.deleteTrip.bind(this);
 
   }
   componentWillReceiveProps(props){
@@ -306,7 +322,9 @@ class TravelDataTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
-
+  deleteTrip = (tripId) => {
+    this.props.removeTrip(tripId);
+  }
   handleClick = (event, id) => {
     const { selectedTrips } = this.state;
     const selectedIndex = selectedTrips.indexOf(id);
@@ -343,7 +361,9 @@ class TravelDataTable extends React.Component {
       collapse: c
     });
   }
-
+  handleChangeBox = name => event => {
+    this.setState({showAll: event.target.checked });
+  };
   onEditFlight = (id) => {
     this.props.getEmployeeTrip(id.tripId, id.employeeId);
     this.setState({
@@ -394,7 +414,7 @@ class TravelDataTable extends React.Component {
   }
   
   afterGroup = (dateFrom, dateTo) => {
-    this.props.groupTrips({trips_to_group : this.state.selectedTrips, dateFrom : new Date(dateFrom).toISOString(), dateTo : new Date(dateTo).toISOString() });
+    this.props.groupTrips({organiser: this.props.organiser.id, trips_to_group : this.state.selectedTrips, dateFrom : new Date(dateFrom).toISOString(), dateTo : new Date(dateTo).toISOString() });
     this.setState({
       datesTo: [],
       datesFrom: [],
@@ -496,7 +516,12 @@ class TravelDataTable extends React.Component {
   render() {
     const { classes } = this.props;
     const { order, orderBy, selectedTrips, rowsPerPage, page } = this.state;
-    let data = this.props.trips;
+    var data;
+    if (this.state.showAll) {
+      data = this.props.trips;
+    } else {
+      data = this.props.trips.filter(trip => trip.organiserId == this.props.organiser.id)
+    }
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
@@ -505,6 +530,22 @@ class TravelDataTable extends React.Component {
         {this.state.addCar ? <CarRentForm employeeTrip={this.state.editCar ? this.props.employeeTrip : {id : {tripId : 0, employeeId:0}}} onSubmit={this.onSubmitCar} onClose={this.onCloseAdd.bind(this)} id={this.state.addId} fake={this.props.employeeTrip}/> : null}
         {this.state.addHotel ? <AccomodationForm employeeTrip={this.props.employeeTrip} onSubmit={this.onSubmitHotel} onClose={this.onCloseAdd.bind(this)} id={this.state.addId}/> : null}
         {this.state.group ? <GroupingForm onSubmit = {this.afterGroup} onClose={this.onCloseGroup.bind(this)} datesFrom = {this.state.datesFrom} datesTo = {this.state.datesTo} /> : null}
+        <FormControlLabel
+          classes={{ root: classes.margin }}
+          control={
+            <Checkbox
+              checked={this.state.showAll}
+              onChange={this.handleChangeBox('showAll')}
+              value="showAll"
+              classes={{
+                root: classes.check,
+                checked: classes.checked,
+              }}
+            />
+            }
+          labelPlacement="start"
+          label="Show all"
+        />
         <Paper className={classes.root}>
           <EnhancedTableToolbar numSelected={selectedTrips.length} group={this.group}/>
           <div className={classes.tableWrapper}>
@@ -611,6 +652,7 @@ TravelDataTable.propTypes = {
   classes: PropTypes.object.isRequired,
   trips: PropTypes.arrayOf(PropTypes.shape({
     tripId: PropTypes.any,
+    organiserId: PropTypes.any,
     leavingDate: PropTypes.any,
     returningDate: PropTypes.any,
     leavingOffice: PropTypes.string,
@@ -640,5 +682,6 @@ TravelDataTable.propTypes = {
   groupTrips: PropTypes.func,
   getEmployeeTrip: PropTypes.func,
   clearEmployeeTrip: PropTypes.func,
+  organiser: PropTypes.any,
 };
 export default withStyles(styles)(TravelDataTable)

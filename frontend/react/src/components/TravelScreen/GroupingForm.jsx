@@ -61,7 +61,7 @@ class GroupingForm extends React.Component {
               >
                 {this.props.datesFrom.map(function (date) {
                   const d = new Date(date);
-                  return <MenuItem  key = {d} value={d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}>{d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}</MenuItem>
+                  return <MenuItem  key = {d} value={d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()}>{d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()}</MenuItem>
                 })}
             </Select>
           </FormControl>
@@ -74,7 +74,7 @@ class GroupingForm extends React.Component {
               >
                 {this.props.datesTo.map(function (date) {
                   const d = new Date(date);
-                  return <MenuItem key = {d} value={d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}>{d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()}</MenuItem>
+                  return <MenuItem key = {d} value={d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate()}>{d.getFullYear() + '-' + (d.getMonth()+1)  + '-' + d.getDate()}</MenuItem>
                 })}
             </Select>
           </FormControl>

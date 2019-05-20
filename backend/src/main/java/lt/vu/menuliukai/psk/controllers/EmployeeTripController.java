@@ -58,11 +58,11 @@ public class EmployeeTripController {
         if (t != null){
             Trip trip = new Trip();
             trip.setLeavingDate(tripsGroupingDto.getDateFrom());
-            trip.setLeavingDate(DateUtils.addHours(DateUtils.round(tripsGroupingDto.getDateFrom(), Calendar.DAY_OF_MONTH), 3));
-            trip.setReturningDate(DateUtils.addHours(DateUtils.round(tripsGroupingDto.getDateTo(), Calendar.DAY_OF_MONTH), 3));
+            trip.setLeavingDate(DateUtils.addHours(tripsGroupingDto.getDateFrom(), 3));
+            trip.setReturningDate(DateUtils.addHours(tripsGroupingDto.getDateTo(), 3));
             trip.setFromOffice(t.getFromOffice());
             trip.setToOffice(t.getToOffice());
-            trip.setOrganiser(t.getOrganiser());
+            trip.setOrganiser(tripsGroupingDto.getOrganiser());
             tripDao.save(trip);
             List<EmployeeTrip> tripsToGroup = new ArrayList<>();
             for (Long id : tripsGroupingDto.getTripsToGroup()) {
@@ -101,7 +101,7 @@ public class EmployeeTripController {
         employeeTrip.setId(new EmployeeTripId(employeeTrip.getEmployee().getId(), employeeTrip.getTrip().getId()));
         eventService.addEvent(employeeTrip.getEmployee().getEmail(), employeeTrip.getTrip().getLeavingDate(), employeeTrip.getTrip().getReturningDate(), "Trip");
         EmployeeTrip empTrip = employeeTripDao.save(employeeTrip);
-        return new TripsDto(empTrip.getTrip().getId(), empTrip.getTrip().getLeavingDate(), empTrip.getTrip().getReturningDate(), empTrip.getTrip().getFromOffice().getCity(), empTrip.getTrip().getToOffice().getCity(),
+        return new TripsDto(empTrip.getTrip().getId(), empTrip.getTrip().getOrganiser().getId(), empTrip.getTrip().getLeavingDate(), empTrip.getTrip().getReturningDate(), empTrip.getTrip().getFromOffice().getCity(), empTrip.getTrip().getToOffice().getCity(),
                 employeeTripDao.findByIdTripId(empTrip.getTrip().getId()).stream()
                         .map(et -> new EmployeeTripDto(et.getEmployee().getId(), et.getEmployee().getFullName(),
                                 et.getTripChecklist(), et.getApproved())).collect(Collectors.toList()));
@@ -185,7 +185,7 @@ public class EmployeeTripController {
     public List<TripsDto> getTrips(){
         Iterable<Trip> trips = tripDao.findAll();
         return StreamSupport.stream(trips.spliterator(), false).map(trip ->
-                new TripsDto(trip.getId(), trip.getLeavingDate(), trip.getReturningDate(), trip.getFromOffice().getCity(), trip.getToOffice().getCity(),
+                new TripsDto(trip.getId(), trip.getOrganiser().getId(),trip.getLeavingDate(), trip.getReturningDate(), trip.getFromOffice().getCity(), trip.getToOffice().getCity(),
                         employeeTripDao.findByIdTripId(trip.getId()).stream()
                                 .map(et -> new EmployeeTripDto(et.getEmployee().getId(), et.getEmployee().getFullName(),
                                         et.getTripChecklist(), et.getApproved())).collect(Collectors.toList()))).collect(Collectors.toList());
