@@ -18,7 +18,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import * as actions from '../../actions/EmployeeScreen';
 import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
@@ -26,7 +25,6 @@ import ApprovalPopup from "./ApprovalPopup.jsx"
 import InfoPopup from "./InfoPopup.jsx"
 import compose from 'recompose/compose'
 
-let counter = 0;
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -52,10 +50,10 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'departureTime', numeric: false, disablePadding: false, label: 'Departure time' },
-  { id: 'returnTime', numeric: true, disablePadding: false, label: 'Return time' },
-  { id: 'accommodation', numeric: true, disablePadding: false, label: 'Accommodation' },
-  { id: 'Status', numeric: true, disablePadding: false, label: '' },
+  { id: 'leavingDate', numeric: false, disablePadding: false, label: 'Departure date' },
+  { id: 'returningDate', numeric: false, disablePadding: false, label: 'Return date' },
+  { id: 'accommodation', numeric: false, disablePadding: false, label: 'Accommodation' },
+  { id: 'status', numeric: false, disablePadding: false, label: '' },
   { id: 'popup', numeric: false, disablePadding: false, label: '' },
 ];
 
@@ -182,10 +180,10 @@ class EmployeeDataTable extends React.Component {
     super(props);
     this.state = {
       order: 'asc',
-      orderBy: 'calories',
+      orderBy: 'departureTime',
       data: [],
       page: 0,
-      rowsPerPage: 5,
+      rowsPerPage: 10,
       showInfo :false,
       showApprovalPopup :false,
       activeTrip: null,
@@ -197,6 +195,7 @@ class EmployeeDataTable extends React.Component {
   
 
   handleRequestSort = (event, property) => {
+    
     const orderBy = property;
     let order = 'desc';
 
@@ -231,7 +230,7 @@ class EmployeeDataTable extends React.Component {
     this.setState({showInfo:false, activeTrip:null})
   }
 
-  onDecline = (trip) =>{
+  onDecline = (e, trip) =>{
     this.props.declineTravel(trip.id.tripId)
   }
 
@@ -261,16 +260,16 @@ class EmployeeDataTable extends React.Component {
     return (
       <div>
       {this.state.showInfo ? <InfoPopup trip={this.state.activeTrip} onClose={this.onCloseInfo.bind(this)} /> : null}
-      {this.state.showApprovalPopup ? <ApprovalPopup trip={this.state.activeTrip} onDecline={this.onDecline.bind(this)} onClose={this.onCloseEdit.bind(this)} onApprovalSubmit = {this.onApprovalSubmit.bind(this)} /> : null}
+      {this.state.showApprovalPopup ? <ApprovalPopup trip={this.state.activeTrip} onClose={this.onCloseEdit.bind(this)} onApprovalSubmit = {this.onApprovalSubmit.bind(this)} /> : null}
       <Paper className={classes.root}>
         <EnhancedTableToolbar />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
           <colgroup>
-            <col width="20%" />
-            <col width="20%" />
+            <col width="15%" />
+            <col width="15%" />
             <col width="40%" />
-            <col width="10%" />
+            <col width="20%" />
             <col width="10%" />
           </colgroup>
             <EnhancedTableHead
@@ -293,7 +292,9 @@ class EmployeeDataTable extends React.Component {
                       <TableCell align="center" omponent="th" scope="row" >{n.leavingDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">{n.returningDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">{n.accommodation}</TableCell>
-                      <TableCell align="center" >{ n.approved? <Button disabled>Approved</Button> : <Button onClick={event => this.onApprove(event, n)} color="primary">Approve</Button> }</TableCell>
+                      <TableCell align="center" >{ n.approved? <Button disabled>Approved</Button> : 
+                        <div><Button onClick={event => this.onApprove(event, n)} color="primary">Approve</Button>
+                        <Button onClick={event => this.onDecline(event, n)} color="secondary">Decline</Button></div> }</TableCell>
                       <TableCell align="center">
                         <IconButton aria-label="Info" onClick={event => this.onShowInfo(event, n)}><InfoIcon/></IconButton>
                       </TableCell>

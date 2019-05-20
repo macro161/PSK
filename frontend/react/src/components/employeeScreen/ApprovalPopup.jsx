@@ -62,11 +62,6 @@ class ApprovalPopup extends React.Component{
         this.props.onClose();
     }
 
-    onDecline = (e) =>{
-      this.props.onDecline(this.props.trip);
-      this.props.onClose()
-  }
-
     render(){
         const { classes } = this.props;
         return(
@@ -115,8 +110,8 @@ class ApprovalPopup extends React.Component{
         </ListItem>
       </List>
             <DialogActions>
-            <Button onClick={this.onDecline.bind(this)} color="secondary">
-              Decline
+            <Button onClick={this.onCloseEdit.bind(this)} color="primary">
+              Cancel
             </Button>
             <Button onClick={this.onSubmit.bind(this)} color="primary">
               Approve
