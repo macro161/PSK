@@ -29,7 +29,34 @@ export default(state = initialState, action) => {
             }
         }
         case 'ADD_FLIGHT_TO_ET': {
-            return { ...state, trips: state.trips.map(et => et.id === action.et ? { ...et, tripChecklist : { ...tripChecklist, plainTickets : 2 } } : et)}
+
+            return {
+                ...state, trips: state.trips.map(trip => trip.tripId === action.et.tripId ?
+                    {
+                        ...trip, employeeTrips: trip.employeeTrips.map(et => et.employeeId === action.et.employeeId ?
+                            { ...et, tripChecklist: { ...et.tripChecklist, plainTickets: 2 } } : et)
+                    } : trip)
+            }
+        }
+        case 'ADD_HOTEL_TO_ET': {
+
+            return {
+                ...state, trips: state.trips.map(trip => trip.tripId === action.et.tripId ?
+                    {
+                        ...trip, employeeTrips: trip.employeeTrips.map(et => et.employeeId === action.et.employeeId ?
+                            { ...et, tripChecklist: { ...et.tripChecklist, apartments: 2 } } : et)
+                    } : trip)
+            }
+            }
+        case 'ADD_CAR_TO_ET': {
+
+            return {
+                ...state, trips: state.trips.map(trip => trip.tripId === action.et.tripId ?
+                    {
+                        ...trip, employeeTrips: trip.employeeTrips.map(et => et.employeeId === action.et.employeeId ?
+                            { ...et, tripChecklist: { ...et.tripChecklist, car: 2 } } : et)
+                    } : trip)
+            }
             }
         case 'APPROVE_TRAVEL':
             return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: true} : travel)}
