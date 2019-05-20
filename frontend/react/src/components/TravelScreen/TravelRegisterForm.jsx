@@ -21,13 +21,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import DateFnsUtils from "@date-io/date-fns"; // choose your lib
-import {
-  DatePicker,
-  TimePicker,
-  DateTimePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns"; 
+import { DatePicker, MuiPickersUtilsProvider,} from "@material-ui/pickers";
 
 
 const DialogContent = withStyles(theme => ({
@@ -213,6 +208,7 @@ class TravelRegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      today: new Date().toISOString().substr(0, 10),
       leavingOffice: null,
       destinationOffice: null,
       selectedEmployee: null,
@@ -253,7 +249,8 @@ class TravelRegisterForm extends React.Component {
 
   handleChangeLeavingTime(e) {
     this.setState({
-      departureTime: e
+      departureTime: e,
+      returningTime: e
     });
   };
   handleChangeReturningTime(e) {
@@ -281,24 +278,39 @@ class TravelRegisterForm extends React.Component {
     }
     return false;
 }
-disableDay = (date) => {
-  let calendar = this.props.calendar
-  var c = false;
-  var i;
+  disableDayTo = (date) => {
+    const { departureTime } = this.state
+    let calendar = this.props.calendar
+    var c = false;
+    var i;
     for (i = 0; i < calendar.length; i++) { 
-      if (this.dateCheck(calendar[i].startDate, calendar[i].endDate, date)) {
+      if (this.dateCheck(departureTime, date, calendar[i].startDate)) {
         c = true;
         break;
-       }
+      }
     }
-    return c;
+      return c;
   }
+  disableDayFrom = (date) => {
+    let calendar = this.props.calendar
+    var c = false;
+
+    var i;
+      for (i = 0; i < calendar.length; i++) { 
+        if (this.dateCheck(calendar[i].startDate, calendar[i].endDate, date)) {
+          c = true;
+          break;
+         }
+      }
+      return c;
+    }
 
   render() {
     const { classes, theme } = this.props;
     const selectStyles = {
       input: base => ({
         ...base,
+        margin: theme.spacing.unit,
         color: theme.palette.text.primary,
         '& input': {
           font: 'inherit',
@@ -321,6 +333,7 @@ disableDay = (date) => {
                 value: emp,
                 label: emp.fullName,
               }))}
+              margin="normal"
               components={components}
               value={this.state.selectedEmployee == null ? null : { value: this.state.selectedEmployee, label: this.state.selectedEmployee.fullName }}
               onChange={this.handleChange.bind(this)}
@@ -335,18 +348,22 @@ disableDay = (date) => {
             <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DatePicker
+                label = "Departure date"
                 value={this.state.departureTime}
                 onChange={this.handleChangeLeavingTime.bind(this)}
-                minDate={new Date()}
-                shouldDisableDate={this.disableDay.bind(this)}/>
+                disablePast
+                disabled = {this.state.selectedEmployee == null}
+                shouldDisableDate={this.disableDayFrom.bind(this)}/>
             </MuiPickersUtilsProvider>
             &nbsp;&nbsp;&nbsp;
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <DatePicker
                 value={this.state.returningTime}
                 onChange={this.handleChangeReturningTime.bind(this)}
-                minDate={new Date()}
-                shouldDisableDate={this.disableDay.bind(this)}/>
+                minDate={this.state.departureTime}
+                shouldDisableDate={this.disableDayTo.bind(this)}
+                disabled = {this.state.today == this.state.departureTime}
+                label="Return date"/>
             </MuiPickersUtilsProvider>
             <br /> <br />
             <Select
@@ -356,6 +373,7 @@ disableDay = (date) => {
                 value: off,
                 label: off.city,
               }))}
+              margin="normal"
               components={components}
               value={this.state.leavingOffice == null ? null : {value : this.state.leavingOffice, label : this.state.leavingOffice.city}}
               onChange={this.handleChangeLeaving.bind(this)}
@@ -375,6 +393,7 @@ disableDay = (date) => {
                 value: off,
                 label: off.city,
               }))}
+              margin="normal"
               components={components}
               value={this.state.destinationOffice == null ? null : {value : this.state.destinationOffice, label : this.state.destinationOffice.city}}
               onChange={this.handleChangeDestination.bind(this)}
