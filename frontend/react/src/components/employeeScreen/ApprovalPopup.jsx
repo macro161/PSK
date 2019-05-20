@@ -46,7 +46,7 @@ class ApprovalPopup extends React.Component{
     }
 
     onSubmit(e){
-        this.props.onApprovalSubmit(this.props.trip, this.state.wantsAccommodation, this.state.wantsCar, this.state.wantsTicets);
+        this.props.onApprovalSubmit(this.props.trip, this.state.wantsAccommodation, this.state.wantsCar, this.state.wantsTickets);
         this.props.onClose();
     }
 
@@ -77,7 +77,7 @@ class ApprovalPopup extends React.Component{
           <ListItemIcon>
             <HotelIcon />
           </ListItemIcon>
-          <ListItemText primary="Hotel" />
+          <ListItemText primary="Accommodation" />
           <ListItemSecondaryAction>
             <Switch
               onChange={event => this.handleChange(event, "wantsAccommodation")}
