@@ -4,18 +4,10 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions/EmployeeScreen';
 import DataTable from './EmployeeDatatable';
-import InfoScreen from  './InfoScreen';
 
-const initialState = {
-    departureTime : '',
-    accomodation : '',
-    city : '',
-    show: false
-  };
 class EmployeeScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
     this.props.getAllTravels();
   }
 
@@ -28,21 +20,13 @@ class EmployeeScreen extends React.Component {
   }
   
   render() {
-    console.log(this.props.travels)
     return (
-
       <div className='page-frame'>
         <title>Travels</title>
         <h2>Your travels</h2>
         <hr />
-        <div>
-          {this.state.show ? <InfoScreen onClose={this.onClose.bind(this)} /> : null}
-        </div>
         <DataTable 
-            travels={this.props.travels}
-            approveTravel={this.props.approveTravel}
-            showInfo={this.showInfo.bind(this)}
-            show={this.state.show}/> 
+            travels={this.props.travels}/>
       </div>
     );
   }
@@ -53,7 +37,6 @@ export default connect(
   (dispatch) => bindActionCreators(
     {
       getAllTravels: actions.getAllTravels,
-      approveTravel: actions.approveTravel,
   }, dispatch))(EmployeeScreen);
 
 EmployeeScreen.propTypes = {
