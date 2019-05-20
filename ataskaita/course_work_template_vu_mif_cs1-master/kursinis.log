@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (MiKTeX 2.9.7000 64-bit) (preloaded format=xelatex 2019.3.20)  20 MAR 2019 20:47
+This is XeTeX, Version 3.14159265-2.6-0.999991 (MiKTeX 2.9.7000 64-bit) (preloaded format=xelatex 2019.3.20)  20 MAY 2019 18:19
 entering extended mode
 **./kursinis.tex
 (kursinis.tex
@@ -1064,39 +1064,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@toc=\write4
 \openout4 = `kursinis.toc'.
 
- [1
-
-] [2
-
-] [3
-
-] [4] [5
-
-] [6
-
-] [7
-
-] [8
-
-] [9
-
-] [10
-
-] [11
-
-]
-(kursinis.aux)
+ [1] [2] [3] [4] (kursinis.aux)
 Package logreq Info: Writing requests to 'kursinis.run.xml'.
 \openout1 = `kursinis.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23483 strings out of 427748
- 469126 string characters out of 3146822
- 960215 words of memory out of 3000000
- 27321 multiletter control sequences out of 15000+200000
+ 23484 strings out of 427748
+ 469137 string characters out of 3146822
+ 959214 words of memory out of 3000000
+ 27322 multiletter control sequences out of 15000+200000
  539872 words of font info for 66 fonts, out of 3000000 for 9000
  1328 hyphenation exceptions out of 8191
  67i,11n,96p,906b,792s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on kursinis.pdf (12 pages).
+Output written on kursinis.pdf (5 pages).
