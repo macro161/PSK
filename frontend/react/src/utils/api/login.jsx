@@ -12,7 +12,6 @@ export function Log(email, password) {
       }
     })
     .then(function (responseValue) {
-      console.log(responseValue)
       return {
         responseCode,
         responseValue

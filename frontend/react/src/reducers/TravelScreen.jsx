@@ -17,7 +17,15 @@ export default(state = initialState, action) => {
                 list.splice(ind, 1)
                 return {
                     ...state, trips: list
-                }
+            }
+        case 'EDIT_TRIP':
+                const updatedTrips = state.trips.map(trip => {
+                    if(ptrip.tripId === action.trip.tripId){
+                      return action.trip
+                    }
+                    return trip
+                  })
+                  return {...state, trips: updatedTrips}
         case 'ADD_EMPLOYEE_TRIPS_BASIC': {
             return {
                 ...state, trips : [...state.trips, action.employeeTrip]
