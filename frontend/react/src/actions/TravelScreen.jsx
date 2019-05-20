@@ -1,24 +1,12 @@
 import * as utils from '../utils/api/organiser'
 
-export const approveTravel = (travelId) => {
-    return {
-        type: 'APPROVE_TRAVEL',
-        Id: travelId,
-    }
-};
-
-export const cancelTravel = (travelId) => {
-    return {
-        type: 'CANCEL_TRAVEL',
-        Id: travelId,
-    }
-};
-
-export const removeTravel = (travelId) => {
-    return {
-        type: 'REMOVE_TRAVEL',
-        Id: travelId,
-    }
+export const removeTrip = (id) => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.deleteTripHttp(id)
+        .then(function (response) {
+            dispatch({ type: "DELETE_TRIP", id });
+            dispatch({ type: 'SET_LOADING', value: false });   
+        })
 };
 
 export const editTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch => {

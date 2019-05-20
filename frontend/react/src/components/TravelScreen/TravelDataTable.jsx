@@ -284,6 +284,7 @@ class TravelDataTable extends React.Component {
     this.onEditFlight.bind(this);
     this.onEditCar.bind(this);
     this.onEditAccomodation.bind(this);
+    this.deleteTrip.bind(this);
 
   }
   componentWillReceiveProps(props){
@@ -306,7 +307,9 @@ class TravelDataTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
-
+  deleteTrip = (tripId) => {
+    this.props.removeTrip(tripId);
+  }
   handleClick = (event, id) => {
     const { selectedTrips } = this.state;
     const selectedIndex = selectedTrips.indexOf(id);

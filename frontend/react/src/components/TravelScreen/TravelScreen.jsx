@@ -78,7 +78,7 @@ class TravelScreen extends React.Component {
           cancelTravel={this.props.cancelTravel}
           show={this.state.show}
           editTravel={this.editTravel.bind(this)}
-          removeTravel={this.props.removeTravel}
+          removeTrip={this.props.removeTrip}
           addFlight={this.props.addFlight}
           addCar={this.props.addCar}
           addHotel={this.props.addHotel}
@@ -133,6 +133,7 @@ export default connect(
       getEmployeeTrip: actions.getEmployeeTrip,
       clearEmployeeTrip:actions.clearEmployeeTrip,
       getEmployeeCalendar: actions.getEmployeeCalendar,
+      removeTrip: actions.removeTrip,
     }, dispatch))(TravelScreen);
 
 TravelScreen.propTypes = {
@@ -197,4 +198,5 @@ TravelScreen.propTypes = {
   clearEmployeeTrip: PropTypes.func,
   calendar: PropTypes.any,
   getEmployeeCalendar: PropTypes.func,
+  removeTrip: PropTypes.func,
 };

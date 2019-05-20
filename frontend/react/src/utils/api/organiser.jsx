@@ -35,6 +35,21 @@ export function registerTripHttp(trip) {
             };
         });
 }
+export function deleteTripHttp(tripId) {
+    let responseCode;
+    return deleteById(tripUrl, tripId)
+        .then(function (response) {
+            if (responseCode != null) {
+                return response
+            }
+        })
+        .then(function (responseValue) {
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
 
 export function registerEmployeeTripHttp(empTrip) {
     let responseCode;

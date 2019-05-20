@@ -11,6 +11,13 @@ export default(state = initialState, action) => {
             return {
                 ... state, employeeTrips: action.employeeTrips
             }
+        case 'DELETE_TRIP':
+                const list = Array.from(state.trips)
+                const ind = list.findIndex(i => i.tripId === action.id)
+                list.splice(ind, 1)
+                return {
+                    ...state, trips: list
+                }
         case 'ADD_EMPLOYEE_TRIPS_BASIC': {
             return {
                 ...state, trips : [...state.trips, action.employeeTrip]
