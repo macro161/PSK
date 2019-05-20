@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -14,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import * as actions from '../../actions/EmployeeScreen';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InfoIcon from '@material-ui/icons/Info';
@@ -21,13 +24,9 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import ApprovalPopup from "./ApprovalPopup.jsx"
 import InfoPopup from "./InfoPopup.jsx"
+import compose from 'recompose/compose'
 
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
-  counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
-}
-
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -212,10 +211,6 @@ class EmployeeDataTable extends React.Component {
     this.setState({showApprovalPopup: true, activeTrip: trip})
   }
 
-  onDecline = (e, trip) =>{
-
-  }
-
   onShowInfo =(e, trip)=>{
     this.setState({showInfo: true, activeTrip: trip})
   }
@@ -236,11 +231,14 @@ class EmployeeDataTable extends React.Component {
     this.setState({showInfo:false, activeTrip:null})
   }
 
+  onDecline = (trip) =>{
+    this.props.declineTravel(trip.id.tripId)
+  }
+
   onApprovalSubmit = (trip, wantsAccommodation, wantsCar, wantsTicets) =>{
     var apt = wantsAccommodation ? 1 : 0;
     var car = wantsCar ? 1 : 0;
     var tickets = wantsTicets ? 1 : 0;
-    console.log(trip)
     var tripChecklist = {
       apartments: apt,
       car: car,
@@ -254,7 +252,6 @@ class EmployeeDataTable extends React.Component {
     const { classes } = this.props;
     const { order, orderBy, rowsPerPage, page } = this.state;
     let data = this.props.travels;
-    console.log(data)
     var length
     if(data==undefined)
        length = 0;
@@ -264,7 +261,7 @@ class EmployeeDataTable extends React.Component {
     return (
       <div>
       {this.state.showInfo ? <InfoPopup trip={this.state.activeTrip} onClose={this.onCloseInfo.bind(this)} /> : null}
-      {this.state.showApprovalPopup ? <ApprovalPopup trip={this.state.activeTrip} onClose={this.onCloseEdit.bind(this)} onApprovalSubmit = {this.onApprovalSubmit.bind(this)} /> : null}
+      {this.state.showApprovalPopup ? <ApprovalPopup trip={this.state.activeTrip} onDecline={this.onDecline.bind(this)} onClose={this.onCloseEdit.bind(this)} onApprovalSubmit = {this.onApprovalSubmit.bind(this)} /> : null}
       <Paper className={classes.root}>
         <EnhancedTableToolbar />
         <div className={classes.tableWrapper}>
@@ -331,7 +328,15 @@ class EmployeeDataTable extends React.Component {
     );
   }
 }
-  
+export default compose(
+  withStyles(styles),connect(null,
+  (dispatch) => bindActionCreators(
+    {
+      getAllTravels: actions.getAllTravels,
+      approveTravel: actions.approveTravel,
+      declineTravel: actions.declineTravel,
+  }, dispatch)))(EmployeeDataTable);  
+
 EmployeeDataTable.propTypes = {
   travels: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
@@ -353,5 +358,3 @@ EmployeeDataTable.propTypes = {
       onDecline: PropTypes.func,
       classes: PropTypes.object.isRequired,
 };
-
-export default withStyles(styles)(EmployeeDataTable);

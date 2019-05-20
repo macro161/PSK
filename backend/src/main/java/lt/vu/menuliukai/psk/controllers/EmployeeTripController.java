@@ -46,20 +46,19 @@ public class EmployeeTripController {
     public List<EmployeeTripPageDto> get(@PathVariable Long employeeId) {
         List<EmployeeTrip> etList = employeeTripDao.findByIdEmployeeId(employeeId);
         List<EmployeeTripPageDto> list =
-                etList.stream().map(et -> {
-                    if(et.getApartmentRoom()!=null) 
-                        return new EmployeeTripPageDto(
-                        et.getId(), et.getEmployee().getFullName(),
-                        et.getApartmentRoom().getRoomNo(),
-                        et.getTrip().getLeavingDate().toString(), et.getTrip().getReturningDate().toString(),
-                        et.getEmployee().getOffice().getAptAddress(), et.getTrip().getFromOffice().getCity(),
-                        et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved());
-                else return new EmployeeTripPageDto(
-                            et.getId(), et.getEmployee().getFullName(),
-                            -1,
-                            et.getTrip().getLeavingDate().toString(), et.getTrip().getReturningDate().toString(),
-                            et.getEmployee().getOffice().getAptAddress(), et.getTrip().getFromOffice().getCity(),
-                            et.getTrip().getToOffice().getCity(), et.getTripChecklist(), et.getApproved());})
+                etList.stream().map(et ->
+                        new EmployeeTripPageDto(
+                                et.getId(), et.getEmployee().getFullName(),
+                                et.getApartmentRoom(),
+                                et.getTrip().getLeavingDate().toString(),
+                                et.getTrip().getReturningDate().toString(),
+                                et.getEmployee().getOffice().getAptAddress(),
+                                et.getTrip().getFromOffice().getCity(),
+                                et.getTrip().getToOffice().getCity(),
+                                et.getCarRent(),
+                                et.getFlight(),
+                                et.getTripChecklist(),
+                                et.getApproved()))
                         .collect(Collectors.toList());
         return list;
     }
@@ -106,12 +105,7 @@ public class EmployeeTripController {
 
     @RequestMapping(value = "/approve/{employeeId}/{tripId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeTrip update(@PathVariable long employeeId, @PathVariable long tripId) {
-        List<EmployeeTrip> userTrips = employeeTripDao.findByIdEmployeeId(employeeId);
-        EmployeeTrip approvedTrip = null;
-        for (EmployeeTrip trip:userTrips) {
-            if(trip.getTrip().getId() == tripId)
-                approvedTrip = trip;
-        }
+        EmployeeTrip approvedTrip = employeeTripDao.findById(new EmployeeTripId(employeeId,tripId)).orElse(null);
         approvedTrip.setApproved(true);
 
         ApartmentRoom availableRoom = null;
@@ -133,6 +127,15 @@ public class EmployeeTripController {
         approvedTrip.setApartmentRoom(availableRoom);
 
         return employeeTripDao.save(approvedTrip);
+    }
+
+    @RequestMapping(value = "/decline/{employeeId}/{tripId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeTrip decline(@PathVariable long employeeId, @PathVariable long tripId) {
+        EmployeeTrip declinedTrip = employeeTripDao.findById(new EmployeeTripId(employeeId,tripId)).orElse(null);
+
+        employeeTripDao.deleteById(declinedTrip.getId());
+
+        return declinedTrip;
     }
 
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

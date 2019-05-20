@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lt.vu.menuliukai.psk.entities.ApartmentRoom;
-import lt.vu.menuliukai.psk.entities.EmployeeTripId;
-import lt.vu.menuliukai.psk.entities.TripChecklist;
+import lt.vu.menuliukai.psk.entities.*;
 import org.springframework.lang.Nullable;
 
 import java.util.Date;
@@ -19,7 +17,7 @@ public class EmployeeTripPageDto {
 
     String fullName;
 
-    Integer aptRoom;
+    ApartmentRoom aptRoom;
 
     String leavingDate;
 
@@ -30,6 +28,10 @@ public class EmployeeTripPageDto {
     String leavingOffice;
 
     String destinationOffice;
+
+    CarRent carRent;
+
+    Flight flight;
 
     TripChecklist tripChecklist;
 

@@ -13,7 +13,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -51,7 +50,6 @@ class ApprovalPopup extends React.Component{
     }
 
     handleChange = (e, target) => {
-        console.log(target)
         if(target== "wantsAccommodation")
             this.setState({wantsAccommodation: !this.state.wantsAccommodation})
         if(target== "wantsCar")
@@ -63,6 +61,11 @@ class ApprovalPopup extends React.Component{
     onCloseEdit = (e) =>{
         this.props.onClose();
     }
+
+    onDecline = (e) =>{
+      this.props.onDecline(this.props.trip);
+      this.props.onClose()
+  }
 
     render(){
         const { classes } = this.props;
@@ -105,19 +108,20 @@ class ApprovalPopup extends React.Component{
           <ListItemText primary="Plane tickets" />
           <ListItemSecondaryAction>
             <Switch
-              checked={this.state.wantsTicets}
+              checked={this.state.wantsTickets}
               onChange={event => this.handleChange(event, "wantsTickets")}
             />
           </ListItemSecondaryAction>
         </ListItem>
       </List>
             <DialogActions>
-            <Button onClick={this.onCloseEdit.bind(this)} color="primary">
-              Cancel
+            <Button onClick={this.onDecline.bind(this)} color="secondary">
+              Decline
             </Button>
             <Button onClick={this.onSubmit.bind(this)} color="primary">
               Approve
             </Button>
+            
           </DialogActions>
             </DialogContent>
       </Dialog>

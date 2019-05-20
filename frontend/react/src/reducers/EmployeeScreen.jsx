@@ -10,6 +10,8 @@ export default(state = initialState, action) => {
             };
         case 'APPROVE_TRAVEL':
             return {...state, travels: state.travels.map(travel => travel.id.tripId === action.Id ? {...travel, approved: true} : travel)}
+        case 'DECLINE_TRAVEL':
+                return {...state, travels: state.travels.filter(travel => travel.id.tripId !== action.Id)}
         default: 
             return state;
     }

@@ -33,6 +33,8 @@ class EmployeeScreen extends React.Component {
 
       <div className='page-frame'>
         <title>Travels</title>
+        <h2>Your travels</h2>
+        <hr />
         <div>
           {this.state.show ? <InfoScreen onClose={this.onClose.bind(this)} /> : null}
         </div>

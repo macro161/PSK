@@ -32,3 +32,16 @@ export const approveTravel = (travelId, checklist) => dispatch =>{
         }
     })
 };
+
+export const declineTravel = (travelId) => dispatch =>{
+    utils.declineTrip(travelId)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert(";(")
+            }
+            dispatch({
+                type: 'DECLINE_TRAVEL',
+                Id: travelId,
+            });
+        })
+};

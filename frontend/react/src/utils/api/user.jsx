@@ -3,6 +3,7 @@ const userUrl = 'http://localhost:8080/user';
 const userTripsUrl = 'http://localhost:8080/employeetrip';
 const userId = 1735
 const approveTripUrl = 'http://localhost:8080/employeetrip/approve/';
+const declineTripUrl = 'http://localhost:8080/employeetrip/decline/';
 const checklistUrl = 'http://localhost:8080/trip/checklist/update';
 
 export function getUserInfo() {
@@ -40,6 +41,22 @@ export function getUserTrips() {
 export function approveTrip(tripId) {
   let responseCode;
   return put(approveTripUrl + userId +"/"+ tripId).then((response) => {
+    responseCode = response.status;
+    if (responseCode === 200) {
+      return response.json();
+    }
+  }).then((responseValue) => {
+    console.log('t' + responseValue)
+    return {
+      responseCode,
+      responseValue,
+    };
+  });
+}
+
+export function declineTrip(tripId) {
+  let responseCode;
+  return put(declineTripUrl + userId +"/"+ tripId).then((response) => {
     responseCode = response.status;
     if (responseCode === 200) {
       return response.json();
