@@ -52,7 +52,7 @@ function getSorting(order, orderBy) {
 const rows = [
   { id: 'leavingDate', numeric: false, disablePadding: false, label: 'Departure date' },
   { id: 'returningDate', numeric: false, disablePadding: false, label: 'Return date' },
-  { id: 'accommodation', numeric: false, disablePadding: false, label: 'Accommodation' },
+  { id: 'destOffice', numeric: false, disablePadding: false, label: 'Destination office' },
   { id: 'status', numeric: false, disablePadding: false, label: '' },
   { id: 'popup', numeric: false, disablePadding: false, label: '' },
 ];
@@ -291,7 +291,7 @@ class EmployeeDataTable extends React.Component {
                     >
                       <TableCell align="center" omponent="th" scope="row" >{n.leavingDate.substring(0, 10)}</TableCell>
                       <TableCell align="center">{n.returningDate.substring(0, 10)}</TableCell>
-                      <TableCell align="center">{n.accommodation}</TableCell>
+                      <TableCell align="center">{n.destinationOfficeAddress}</TableCell>
                       <TableCell align="center" >{ n.approved? <Button disabled>Approved</Button> : 
                         <div><Button onClick={event => this.onApprove(event, n)} color="primary">Approve</Button>
                         <Button onClick={event => this.onDecline(event, n)} color="secondary">Decline</Button></div> }</TableCell>

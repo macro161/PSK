@@ -60,6 +60,7 @@ public class EmployeeTripController {
                                 et.getTrip().getToOffice().getAptAddress(),
                                 et.getTrip().getFromOffice().getCity(),
                                 et.getTrip().getToOffice().getCity(),
+                                et.getTrip().getToOffice().getAddress(),
                                 et.getCarRent(),
                                 et.getFlight(),
                                 et.getTripChecklist(),

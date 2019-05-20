@@ -33,6 +33,8 @@ public class TripChecklistController {
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public TripChecklist update(@RequestBody TripChecklist tripChecklist) {
+        if(tripChecklist.getApartments()==1)
+            tripChecklist.setApartments(2);
         return tripChecklistDao.save(tripChecklist);
     }
 

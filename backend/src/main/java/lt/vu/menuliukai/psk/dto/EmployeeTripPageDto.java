@@ -29,6 +29,8 @@ public class EmployeeTripPageDto {
 
     String destinationOffice;
 
+    String destinationOfficeAddress;
+
     CarRent carRent;
 
     Flight flight;
