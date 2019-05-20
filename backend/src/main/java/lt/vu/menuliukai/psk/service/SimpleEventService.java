@@ -66,7 +66,7 @@ public class SimpleEventService implements EventService {
     public void deleteEvent(String email, Date startDate) {
         Employee emp = employeeDao.findByEmail(email);
         if (emp != null){
-            Event event = eventDao.findByEmployeeAndStartDate(emp, startDate);
+            Event event = eventDao.findByEmployeeAndStartDate(emp, startDate).get(0);
             eventDao.delete(event);
         }
     }

@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface EventDao extends CrudRepository<Event, Long> {
     List<Event> findAllByEmployee(Employee employee);
-    Event findByEmployeeAndStartDate(Employee employee, Date startDate);
+    List<Event> findByEmployeeAndStartDate(Employee employee, Date startDate);
 }

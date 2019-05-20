@@ -40,6 +40,9 @@ export const GetMeAdmin = () => (dispatch) => {
         history.push('');
         alert("You have no right to go to this page")
       }
+      if (response.responseCode === 200 && response.responseValue.role === "ADMIN") {
+        dispatch({type:'GET_USER_INFO_SUCCESS', userInfo: response.responseValue})
+      }
       dispatch({ type: 'SET_LOADING', value: false });
     });
 }
@@ -55,6 +58,9 @@ export const GetMeOrganiser = () => (dispatch) => {
         history.push('');
         alert("You have no right to go to this page")
       }
+      if (response.responseCode === 200 && response.responseValue.role === "ORGANISER") {
+        dispatch({type:'GET_USER_INFO_SUCCESS', userInfo: response.responseValue})
+      }
       dispatch({ type: 'SET_LOADING', value: false });
     });
 }
@@ -65,6 +71,9 @@ export const GetMe = () => (dispatch) => {
     .then((response) => {
       if (response.responseCode === 401){
         history.push('');
+      }
+      if (response.responseCode === 200) {
+        dispatch({type:'GET_USER_INFO_SUCCESS', userInfo: response.responseValue})
       }
       dispatch({ type: 'SET_LOADING', value: false });
     });

@@ -397,7 +397,7 @@ class TravelDataTable extends React.Component {
   }
   
   afterGroup = (dateFrom, dateTo) => {
-    this.props.groupTrips({trips_to_group : this.state.selectedTrips, dateFrom : new Date(dateFrom).toISOString(), dateTo : new Date(dateTo).toISOString() });
+    this.props.groupTrips({organiser: this.props.organiser.id, trips_to_group : this.state.selectedTrips, dateFrom : new Date(dateFrom).toISOString(), dateTo : new Date(dateTo).toISOString() });
     this.setState({
       datesTo: [],
       datesFrom: [],
@@ -643,5 +643,6 @@ TravelDataTable.propTypes = {
   groupTrips: PropTypes.func,
   getEmployeeTrip: PropTypes.func,
   clearEmployeeTrip: PropTypes.func,
+  organiser: PropTypes.any,
 };
 export default withStyles(styles)(TravelDataTable)

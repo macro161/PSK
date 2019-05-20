@@ -24,9 +24,9 @@ export const editTravel = (trip, departureDate, returnDate) => dispatch => {
     })
    
 }
-export const registerTravel = (employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) => dispatch => {
+export const registerTravel = (organiser, employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
-    utils.registerTripHttp({ from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
+    utils.registerTripHttp({ organiser: organiser, from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
         .then(function (response) {
             utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved: false })
                 .then(function (r) {

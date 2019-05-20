@@ -49,7 +49,7 @@ class TravelScreen extends React.Component {
   }
 
   onSubmit(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) {
-    this.props.registerTravel(employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist);
+    this.props.registerTravel(this.props.user.id, employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist);
     this.setState(initialState)
   }
 
@@ -83,6 +83,7 @@ class TravelScreen extends React.Component {
           addCar={this.props.addCar}
           addHotel={this.props.addHotel}
           groupTrips={this.props.groupTrips}
+          organiser={this.props.user}
           getEmployeeTrip={this.props.getEmployeeTrip}
           employeeTrip={this.props.employeeTrip}
           clearEmployeeTrip={this.props.clearEmployeeTrip}
@@ -113,6 +114,7 @@ export default connect(
     offices: state.Offices.offices,
     employeeTrip: state.TravelScreen.employeeTrip,
     calendar: state.TravelScreen.calendar,
+    user: state.User.userInfo,
   }),
   (dispatch) => bindActionCreators(
     {
@@ -199,4 +201,5 @@ TravelScreen.propTypes = {
   calendar: PropTypes.any,
   getEmployeeCalendar: PropTypes.func,
   removeTrip: PropTypes.func,
+  user: PropTypes.any,
 };

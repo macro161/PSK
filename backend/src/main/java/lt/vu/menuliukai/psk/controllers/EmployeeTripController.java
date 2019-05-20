@@ -58,11 +58,11 @@ public class EmployeeTripController {
         if (t != null){
             Trip trip = new Trip();
             trip.setLeavingDate(tripsGroupingDto.getDateFrom());
-            trip.setLeavingDate(DateUtils.addHours(DateUtils.round(tripsGroupingDto.getDateFrom(), Calendar.DAY_OF_MONTH), 3));
-            trip.setReturningDate(DateUtils.addHours(DateUtils.round(tripsGroupingDto.getDateTo(), Calendar.DAY_OF_MONTH), 3));
+            trip.setLeavingDate(DateUtils.addHours(tripsGroupingDto.getDateFrom(), 3));
+            trip.setReturningDate(DateUtils.addHours(tripsGroupingDto.getDateTo(), 3));
             trip.setFromOffice(t.getFromOffice());
             trip.setToOffice(t.getToOffice());
-            trip.setOrganiser(t.getOrganiser());
+            trip.setOrganiser(tripsGroupingDto.getOrganiser());
             tripDao.save(trip);
             List<EmployeeTrip> tripsToGroup = new ArrayList<>();
             for (Long id : tripsGroupingDto.getTripsToGroup()) {

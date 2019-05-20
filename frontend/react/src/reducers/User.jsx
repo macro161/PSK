@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
     case 'GET_USER_INFO_SUCCESS': {
       return {
         ...state,
-        userInfo: action.info,
+        userInfo: action.userInfo,
       };
     }
     case 'RESET_USER_INFO': {
