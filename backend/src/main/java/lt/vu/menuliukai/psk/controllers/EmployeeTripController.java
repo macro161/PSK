@@ -57,7 +57,7 @@ public class EmployeeTripController {
                                 et.getApartmentRoom(),
                                 et.getTrip().getLeavingDate().toString(),
                                 et.getTrip().getReturningDate().toString(),
-                                et.getEmployee().getOffice().getAptAddress(),
+                                et.getTrip().getToOffice().getAptAddress(),
                                 et.getTrip().getFromOffice().getCity(),
                                 et.getTrip().getToOffice().getCity(),
                                 et.getCarRent(),

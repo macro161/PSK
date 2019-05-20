@@ -24,7 +24,13 @@ export function getUserInfo() {
 
 export function getUserTrips() {
   let responseCode;
-  return getById(userTripsUrl,userId).then((response) => {
+  return getAll(userUrl).then((response) => {
+    responseCode = response.status;
+    if (responseCode === 200) {
+      return response.json();
+    }
+  }).then((responseValue)=>
+  getById(userTripsUrl,responseValue.id).then((response) => {
     responseCode = response.status;
     if (responseCode === 200) {
       return response.json();
@@ -35,12 +41,18 @@ export function getUserTrips() {
       responseCode,
       responseValue,
     };
-  });
+  }))
 }
 
 export function approveTrip(tripId) {
   let responseCode;
-  return put(approveTripUrl + userId +"/"+ tripId).then((response) => {
+  return getAll(userUrl).then((response) => {
+    responseCode = response.status;
+    if (responseCode === 200) {
+      return response.json();
+    }
+  }).then((responseValue)=>
+  put(approveTripUrl + responseValue.id +"/"+ tripId).then((response) => {
     responseCode = response.status;
     if (responseCode === 200) {
       return response.json();
@@ -51,12 +63,18 @@ export function approveTrip(tripId) {
       responseCode,
       responseValue,
     };
-  });
+  }))
 }
 
 export function declineTrip(tripId) {
   let responseCode;
-  return put(declineTripUrl + userId +"/"+ tripId).then((response) => {
+  return getAll(userUrl).then((response) => {
+    responseCode = response.status;
+    if (responseCode === 200) {
+      return response.json();
+    }
+  }).then((responseValue)=>
+  put(declineTripUrl + responseValue.id +"/"+ tripId).then((response) => {
     responseCode = response.status;
     if (responseCode === 200) {
       return response.json();
@@ -67,7 +85,7 @@ export function declineTrip(tripId) {
       responseCode,
       responseValue,
     };
-  });
+  }))
 }
 
 export function updateTripChecklist(checklist) {
