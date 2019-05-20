@@ -50,6 +50,22 @@ export function deleteTripHttp(tripId) {
             };
         });
 }
+export function editTripHttp(tripId, departureDate, returnDate) {
+    let responseCode;
+    return post(tripUrl + "change/" + tripId + "/" + departureDate + "/" + returnDate)
+        .then(function (response) {
+            responseCode = response.status;
+            if (responseCode === 200) {
+                return response.json();
+            }
+        })
+        .then(function (responseValue) {
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
 
 export function registerEmployeeTripHttp(empTrip) {
     let responseCode;

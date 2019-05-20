@@ -9,20 +9,20 @@ export const removeTrip = (id) => dispatch => {
         })
 };
 
-export const editTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch => {
+export const editTravel = (trip, departureDate, returnDate) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
-    dispatch({
-        type: "EDIT_TRAVEL",
-        travel: {
-            id: id,
-            fullName: fullName,
-            departureTime: departureTime,
-            accomodation: accomodation,
-            city: city,
-            approved: approved,
+    utils.editTripHttp(trip.tripId, departureDate, returnDate)
+        .then(function (response) {
+        console.log(response);
+            if (response.responseValue == true) {
+                var edited = trip;
+                edited.returningDate = returnDate;
+                edited.leavingDate = departureDate;
+                dispatch({ type: "EDIT_TRAVEL", trip: edited });
         }
+        dispatch({ type: 'SET_LOADING', value: false });
     })
-    dispatch({ type: 'SET_LOADING', value: false });
+   
 }
 export const registerTravel = (employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });

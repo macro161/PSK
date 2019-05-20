@@ -20,7 +20,7 @@ export default(state = initialState, action) => {
             }
         case 'EDIT_TRIP':
                 const updatedTrips = state.trips.map(trip => {
-                    if(ptrip.tripId === action.trip.tripId){
+                    if(trip.tripId === action.trip.tripId){
                       return action.trip
                     }
                     return trip

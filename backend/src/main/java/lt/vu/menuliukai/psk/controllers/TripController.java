@@ -10,7 +10,11 @@ import lt.vu.menuliukai.psk.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.Path;
+import java.util.Date;
 
 
 @RestController
@@ -38,7 +42,20 @@ public class TripController {
     public Trip add(@RequestBody Trip trip) {
         return tripDao.save(trip);
     }
-
+    @RequestMapping(value="change/{tripId}/{startDate}/{endDate}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean change(@PathVariable Long tripId, @PathVariable Date startDate, @PathVariable Date endDate){
+        Trip trip = tripDao.findById(tripId).orElse(null);
+        if (trip != null){
+            for (EmployeeTrip empTrip: trip.getEmployeeTrips()) {
+                empTrip.setApproved(Boolean.FALSE);
+            }
+            trip.setLeavingDate(startDate);
+            trip.setReturningDate(endDate);
+            tripDao.save(trip);
+            return true;
+        }
+        return false;
+    }
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable long id) {
         try {
