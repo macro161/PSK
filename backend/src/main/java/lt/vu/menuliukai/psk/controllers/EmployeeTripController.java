@@ -112,13 +112,14 @@ public class EmployeeTripController {
         return employeeTripDao.findByIdEmployeeId(employeeId);
     }
 
-    @RequestMapping(value = "/approve/{employeeId}/{tripId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeTrip update(@PathVariable long employeeId, @PathVariable long tripId) {
+    @RequestMapping(value = "/approve/{employeeId}/{tripId}/{wantsAccommodation}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeTrip update(@PathVariable long employeeId, @PathVariable long tripId, @PathVariable int wantsAccommodation) {
         EmployeeTrip approvedTrip = employeeTripDao.findById(new EmployeeTripId(employeeId,tripId)).orElse(null);
         approvedTrip.setApproved(true);
 
         ApartmentRoom availableRoom = null;
 
+        if(wantsAccommodation==1)
         for (ApartmentRoom room:approvedTrip.getTrip().getToOffice().getApartmentRooms()) {
              Set<EmployeeTrip> trips = room.getEmployeeTrips();
              int tripCount = trips.size();

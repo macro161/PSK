@@ -81,7 +81,7 @@ class InfoPopup extends React.Component{
         <Divider/>
         <List style={flexContainer}>
         <ListItem>
-          <ListItemText  primary="Accommodation address" secondary={this.props.trip.accommodation} />
+          <ListItemText  primary="Accommodation address" secondary={this.props.trip.aptRoom !=null ? this.props.trip.accommodation : "Not available"} />
         </ListItem>
         <ListItem>
           <ListItemText  primary="Room" secondary={this.props.trip.aptRoom != null ? this.props.trip.aptRoom.roomNo : "Not available" } />

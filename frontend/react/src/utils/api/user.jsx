@@ -44,7 +44,7 @@ export function getUserTrips() {
   }))
 }
 
-export function approveTrip(tripId) {
+export function approveTrip(tripId, apartments) {
   let responseCode;
   return getAll(userUrl).then((response) => {
     responseCode = response.status;
@@ -52,7 +52,7 @@ export function approveTrip(tripId) {
       return response.json();
     }
   }).then((responseValue)=>
-  put(approveTripUrl + responseValue.id +"/"+ tripId).then((response) => {
+  put(approveTripUrl + responseValue.id +"/"+ tripId + "/" + apartments).then((response) => {
     responseCode = response.status;
     if (responseCode === 200) {
       return response.json();

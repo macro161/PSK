@@ -15,7 +15,7 @@ export const getAllTravels = () => dispatch => {
 }
 
 export const approveTravel = (travelId, checklist) => dispatch =>{
-    utils.approveTrip(travelId)
+    utils.approveTrip(travelId, checklist.apartments)
         .then(function (response) {
             if (response.responseCode != 200) {
                 alert(";(")
