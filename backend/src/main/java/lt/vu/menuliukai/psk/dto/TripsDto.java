@@ -17,6 +17,8 @@ public class TripsDto {
 
     long tripId;
 
+    long organiserId;
+
     Date leavingDate;
 
     Date returningDate;
