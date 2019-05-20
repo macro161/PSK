@@ -26,26 +26,30 @@ public class MyBatisStatisticsService implements StatisticsDao {
 
     @Override
     public Statistics calculateStatistics() {
+        try {
+            statistics.setMostCommonTripDestination(statisticsMapper.selectMostCommonDestination());
 
-        statistics.setMostCommonTripDestination(statisticsMapper.selectMostCommonDestination());
+            Statistics temp = statisticsMapper.selectCheapestTrip();
+            statistics.setCheapestTripOrigin(temp.getCheapestTripOrigin());
+            statistics.setCheapestTripDestination(temp.getCheapestTripDestination());
 
-        Statistics temp = statisticsMapper.selectCheapestTrip();
-        statistics.setCheapestTripOrigin(temp.getCheapestTripOrigin());
-        statistics.setCheapestTripDestination(temp.getCheapestTripDestination());
+            temp = statisticsMapper.selectMostExpensiveTrip();
+            statistics.setMostExpensiveTripDestination(temp.getMostExpensiveTripDestination());
+            statistics.setMostExpensiveTripOrigin(temp.getMostExpensiveTripOrigin());
 
-        temp = statisticsMapper.selectMostExpensiveTrip();
-        statistics.setMostExpensiveTripDestination(temp.getMostExpensiveTripDestination());
-        statistics.setMostExpensiveTripOrigin(temp.getMostExpensiveTripOrigin());
+            temp = statisticsMapper.selectShortestTrip();
+            statistics.setShortestTripOrigin(temp.getShortestTripOrigin());
+            statistics.setShortestTripDestination(temp.getShortestTripDestination());
 
-        temp = statisticsMapper.selectShortestTrip();
-        statistics.setShortestTripOrigin(temp.getShortestTripOrigin());
-        statistics.setShortestTripDestination(temp.getShortestTripDestination());
+            temp = statisticsMapper.selectLongestTrip();
+            statistics.setLongestTripDestination(temp.getLongestTripDestination());
+            statistics.setLongestTripOrigin(temp.getLongestTripOrigin());
 
-        temp = statisticsMapper.selectLongestTrip();
-        statistics.setLongestTripDestination(temp.getLongestTripDestination());
-        statistics.setLongestTripOrigin(temp.getLongestTripOrigin());
+            return statistics;
+        } catch (NullPointerException npe) {
+            return statistics;
+        }
 
-        return statistics;
     }
 
     @Override
