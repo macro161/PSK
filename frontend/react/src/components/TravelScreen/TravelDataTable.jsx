@@ -469,7 +469,7 @@ class TravelDataTable extends React.Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
-  details = (fullName, id, collapse, tripChecklist) =>
+  details = (approved, fullName, id, collapse, tripChecklist) =>
     collapse ? (
       <InfoTableRow key= {id.tripId + ' ' + id.employeeId}>
         <TableCell colSpan = {3}></TableCell>
@@ -478,35 +478,38 @@ class TravelDataTable extends React.Component {
         </TableCell>
         <TableCell colSpan={8}>
           <Collapse in={collapse} unmountOnExit={true}>
-          <Tooltip title="Flight info">
-            <IconButton onClick={event => tripChecklist.plainTickets == 1 ? this.addFlight(id) : this.onEditFlight(id)} aria-label="Plane info" disabled={tripChecklist.plainTickets == 0 ? true : false}>
-              {tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : tripChecklist.plainTickets == 1 ?
-                <Badge color="secondary" variant="dot">
-                  <PlaneIcon fontSize="small" />
-                </Badge> :
-                <PlaneIcon fontSize="small" color="primary" />}
-            </IconButton>
-            </Tooltip>
-            <Tooltip title="Car rent info">
-            <IconButton onClick={event => tripChecklist.car == 1 ? this.addCar(id) : this.onEditCar(id)} aria-label="Car rent info" disabled={tripChecklist.car == 0 ? true : false}>
-              {tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
-                tripChecklist.car == 1 ?
-                  <Badge color="secondary" variant="dot">
-                    <CarIcon fontSize="small" />
-                  </Badge> :
-                  <CarIcon fontSize="small" color="primary" />}
-            </IconButton>
-            </Tooltip>
-            <Tooltip title="Accomodation info">
-            <IconButton onClick={event => tripChecklist.car == 1 ? this.addHotel(id) : this.onEditAccomodation(id)} aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
-              {tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : tripChecklist.apartments == 1 ?
-                <Badge color="secondary" variant="dot">
-                  <HotelIcon fontSize="small" />
-                </Badge> :
-                <HotelIcon fontSize="small" color="primary" />}
-            </IconButton></Tooltip></Collapse>
+            {approved ?
+            <div>
+              <Tooltip title="Flight info">
+                <IconButton onClick={event => tripChecklist.plainTickets == 1 ? this.addFlight(id) : this.onEditFlight(id)} aria-label="Plane info" disabled={tripChecklist.plainTickets == 0 ? true : false}>
+                  {tripChecklist.plainTickets == 0 ? <PlaneIcon fontSize="small" disabled /> : tripChecklist.plainTickets == 1 ?
+                    <Badge color="secondary" variant="dot">
+                      <PlaneIcon fontSize="small" />
+                    </Badge> :
+                    <PlaneIcon fontSize="small" color="primary" />}
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Car rent info">
+                <IconButton onClick={event => tripChecklist.car == 1 ? this.addCar(id) : this.onEditCar(id)} aria-label="Car rent info" disabled={tripChecklist.car == 0 ? true : false}>
+                  {tripChecklist.car == 0 ? <CarIcon fontSize="small" disabled /> :
+                    tripChecklist.car == 1 ?
+                      <Badge color="secondary" variant="dot">
+                        <CarIcon fontSize="small" />
+                      </Badge> :
+                      <CarIcon fontSize="small" color="primary" />}
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Accomodation info">
+                <IconButton onClick={event => tripChecklist.car == 1 ? this.addHotel(id) : this.onEditAccomodation(id)} aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
+                  {tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : tripChecklist.apartments == 1 ?
+                    <Badge color="secondary" variant="dot">
+                      <HotelIcon fontSize="small" />
+                    </Badge> :
+                    <HotelIcon fontSize="small" color="primary" />}
+                </IconButton></Tooltip></div> : <div>This trip wasn't approved yet</div>}
+            </Collapse>
         </TableCell>
-        <TableCell colSpan = {7}></TableCell>
+        <TableCell colSpan={7}></TableCell>
       </InfoTableRow>
     ) : null;
 
@@ -604,7 +607,7 @@ class TravelDataTable extends React.Component {
                         </EnhancedTableRow>
                         {n.employeeTrips.map(
                           et => {
-                            return (this.details(et.fullName, { tripId: n.tripId, employeeId: et.employeeId }, this.state.collapse[n.tripId], et.tripChecklist));
+                            return (this.details(et.approved, et.fullName, { tripId: n.tripId, employeeId: et.employeeId }, this.state.collapse[n.tripId], et.tripChecklist));
                           }
                         )}
                       </React.Fragment>
