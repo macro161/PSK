@@ -418,6 +418,7 @@ class TravelDataTable extends React.Component {
     this.setState({
       datesTo: [],
       datesFrom: [],
+      selectedTrips: [],
       group: false,
     });
   }
@@ -426,6 +427,7 @@ class TravelDataTable extends React.Component {
     this.setState({
       datesTo: [],
       datesFrom: [],
+      selectedTrips: [],
       group: false,
     });
     this.props.clearEmployeeTrip();
