@@ -4,10 +4,7 @@ import lt.vu.menuliukai.psk.converters.Converter;
 import lt.vu.menuliukai.psk.dao.EmployeeDao;
 import lt.vu.menuliukai.psk.dao.EmployeeTripDao;
 import lt.vu.menuliukai.psk.dao.TripDao;
-import lt.vu.menuliukai.psk.dto.EmployeeTripBasicDto;
-import lt.vu.menuliukai.psk.dto.EmployeeTripDto;
-import lt.vu.menuliukai.psk.dto.TripsDto;
-import lt.vu.menuliukai.psk.dto.TripsGroupingDto;
+import lt.vu.menuliukai.psk.dto.*;
 import lt.vu.menuliukai.psk.entities.*;
 import lt.vu.menuliukai.psk.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.apache.commons.lang.time.DateUtils;
 
+import java.util.stream.Collector;
+import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -45,6 +45,28 @@ public class EmployeeTripController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<EmployeeTrip> index() {
         return employeeTripDao.findAll();
+    }
+
+    @RequestMapping(value = "/{employeeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<EmployeeTripPageDto> get(@PathVariable Long employeeId) {
+        List<EmployeeTrip> etList = employeeTripDao.findByIdEmployeeId(employeeId);
+        List<EmployeeTripPageDto> list =
+                etList.stream().map(et ->
+                        new EmployeeTripPageDto(
+                                et.getId(), et.getEmployee().getFullName(),
+                                et.getApartmentRoom(),
+                                et.getTrip().getLeavingDate().toString(),
+                                et.getTrip().getReturningDate().toString(),
+                                et.getTrip().getToOffice().getAptAddress(),
+                                et.getTrip().getFromOffice().getCity(),
+                                et.getTrip().getToOffice().getCity(),
+                                et.getTrip().getToOffice().getAddress(),
+                                et.getCarRent(),
+                                et.getFlight(),
+                                et.getTripChecklist(),
+                                et.getApproved()))
+                        .collect(Collectors.toList());
+        return list;
     }
 
     @RequestMapping(value = "/{employeeId}/{tripId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -88,6 +110,42 @@ public class EmployeeTripController {
     @RequestMapping(value = "/employees/{employeeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeTrip> getByEmployee(@PathVariable long employeeId) {
         return employeeTripDao.findByIdEmployeeId(employeeId);
+    }
+
+    @RequestMapping(value = "/approve/{employeeId}/{tripId}/{wantsAccommodation}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeTrip update(@PathVariable long employeeId, @PathVariable long tripId, @PathVariable int wantsAccommodation) {
+        EmployeeTrip approvedTrip = employeeTripDao.findById(new EmployeeTripId(employeeId,tripId)).orElse(null);
+        approvedTrip.setApproved(true);
+
+        ApartmentRoom availableRoom = null;
+
+        if(wantsAccommodation==1)
+        for (ApartmentRoom room:approvedTrip.getTrip().getToOffice().getApartmentRooms()) {
+             Set<EmployeeTrip> trips = room.getEmployeeTrips();
+             int tripCount = trips.size();
+             int count = 0;
+             for(EmployeeTrip trip: trips){
+                 if(trip.getTrip().getLeavingDate().compareTo(approvedTrip.getTrip().getReturningDate())>0
+                         || trip.getTrip().getReturningDate().compareTo(approvedTrip.getTrip().getLeavingDate())<0){
+                     count++;
+                 }
+             }
+             if(count == tripCount)
+                 availableRoom = room;
+        }
+
+        approvedTrip.setApartmentRoom(availableRoom);
+
+        return employeeTripDao.save(approvedTrip);
+    }
+
+    @RequestMapping(value = "/decline/{employeeId}/{tripId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeTrip decline(@PathVariable long employeeId, @PathVariable long tripId) {
+        EmployeeTrip declinedTrip = employeeTripDao.findById(new EmployeeTripId(employeeId,tripId)).orElse(null);
+
+        employeeTripDao.deleteById(declinedTrip.getId());
+
+        return declinedTrip;
     }
 
     @RequestMapping(value = "/trip/{tripId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

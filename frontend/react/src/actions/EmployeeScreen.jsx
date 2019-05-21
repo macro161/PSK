@@ -1,39 +1,47 @@
-export const getAllTravels = (userId) => dispatch => {
-    dispatch({ type: 'SET_LOADING', value: true });
-    let moc = [
-        {
-            id: '1',
-            departureTime: '2018-01-01',
-            accomodation: 'Vilnius chata',
-            city: 'Vilnius',
-            approved: true
-        },
-        {
-            id: '2',
-            departureTime: '2018-01-02',
-            accomodation: 'Vilnius chata',
-            city: 'Vilnius',
-            approved: false
-        }
-    ]
-    dispatch({
-        type:'GET_TRAVELS_BY_ID',
-        travels: moc,
-        id: userId
-    });
-    dispatch({ type: 'SET_LOADING', value: false });
-};
 
-export const approveTravel = (travelId) =>{
-    return {
-        type: 'APPROVE_TRAVEL',
-        Id: travelId,
-    }
-};
+import * as utils from '../utils/api/user'
 
-export const cancelTravel = (travelId) => {
-    return {
-        type: 'CANCEL_TRAVEL',
-        Id: travelId,
-    }
+export const getAllTravels = () => dispatch => {
+    utils.getUserTrips()
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert(";(")
+            }
+            dispatch({
+                type: 'GET_TRAVELS_BY_ID',
+                employeeTrips: response.responseValue,
+            });
+        })
 }
+
+export const approveTravel = (travelId, checklist) => dispatch =>{
+    utils.approveTrip(travelId, checklist.apartments)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert(";(")
+            }
+            dispatch({
+                type: 'APPROVE_TRAVEL',
+                Id: travelId,
+            });
+        })
+    utils.updateTripChecklist(checklist)
+    .then(function (response) {
+        if (response.responseCode != 200) {
+            alert(";(")
+        }
+    })
+};
+
+export const declineTravel = (travelId) => dispatch =>{
+    utils.declineTrip(travelId)
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert(";(")
+            }
+            dispatch({
+                type: 'DECLINE_TRAVEL',
+                Id: travelId,
+            });
+        })
+};

@@ -6,12 +6,12 @@ export default(state = initialState, action) => {
     switch(action.type){
         case 'GET_TRAVELS_BY_ID':
             return{
-                ...state, travels: action.travels
+                ...state, travels: action.employeeTrips
             };
         case 'APPROVE_TRAVEL':
-            return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: true} : travel)}
-        case 'CANCEL_TRAVEL':
-            return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: false} : travel)}
+            return {...state, travels: state.travels.map(travel => travel.id.tripId === action.Id ? {...travel, approved: true} : travel)}
+        case 'DECLINE_TRAVEL':
+                return {...state, travels: state.travels.filter(travel => travel.id.tripId !== action.Id)}
         default: 
             return state;
     }

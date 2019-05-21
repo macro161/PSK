@@ -66,10 +66,6 @@ export default(state = initialState, action) => {
                     } : trip)
             }
             }
-        case 'APPROVE_TRAVEL':
-            return {...state, travels: state.travels.map(travel => travel.id === action.Id ? {...travel, approved: true} : travel)}
-        case 'CANCEL_TRAVEL':
-            return { ...state, travels: state.travels.map(travel => travel.id === action.Id ? { ...travel, approved: false } : travel) }
         case 'SET_LOADING':
             return { ...state, loading: action.value };
         case 'GET_TRIPS':

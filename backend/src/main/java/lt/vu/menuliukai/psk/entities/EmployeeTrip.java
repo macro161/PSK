@@ -40,9 +40,8 @@ public class EmployeeTrip implements Serializable {
     @JsonProperty("trip_checklist")
     private TripChecklist tripChecklist;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn
-    @JsonDeserialize(converter = ApartmentRoomConverter.class)
     @JsonProperty("apartments_room")
     private ApartmentRoom apartmentRoom;       // one of these should be null at all cases
 
