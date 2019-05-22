@@ -26,5 +26,7 @@ public class Flight {
 
     private String airport;
 
+    private String booking;
+
     private int seatNumber;
 }

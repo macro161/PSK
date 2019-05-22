@@ -21,6 +21,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import DateFnsUtils from "@date-io/date-fns"; 
+import { DatePicker, MuiPickersUtilsProvider,} from "@material-ui/pickers";
 
 
 const DialogContent = withStyles(theme => ({
@@ -206,6 +208,7 @@ class TravelRegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      today: new Date().toISOString().substr(0, 10),
       leavingOffice: null,
       destinationOffice: null,
       selectedEmployee: null,
@@ -221,7 +224,7 @@ class TravelRegisterForm extends React.Component {
       checkedCar: true,
       checkedAcomondation: true,
     };
-
+    this.dateCheck.bind(this)
   }
   handleChangeCheckBox(e) {
     this.setState({ [e.target.value]: e.target.checked });
@@ -231,6 +234,7 @@ class TravelRegisterForm extends React.Component {
       selectedEmployee: e.value,
       fullName: e.value.fullName,
     });
+    this.props.getEmployeeCalendar(e.value.email);
   };
   handleChangeLeaving(e) {
     this.setState({
@@ -243,21 +247,70 @@ class TravelRegisterForm extends React.Component {
     });
   };
 
+  handleChangeLeavingTime(e) {
+    this.setState({
+      departureTime: e,
+      returningTime: e
+    });
+  };
+  handleChangeReturningTime(e) {
+    this.setState({
+      returningTime: e
+    });
+  };
   inputChange(e) {
     this.setState({
       [e.target.id]: e.target.value,
     });
   }
-
   onSubmit() {
     this.props.onSubmit(this.state.selectedEmployee, this.state.departureTime, this.state.returningTime, this.state.leavingOffice, this.state.destinationOffice, {plainTickets : this.state.checkedPlane ? 1 : 0, car : this.state.checkedCar ? 1 : 0, apartments : this.state.checkedAcomondation ? 1 : 0 } );
   }
+  dateCheck(from,to,check) {
+
+    var fDate,lDate,cDate;
+    fDate = Date.parse(from);
+    lDate = Date.parse(to);
+    cDate = Date.parse(check);
+
+    if((cDate <= lDate && cDate >= fDate)) {
+        return true;
+    }
+    return false;
+}
+  disableDayTo = (date) => {
+    const { departureTime } = this.state
+    let calendar = this.props.calendar
+    var c = false;
+    var i;
+    for (i = 0; i < calendar.length; i++) { 
+      if (this.dateCheck(departureTime, date, calendar[i].startDate)) {
+        c = true;
+        break;
+      }
+    }
+      return c;
+  }
+  disableDayFrom = (date) => {
+    let calendar = this.props.calendar
+    var c = false;
+
+    var i;
+      for (i = 0; i < calendar.length; i++) { 
+        if (this.dateCheck(calendar[i].startDate, calendar[i].endDate, date)) {
+          c = true;
+          break;
+         }
+      }
+      return c;
+    }
 
   render() {
     const { classes, theme } = this.props;
     const selectStyles = {
       input: base => ({
         ...base,
+        margin: theme.spacing.unit,
         color: theme.palette.text.primary,
         '& input': {
           font: 'inherit',
@@ -280,6 +333,7 @@ class TravelRegisterForm extends React.Component {
                 value: emp,
                 label: emp.fullName,
               }))}
+              margin="normal"
               components={components}
               value={this.state.selectedEmployee == null ? null : { value: this.state.selectedEmployee, label: this.state.selectedEmployee.fullName }}
               onChange={this.handleChange.bind(this)}
@@ -291,32 +345,27 @@ class TravelRegisterForm extends React.Component {
               }}
               isClearable
             />
-            <TextField
-              id="departureTime"
-              label="Departure time"
-              className="form-time-travel"
-              type="date"
-              defaultValue={this.state.departureTime}
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={this.inputChange.bind(this)}
-            />
-            &nbsp;&nbsp;&nbsp;
-              <TextField
-              id="returningTime"
-              label="Returning time"
-              className="form-time-travel"
-              type="date"
-              margin="normal"
-              defaultValue={this.state.returningTime}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              onChange={this.inputChange.bind(this)}
-            />
             <br />
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                label = "Departure date"
+                value={this.state.departureTime}
+                onChange={this.handleChangeLeavingTime.bind(this)}
+                disablePast
+                disabled = {this.state.selectedEmployee == null}
+                shouldDisableDate={this.disableDayFrom.bind(this)}/>
+            </MuiPickersUtilsProvider>
+            &nbsp;&nbsp;&nbsp;
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                value={this.state.returningTime}
+                onChange={this.handleChangeReturningTime.bind(this)}
+                minDate={this.state.departureTime}
+                shouldDisableDate={this.disableDayTo.bind(this)}
+                disabled = {this.state.today == this.state.departureTime}
+                label="Return date"/>
+            </MuiPickersUtilsProvider>
+            <br /> <br />
             <Select
               classes={classes}
               styles={selectStyles}
@@ -324,6 +373,7 @@ class TravelRegisterForm extends React.Component {
                 value: off,
                 label: off.city,
               }))}
+              margin="normal"
               components={components}
               value={this.state.leavingOffice == null ? null : {value : this.state.leavingOffice, label : this.state.leavingOffice.city}}
               onChange={this.handleChangeLeaving.bind(this)}
@@ -343,6 +393,7 @@ class TravelRegisterForm extends React.Component {
                 value: off,
                 label: off.city,
               }))}
+              margin="normal"
               components={components}
               value={this.state.destinationOffice == null ? null : {value : this.state.destinationOffice, label : this.state.destinationOffice.city}}
               onChange={this.handleChangeDestination.bind(this)}
@@ -354,6 +405,7 @@ class TravelRegisterForm extends React.Component {
               }}
               isClearable
             />
+            <br />
               <FormGroup row>
               <FormControlLabel
           control={
@@ -418,6 +470,8 @@ class TravelRegisterForm extends React.Component {
 }
 
 TravelRegisterForm.propTypes = {
+  calendar: PropTypes.any,
+  getEmployeeCalendar: PropTypes.func,
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   fullName: PropTypes.string,

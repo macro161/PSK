@@ -2,6 +2,8 @@ package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.dao.StatisticsDao;
 import lt.vu.menuliukai.psk.entities.Statistics;
+import lt.vu.menuliukai.psk.service.JPAStatisticsService;
+import lt.vu.menuliukai.psk.service.MyBatisStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;

@@ -1,73 +1,36 @@
 import * as utils from '../utils/api/organiser'
-export const getAllTravels = (userId) => dispatch => {
+
+export const removeTrip = (id) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
-    let moc = [
-        {
-            id: '1',
-            fullName: 'Tomas Balta',
-            departureTime: '2018-01-01',
-            accomodation: 'Vilnius chata',
-            city: 'Vilnius',
-            approved: true
-        },
-        {
-            id: '2',
-            fullName: 'Jonas Juoda',
-            departureTime: '2018-01-02',
-            accomodation: 'Vilnius chata',
-            city: 'Vilnius',
-            approved: false
-        }
-    ]
-    dispatch({
-        type: 'GET_TRAVELS',
-        travels: moc,
-    });
-    dispatch({ type: 'SET_LOADING', value: false });
+    utils.deleteTripHttp(id)
+        .then(function (response) {
+            dispatch({ type: "DELETE_TRIP", id });
+            dispatch({ type: 'SET_LOADING', value: false });   
+        })
 };
 
-export const approveTravel = (travelId) => {
-    return {
-        type: 'APPROVE_TRAVEL',
-        Id: travelId,
-    }
-};
-
-export const cancelTravel = (travelId) => {
-    return {
-        type: 'CANCEL_TRAVEL',
-        Id: travelId,
-    }
-};
-
-export const removeTravel = (travelId) => {
-    return {
-        type: 'REMOVE_TRAVEL',
-        Id: travelId,
-    }
-};
-
-export const editTravel = (id, fullName, departureTime, accomodation, city, approved) => dispatch => {
+export const editTravel = (trip, departureDate, returnDate) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
-    dispatch({
-        type: "EDIT_TRAVEL",
-        travel: {
-            id: id,
-            fullName: fullName,
-            departureTime: departureTime,
-            accomodation: accomodation,
-            city: city,
-            approved: approved,
+    utils.editTripHttp(trip.tripId, departureDate, returnDate)
+        .then(function (response) {
+        console.log(response);
+            if (response.responseValue == true) {
+                var edited = trip;
+                edited.returningDate = returnDate;
+                edited.leavingDate = departureDate;
+                dispatch({ type: "EDIT_TRAVEL", trip: edited });
         }
+        dispatch({ type: 'SET_LOADING', value: false });
     })
-    dispatch({ type: 'SET_LOADING', value: false });
+   
 }
-export const registerTravel = (employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) => dispatch => {
+export const registerTravel = (organiser, employee, leavingDate, returningDate, fromOffice, toOffice, tripChecklist) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
-    utils.registerTripHttp({ from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
+    utils.registerTripHttp({ organiser: organiser, from_office: fromOffice.id, to_office: toOffice.id, leaving_date: leavingDate, returning_date: returningDate })
         .then(function (response) {
             utils.registerEmployeeTripHttp({ employee: employee.id, trip: response.responseValue.id, trip_checklist: tripChecklist, approved: false })
                 .then(function (r) {
+                    dispatch({ type: 'ADD_EMPLOYEE_TRIPS_BASIC', employeeTrip: r.responseValue });
                     dispatch({ type: 'SET_LOADING', value: false });
                 });
         });
@@ -153,8 +116,11 @@ export const groupTrips = (data) => dispatch => {
             if (response.responseCode != 200) {
                 alert("failed to group!")
             }
+            dispatch({
+                type: 'GET_TRIPS',
+                trips: response.responseValue,
+            });
             dispatch({ type: 'SET_LOADING', value: false });
-            getAllTrips();
     });
 }
 export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
@@ -165,6 +131,13 @@ export const getEmployeeTrip = (tripId, employeeId) => dispatch => {
             dispatch({ type: 'SET_LOADING', value: false });
 
         })
+   
+}
+export const getEmployeeCalendar = (email) => dispatch => {
+    utils.getEmployeeEvents(email)
+        .then(function (response) {
+            dispatch({ type: 'GET_CALENDAR', calendar: response.responseValue })
+        });
 }
 export const clearEmployeeTrip = () => dispatch => {
     dispatch({ type: 'GET_EMPLOYEE_TRIP', employeeTrip: {} });

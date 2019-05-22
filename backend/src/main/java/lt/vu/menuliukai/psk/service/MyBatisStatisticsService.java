@@ -28,6 +28,7 @@ public class MyBatisStatisticsService implements StatisticsDao {
         statistics.setMostCommonTripDestination(statisticsMapper.selectMostCommonDestination());
 
         Statistics temp = statisticsMapper.selectCheapestTrip();
+      
         if (temp != null){
             statistics.setCheapestTripOrigin(temp.getCheapestTripOrigin());
             statistics.setCheapestTripDestination(temp.getCheapestTripDestination());

@@ -1,6 +1,7 @@
 import { getAll, post, put, deleteById } from './http';
 const organiserUrl = "http://localhost:8080/employeetrip/";
 const tripUrl = "http://localhost:8080/trip/";
+const eventsUrl = "http://localhost:8080/events/";
 
 export function getBasicTripsHttp() {
     let responseCode;
@@ -34,13 +35,44 @@ export function registerTripHttp(trip) {
             };
         });
 }
+export function deleteTripHttp(tripId) {
+    let responseCode;
+    return deleteById(tripUrl, tripId)
+        .then(function (response) {
+            if (responseCode != null) {
+                return response
+            }
+        })
+        .then(function (responseValue) {
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
+export function editTripHttp(tripId, departureDate, returnDate) {
+    let responseCode;
+    return post(tripUrl + "change/" + tripId + "/" + departureDate + "/" + returnDate)
+        .then(function (response) {
+            responseCode = response.status;
+            if (responseCode === 200) {
+                return response.json();
+            }
+        })
+        .then(function (responseValue) {
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
 
 export function registerEmployeeTripHttp(empTrip) {
     let responseCode;
     return post(organiserUrl + "add", empTrip)
         .then(function (response) {
             responseCode = response.status;
-            if (responseCode === 200) {
+            if (responseCode === 201) {
                 return response.json();
             }
         })
@@ -159,6 +191,23 @@ export function getEmployeeTripHttp(tripId, employeeId){
         }
         })
         .then(function (responseValue) {
+        return {
+            responseCode,
+            responseValue
+        }
+    })
+}
+export function getEmployeeEvents(email){
+    let responseCode;
+    return getAll(eventsUrl + email)
+    .then(function (response) {
+        responseCode = response.status;
+            if (responseCode === 200) {
+                return response.json();
+        }
+    })
+        .then(function (responseValue) {
+            console.log(responseValue)
         return {
             responseCode,
             responseValue
