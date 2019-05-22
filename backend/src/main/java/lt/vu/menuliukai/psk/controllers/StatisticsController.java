@@ -21,13 +21,7 @@ public class StatisticsController {
         this.statisticsDao = statisticsDao;
     }
 
-    private final StatisticsDao statisticsDao;
-
-//    @Autowired
-//    private JPAStatisticsService jpaStatisticsService;
-//
-//    @Autowired
-//    private MyBatisStatisticsService myBatisStatisticsService;
+    private StatisticsDao statisticsDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Statistics index() {
@@ -43,5 +37,4 @@ public class StatisticsController {
     public long getDate(@PathVariable("leavingDate") String leavingDate, @PathVariable("returningDate") String returningDate) {
         return statisticsDao.getPeriodTripQuantity(leavingDate, returningDate);
     }
-
 }

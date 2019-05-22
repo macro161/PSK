@@ -9,7 +9,6 @@ import lt.vu.menuliukai.psk.entities.Flight;
 import lt.vu.menuliukai.psk.entities.Statistics;
 import lt.vu.menuliukai.psk.entities.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -20,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@Component
 @Service
 @RequestScope
 public class JPAStatisticsService implements StatisticsDao {
@@ -37,6 +35,7 @@ public class JPAStatisticsService implements StatisticsDao {
     private EmployeeTripDao employeeTripDao;
 
     long argument = 0;
+    long argument2 = Long.MAX_VALUE;
 
     @Override
     public Statistics calculateStatistics() {
@@ -49,7 +48,6 @@ public class JPAStatisticsService implements StatisticsDao {
         Trip trip2 = new Trip();
         Flight flight = new Flight();
         Flight flight2 = new Flight();
-        long argument2 = Integer.MAX_VALUE;
         long temp;
         long temp2;
         boolean toBreak = false;
@@ -60,56 +58,65 @@ public class JPAStatisticsService implements StatisticsDao {
         trips.forEach(t -> cities.add(t.getToOffice().getCity()));
         flightDao.findAll().forEach(f -> flights.add(f));
 
-
-
-        statistics.setMostCommonTripDestination(mostCommon(cities));
-
-
-        for(Trip t : trips){
-            temp = temp2 = t.getReturningDate().getTime() - t.getLeavingDate().getTime();
-            if (temp > argument){
-                argument = temp;
-                trip = t;
-            }
-            if (temp2 < argument2){
-                argument2 = temp2;
-                trip2 = t;
-            }
-        }
-        statistics.setLongestTripOrigin(trip.getFromOffice().getCity());
-        statistics.setLongestTripDestination(trip.getToOffice().getCity());
-        statistics.setShortestTripOrigin(trip2.getFromOffice().getCity());
-        statistics.setShortestTripDestination(trip2.getToOffice().getCity());
-
-
-        argument = Integer.MIN_VALUE;
-        argument2 = Integer.MAX_VALUE;
-
-        for(Flight f : flights){
-            temp = temp2 = f.getPrice();
-            if (temp > argument){
-                argument = temp;
-                flight = f;
-            }
-            if (temp2 < argument2){
-                argument2 = temp2;
-                flight2 = f;
-            }
+        if(cities.size() != 0) {
+            statistics.setMostCommonTripDestination(mostCommon(cities));
         }
 
-        for(EmployeeTrip et : employeeTrips){
-            if(et.getFlight().getId() == flight.getId()){
-                statistics.setMostExpensiveTripOrigin(et.getTrip().getFromOffice().getCity());
-                statistics.setMostExpensiveTripDestination(et.getTrip().getToOffice().getCity());
-                toBreak = true;
+        if(trips.size() != 0)
+        {
+            for(Trip t : trips){
+                temp = temp2 = t.getReturningDate().getTime() - t.getLeavingDate().getTime();
+                if (temp >= argument){
+                    argument = temp;
+                    trip = t;
+                }
+                if (temp2 <= argument2){
+                    argument2 = temp2;
+                    trip2 = t;
+                }
             }
-            if(et.getFlight().getId() == flight2.getId()){
-                statistics.setCheapestTripOrigin(et.getTrip().getFromOffice().getCity());
-                statistics.setCheapestTripDestination(et.getTrip().getToOffice().getCity());
-                toBreak2 = true;
+            statistics.setLongestTripOrigin(trip.getFromOffice().getCity());
+            statistics.setLongestTripDestination(trip.getToOffice().getCity());
+            statistics.setShortestTripOrigin(trip2.getFromOffice().getCity());
+            statistics.setShortestTripDestination(trip2.getToOffice().getCity());
+        }
+
+
+        if(flights.size() != 0) {
+
+            argument = Long.MIN_VALUE;
+            argument2 = Long.MAX_VALUE;
+
+            for (Flight f : flights) {
+                temp = temp2 = f.getPrice();
+                if (temp >= argument) {
+                    argument = temp;
+                    flight = f;
+                }
+                if (temp2 <= argument2) {
+                    argument2 = temp2;
+                    flight2 = f;
+                }
             }
-            if (toBreak == true && toBreak2 == true){
-                break;
+
+        }
+
+        if(employeeTrips.size() != 0){
+            for(EmployeeTrip et : employeeTrips){
+
+                if(et.getFlight().getId() == flight.getId() && !toBreak){
+                    statistics.setMostExpensiveTripOrigin(et.getTrip().getFromOffice().getCity());
+                    statistics.setMostExpensiveTripDestination(et.getTrip().getToOffice().getCity());
+                    toBreak = true;
+                }
+                if(et.getFlight().getId() == flight2.getId() && !toBreak2){
+                    statistics.setCheapestTripOrigin(et.getTrip().getFromOffice().getCity());
+                    statistics.setCheapestTripDestination(et.getTrip().getToOffice().getCity());
+                    toBreak2 = true;
+                }
+                if (toBreak && toBreak2){
+                    break;
+                }
             }
         }
 
@@ -119,8 +126,8 @@ public class JPAStatisticsService implements StatisticsDao {
     @Override
     public long getEmployeeTripQuantity(String fullName) {
         argument = 0;
-        for(EmployeeTrip et : employeeTripDao.findAll()){
-            if(et.getEmployee().getFullName().equals(fullName.replace('_', ' '))){
+        for (EmployeeTrip et : employeeTripDao.findAll()) {
+            if (et.getEmployee().getFullName().equals(fullName.replace('_', ' '))) {
                 argument++;
             }
         }

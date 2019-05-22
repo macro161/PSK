@@ -4,11 +4,9 @@ import lt.vu.menuliukai.psk.dao.StatisticsDao;
 import lt.vu.menuliukai.psk.entities.Statistics;
 import lt.vu.menuliukai.psk.mappers.StatisticsMapper;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
-//@Component
 @Service
 @RequestScope
 public class MyBatisStatisticsService implements StatisticsDao {
@@ -30,20 +28,29 @@ public class MyBatisStatisticsService implements StatisticsDao {
         statistics.setMostCommonTripDestination(statisticsMapper.selectMostCommonDestination());
 
         Statistics temp = statisticsMapper.selectCheapestTrip();
-        statistics.setCheapestTripOrigin(temp.getCheapestTripOrigin());
-        statistics.setCheapestTripDestination(temp.getCheapestTripDestination());
+      
+        if (temp != null){
+            statistics.setCheapestTripOrigin(temp.getCheapestTripOrigin());
+            statistics.setCheapestTripDestination(temp.getCheapestTripDestination());
+        }
 
         temp = statisticsMapper.selectMostExpensiveTrip();
-        statistics.setMostExpensiveTripDestination(temp.getMostExpensiveTripDestination());
-        statistics.setMostExpensiveTripOrigin(temp.getMostExpensiveTripOrigin());
+        if (temp != null) {
+            statistics.setMostExpensiveTripDestination(temp.getMostExpensiveTripDestination());
+            statistics.setMostExpensiveTripOrigin(temp.getMostExpensiveTripOrigin());
+        }
 
         temp = statisticsMapper.selectShortestTrip();
-        statistics.setShortestTripOrigin(temp.getShortestTripOrigin());
-        statistics.setShortestTripDestination(temp.getShortestTripDestination());
+        if (temp != null) {
+            statistics.setShortestTripOrigin(temp.getShortestTripOrigin());
+            statistics.setShortestTripDestination(temp.getShortestTripDestination());
+        }
 
         temp = statisticsMapper.selectLongestTrip();
-        statistics.setLongestTripDestination(temp.getLongestTripDestination());
-        statistics.setLongestTripOrigin(temp.getLongestTripOrigin());
+        if (temp != null) {
+            statistics.setLongestTripDestination(temp.getLongestTripDestination());
+            statistics.setLongestTripOrigin(temp.getLongestTripOrigin());
+        }
 
         return statistics;
     }
