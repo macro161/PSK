@@ -4,11 +4,9 @@ import lt.vu.menuliukai.psk.dao.StatisticsDao;
 import lt.vu.menuliukai.psk.entities.Statistics;
 import lt.vu.menuliukai.psk.mappers.StatisticsMapper;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
-//@Component
 @Service
 @RequestScope
 public class MyBatisStatisticsService implements StatisticsDao {

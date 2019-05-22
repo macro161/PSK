@@ -2,8 +2,6 @@ package lt.vu.menuliukai.psk.controllers;
 
 import lt.vu.menuliukai.psk.dao.StatisticsDao;
 import lt.vu.menuliukai.psk.entities.Statistics;
-import lt.vu.menuliukai.psk.service.JPAStatisticsService;
-import lt.vu.menuliukai.psk.service.MyBatisStatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -21,13 +19,7 @@ public class StatisticsController {
         this.statisticsDao = statisticsDao;
     }
 
-    private final StatisticsDao statisticsDao;
-
-//    @Autowired
-//    private JPAStatisticsService jpaStatisticsService;
-//
-//    @Autowired
-//    private MyBatisStatisticsService myBatisStatisticsService;
+    private StatisticsDao statisticsDao;
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Statistics index() {
@@ -43,5 +35,4 @@ public class StatisticsController {
     public long getDate(@PathVariable("leavingDate") String leavingDate, @PathVariable("returningDate") String returningDate) {
         return statisticsDao.getPeriodTripQuantity(leavingDate, returningDate);
     }
-
 }
