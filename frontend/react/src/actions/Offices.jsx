@@ -53,9 +53,9 @@ export const deleteOffice = (id) => dispatch => {
     });
   }
 
-  export const editOffice = (id,city,address,aptAddress,aptSize) => dispatch =>{
+  export const editOffice = (id,city,address,aptAddress,aptSize, version) => dispatch =>{
     dispatch({ type: 'SET_LOADING', value: true });
-    utils.updateOffice({id,city, address, aptAddress,aptSize})
+    utils.updateOffice({id,city, address, aptAddress,aptSize, version})
       .then(function(response){
         if(response.responseCode != 200){
           alert("100 proc nebus alerto")
@@ -69,6 +69,7 @@ export const deleteOffice = (id) => dispatch => {
               address: address,
               aptAddress: aptAddress,
               aptSize: aptSize,
+              version: version
             }
           })
         }

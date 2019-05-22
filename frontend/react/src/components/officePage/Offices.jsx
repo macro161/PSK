@@ -42,17 +42,18 @@ class Offices extends React.Component {
       this.setState({
         showRegistration:false,
         showEdit:true,
-        showPopup:true,
-        office:office,
+        showPopup: true,
+        office: office,
       })
     }
 
-    onEditSave(id,city,address, accommodation, rooms){
-        this.props.editOffice(id,city,address,accommodation, rooms);
-        this.setState({
-          showEdit:false,
-          showPopup:false
-        })
+    onEditSave(id, city, address, accommodation, rooms) {
+      const office = Array.isArray(this.props.offices) && this.props.offices.find(o => o.id == id);
+      this.props.editOffice(id,city,address,accommodation, rooms, office.version);
+      this.setState({
+        showEdit:false,
+        showPopup:false
+      })
     }
 
     onDelete(id){
@@ -105,7 +106,8 @@ Offices.propTypes = {
   offices: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
     city: PropTypes.string,
-    address: PropTypes.string
+    address: PropTypes.string,
+    version: PropTypes.number
   })),
   getOffices: PropTypes.func,
   registerOffice: PropTypes.func,
