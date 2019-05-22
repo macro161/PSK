@@ -61,14 +61,15 @@ public class OfficeController {
     public Office edit(@RequestBody Office office , @PathVariable long id) {
         Office baseOffice = Converter.convert(officeDao, objectName, id);
 
-        if(baseOffice.getVersion() != office.getVersion()){
-            throw new OptimisticLockingFailureException("NOOOOO");
-        }
+//        if(baseOffice.getVersion() != office.getVersion()){
+//            throw new OptimisticLockingFailureException("NOOOOO");
+//        }
 
         change(office::getAddress, baseOffice::setAddress);
         change(office::getCity, baseOffice::setCity);
         change(office::getAptAddress, baseOffice::setAptAddress);
         change(office::getAptSize, baseOffice::setAptSize);
+        change(office::getVersion, baseOffice::setVersion);
 
         return officeDao.save(baseOffice);
     }
