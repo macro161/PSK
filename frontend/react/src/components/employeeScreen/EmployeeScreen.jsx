@@ -20,6 +20,7 @@ class EmployeeScreen extends React.Component {
   }
   
   render() {
+    console.log(this.props.travels)
     return (
       <div className='page-frame'>
         <title>Travels</title>
