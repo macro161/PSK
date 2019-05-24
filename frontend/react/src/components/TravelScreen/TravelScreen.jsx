@@ -35,6 +35,7 @@ class TravelScreen extends React.Component {
     this.props.getOffices();
     this.props.getAllEmployees();
     this.props.getTrips();
+    this.props.getCsvData();
     this.getTodaysFilename = this.getTodaysFilename.bind(this)
   }
 
@@ -87,7 +88,7 @@ class TravelScreen extends React.Component {
         <hr />
         <div>
           <Button onClick={this.addTravelClick.bind(this)} className="register-travel-button" variant="contained" color="secondary"> Add travel </Button>
-          <Button style={{ float: "right" }} variant="contained" color="primary"><CSVLink style={CSVStyle} className="button button--primary button--spaced admin__action" data={this.props.trips} filename={this.getTodaysFilename()}>
+          <Button style={{ float: "right" }} variant="contained" color="primary"><CSVLink style={CSVStyle} className="button button--primary button--spaced admin__action" data={this.props.csvData} filename={this.getTodaysFilename()}>
                     Download as CSV
                 </CSVLink></Button>
         </div>
@@ -129,6 +130,7 @@ class TravelScreen extends React.Component {
 export default connect(
   (state) => ({
     trips: state.TravelScreen.trips,
+    csvData: state.TravelScreen.csvData,
     employees: state.UserManager.employees,
     offices: state.Offices.offices,
     employeeTrip: state.TravelScreen.employeeTrip,
@@ -138,6 +140,7 @@ export default connect(
   (dispatch) => bindActionCreators(
     {
       getAllEmployees: getAllEmployees,
+      getCsvData: actions.getCsvData,
       getOffices: getOffices,
       getAllTravels: actions.getAllTravels,
       approveTravel: actions.approveTravel,
@@ -203,6 +206,7 @@ TravelScreen.propTypes = {
   employeeTrip: PropTypes.any,
   show: PropTypes.bool,
   getAllTravels: PropTypes.func,
+  getCsvData: PropTypes.func,
   approveTravel: PropTypes.func,
   cancelTravel: PropTypes.func,
   seeTravelDetails: PropTypes.func,

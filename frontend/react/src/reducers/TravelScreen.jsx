@@ -1,5 +1,6 @@
 const initialState = {
     trips: [],
+    csvData: [],
     employeeTrips: [],
     employeeTrip: {},
     calendar: [],
@@ -10,6 +11,10 @@ export default(state = initialState, action) => {
         case 'GET_EMPLOYEE_TRIPS_BASIC':
             return {
                 ... state, employeeTrips: action.employeeTrips
+            }
+        case 'GET_CSV_DATA':
+            return {
+                ... state, csvData: action.data
             }
         case 'DELETE_TRIP':
                 const list = Array.from(state.trips)
