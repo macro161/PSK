@@ -51,6 +51,21 @@ export const getAllEmployeeTrips = () => dispatch => {
         })
 }
 
+export const getCsvData = () => dispatch => {
+    dispatch({ type: 'SET_LOADING', value: true });
+    utils.getCsvDataHttp()
+        .then(function (response) {
+            if (response.responseCode != 200) {
+                alert("As tikrai gausiu dusimtini")
+            }
+            dispatch({
+                type: 'GET_CSV_DATA',
+                data: response.responseValue,
+            });
+            dispatch({ type: 'SET_LOADING', value: false });
+        })
+}
+
 export const addFlight = (et, flight) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
     utils.addFlightHttp(et, flight)

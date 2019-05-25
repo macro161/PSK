@@ -19,6 +19,24 @@ export function getBasicTripsHttp() {
             };
         });
 }
+
+export function getCsvDataHttp() {
+    let responseCode;
+    return getAll(organiserUrl + "getcsv")
+        .then(function (response) {
+            responseCode = response.status;
+            if (responseCode === 200) {
+                return response.json();
+            }
+        })
+        .then(function (responseValue) {
+            return {
+                responseCode,
+                responseValue
+            };
+        });
+}
+
 export function registerTripHttp(trip) {
     let responseCode;
     return post(tripUrl + "add", trip)

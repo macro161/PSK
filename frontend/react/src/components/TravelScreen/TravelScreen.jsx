@@ -10,7 +10,7 @@ import DataTable from './TravelDataTable';
 import EditForm from './TravelEditForm';
 import RegisterForm from './TravelRegisterForm';
 import Button from '@material-ui/core/Button';
-
+import { CSVLink } from "react-csv";
 
 const initialState = {
   fullName: '',
@@ -22,6 +22,12 @@ const initialState = {
   showRegister: false,
 
 };
+
+const CSVStyle = {
+  color: "white",
+  textDecoration: "none"
+};
+
 class TravelScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +35,8 @@ class TravelScreen extends React.Component {
     this.props.getOffices();
     this.props.getAllEmployees();
     this.props.getTrips();
-
+    this.props.getCsvData();
+    this.getTodaysFilename = this.getTodaysFilename.bind(this)
   }
 
   onClose() {
@@ -63,14 +70,27 @@ class TravelScreen extends React.Component {
     })
   }
 
+  getTodaysFilename(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '/' + mm + '/' + dd;
+    return "Travels_" + today +".csv";
+  }
+
   render() {
     return (
       <div className='page-frame'>
         <title>Travels</title>
         <h2>Organise travels</h2>
         <hr />
-        <Button variant="contained" onClick={this.addTravelClick.bind(this)} className="register-travel-button" variant="contained" color="secondary"> Add travel </Button>
         <div>
+          <Button onClick={this.addTravelClick.bind(this)} className="register-travel-button" variant="contained" color="secondary"> Add travel </Button>
+          <Button style={{ float: "right" }} variant="contained" color="primary"><CSVLink style={CSVStyle} className="button button--primary button--spaced admin__action" data={this.props.csvData} filename={this.getTodaysFilename()}>
+                    Download as CSV
+                </CSVLink></Button>
         </div>
         <DataTable
           trips={this.props.trips}
@@ -110,6 +130,7 @@ class TravelScreen extends React.Component {
 export default connect(
   (state) => ({
     trips: state.TravelScreen.trips,
+    csvData: state.TravelScreen.csvData,
     employees: state.UserManager.employees,
     offices: state.Offices.offices,
     employeeTrip: state.TravelScreen.employeeTrip,
@@ -119,6 +140,7 @@ export default connect(
   (dispatch) => bindActionCreators(
     {
       getAllEmployees: getAllEmployees,
+      getCsvData: actions.getCsvData,
       getOffices: getOffices,
       getAllTravels: actions.getAllTravels,
       approveTravel: actions.approveTravel,
@@ -184,6 +206,7 @@ TravelScreen.propTypes = {
   employeeTrip: PropTypes.any,
   show: PropTypes.bool,
   getAllTravels: PropTypes.func,
+  getCsvData: PropTypes.func,
   approveTravel: PropTypes.func,
   cancelTravel: PropTypes.func,
   seeTravelDetails: PropTypes.func,
