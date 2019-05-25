@@ -54,10 +54,10 @@ class InfoPopup extends React.Component{
         </List>
         <List className={classes.root} >
         <ListItem>
-          <ListItemText  primary="Leaving time" secondary={this.props.trip.leavingDate} />
+          <ListItemText  primary="Leaving date" secondary={this.props.trip.leavingDate.substring(0, 10)} />
         </ListItem>
         <ListItem>
-          <ListItemText  primary="Return time" secondary={this.props.trip.returningDate} />
+          <ListItemText  primary="Return date" secondary={this.props.trip.returningDate.substring(0, 10)} />
         </ListItem>
         </List>
         <Divider/>
@@ -66,7 +66,7 @@ class InfoPopup extends React.Component{
           <ListItemText  primary="Airport" secondary={this.props.trip.flight != null ? this.props.trip.flight.airport : "Not available"} />
         </ListItem>
         <ListItem>
-          <ListItemText  primary="Flight time" secondary={this.props.trip.flight != null ? this.props.trip.flight.date : "Not available" } />
+          <ListItemText  primary="Flight time" secondary={this.props.trip.flight != null ? this.props.trip.flight.date.substring(0,10)+" " + this.props.trip.flight.date.substring(11,16) : "Not available" } />
         </ListItem>
         <ListItem>
           <ListItemText  primary="Booking reference" secondary={this.props.trip.flight != null ? this.props.trip.flight.booking : "Not available" } />
@@ -75,7 +75,7 @@ class InfoPopup extends React.Component{
         <Divider/>
         <List style={flexContainer}>
         <ListItem>
-          <ListItemText  primary="Car rent address" secondary={this.props.trip.carRent != null ? this.props.trip.carRentAddress : "Not available"} />
+          <ListItemText  primary="Car rent address" secondary={this.props.trip.carRent != null ? this.props.trip.carRent.address : "Not available"} />
         </ListItem>
         </List>
         <Divider/>

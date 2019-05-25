@@ -12,13 +12,11 @@ export default class OfficeEditForm extends React.Component{
         super(props);
 
         this.state = {
-            city : '',
-            address : '',
-            accommodation:'',
-            rooms: '',
+            city : this.props.office.city,
+            address : this.props.office.address,
+            accommodation:this.props.office.aptSize,
+            rooms: this.props.office.aptAddress,
         }
-        this.state.city=this.props.office.city;
-        this.state.address=this.props.office.address;
     }
 
     inputChange(e){
@@ -28,50 +26,10 @@ export default class OfficeEditForm extends React.Component{
     }
 
     onEditSave(){
-        this.props.onEditSave(this.props.office.id, this.state.city, this.state.address, this.state.accommodation, parseInt(this.state.rooms));
+        this.props.onEditSave(this.props.office.id, this.state.city, this.state.address, this.state.accommodation, this.state.rooms);
     }
 
     render(){
-        
-        /*return(
-            <div className="popup">
-                <div className="popup-small">
-                    <header className="form-header">
-                        <span className="form-header-text">Edit office</span>
-                        <span className="form-header-close" onClick={this.props.onClose}>✖</span>
-                    </header>
-                    <div className="form-container">
-                        <TextField
-                            id="city"
-                            label="City"
-                            defaultValue = {this.props.office.city}
-                            className="form-text-field"
-                            type="text"
-                            margin="normal"
-                            onChange={this.inputChange.bind(this)}
-                            />
-                            <br/>
-                        <TextField
-                            id="address"
-                            label="Address"
-                            defaultValue = {this.props.office.address}
-                            className="form-text-field-wide"
-                            type="text"
-                            margin="normal"
-                            onChange={this.inputChange.bind(this)}
-                        />
-                        <div className="register-form-buttons">
-                        <Button variant="contained" size="large" color="primary" onClick={this.onEditSave.bind(this)}>
-                        Save
-                        </Button>
-                            <Button variant="contained" size="large" color="secondary" className="cancel-button" onClick={this.props.onClose}>
-                        Cancel
-                        </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );*/
         return(
             <Dialog
             open={true}
@@ -111,7 +69,7 @@ export default class OfficeEditForm extends React.Component{
                   id="rooms"
                   label="Rooms"
                   className="form-text-field-rooms"
-                  type="text"
+                  type="number"
                   margin="normal"
                   onChange={this.inputChange.bind(this)}
                 />
