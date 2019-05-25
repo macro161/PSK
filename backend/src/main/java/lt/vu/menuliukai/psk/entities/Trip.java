@@ -24,6 +24,9 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
 
+    @Version
+    Long version;
+
     @JsonProperty("leaving_date")
     Date leavingDate;
 

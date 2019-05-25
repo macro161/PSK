@@ -56,8 +56,11 @@ export const deleteOffice = (id) => dispatch => {
   export const editOffice = (id,city,address,aptAddress,aptSize, version) => dispatch =>{
     dispatch({ type: 'SET_LOADING', value: true });
     utils.updateOffice({id,city, address, aptAddress,aptSize, version})
-      .then(function(response){
-        if(response.responseCode != 200){
+      .then(function (response) {
+        if (response.responseCode == 500) {
+          alert("The office has been changed by other user.")
+        }
+        else if(response.responseCode != 200){
           alert("100 proc nebus alerto")
         }
         else{
