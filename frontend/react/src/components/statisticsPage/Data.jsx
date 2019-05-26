@@ -2,36 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
-
+import List from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing.unit * 2,
-    textAlign: 'center',
-    color: theme.palette.text.primary,
-    fontSize: 25
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  dense: {
-    marginTop: 16,
-  },
-  menu: {
-    width: 200,
   },
 });
 
@@ -67,84 +55,90 @@ class Test extends React.Component {
 
   render() {
     const { classes } = this.props;
-    return (
-      <div className={classes.root}>
-        <Grid container spacing={24}>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>Most common trip destination</Paper>
+    
+    return(
+      <div className='page-frame'>
+        <title>Statistics</title>
+        <h2>Statistics</h2>
+        <hr />
+        <br/>
+      <Grid container spacing={2}>
+      <Grid item xs={5}>
+      <h3>All travels</h3>
+      <List className={classes.root}>
+        <ListItem>
+    <ListItemText primary="Most common trip destination:" secondary={<h1>{this.props.mostCommonTripDestination}</h1>} />
+        </ListItem>
+        <hr/>
+          <ListItem>
+            <ListItemText primary="Most expensive flight:" secondary={<h1>{this.props.mostExpensiveTripOrigin} - {this.props.mostExpensiveTripDestination}</h1>} />
+          </ListItem>
+          <hr/>
+          <ListItem>
+           <ListItemText primary="Cheapest flight:" secondary={<h1>{this.props.cheapestTripOrigin} - {this.props.cheapestTripDestination}</h1>} />
+          </ListItem>
+          <hr/>
+          <ListItem>
+          <ListItemText primary="Shortest trip:" secondary={<h1>{this.props.shortestTripOrigin} - {this.props.shortestTripDestination}</h1>} />
+          </ListItem>
+          <hr/>
+          <ListItem>
+          <ListItemText primary="Longest trip:" secondary={<h1>{this.props.longestTripOrigin} - {this.props.longestTripDestination}</h1>} />
+          </ListItem>
+          </List>
           </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>{this.props.mostCommonTripDestination}</Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>Most expensive flight</Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>{this.props.mostExpensiveTripOrigin} - {this.props.mostExpensiveTripDestination}</Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>Cheapest flight</Paper>
-          </Grid>
-          <Grid item xs={6}>
-          <Paper className={classes.paper}>{this.props.cheapestTripOrigin} - {this.props.cheapestTripDestination}</Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>Shortest trip</Paper>
-          </Grid>
-          <Grid item xs={6}>
-          <Paper className={classes.paper}>{this.props.shortestTripOrigin} - {this.props.shortestTripDestination}</Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>Longest trip</Paper>
-          </Grid>
-          <Grid item xs={6}>
-          <Paper className={classes.paper}>{this.props.longestTripOrigin} - {this.props.longestTripDestination}</Paper>
-          </Grid>
-          <Grid item xs={2}>
-            <Paper className={classes.paper}>Employee</Paper>
-          </Grid>
-          <Grid item xs={2}>
+
+
+          <Grid spacing={3}>
+            <h3>Employee travels</h3>
+            <List>
+          <ListItem>
+            <Grid container spacing={24}>
+            <Grid item xs={6}>
             <TextField
               id="name"
-              label="Name"
+              label="First name"
               className="text"
               margin="normal"
               onChange={this.inputChange.bind(this)}
               inputProps={{
                 style: { fontSize: 22 }
               }}
-            />
-          </Grid>
-          <Grid item xs={2}>
+            /></Grid>
+            <Grid item xs={6}>
             <TextField
               id="surname"
-              label="Surname"
+              label="Last name"
               className="text"
               margin="normal"
               onChange={this.inputChange.bind(this)}
               inputProps={{
                 style: { fontSize: 22 }
               }}
-              />
-          </Grid>
-          <Grid item xs={1}>
-            <Button size="large" variant="contained" color="primary" onClick={(e) => this.handleName(e)} className={classes.button}>
+              /></Grid></Grid>
+              
+              <Button size="medium" variant="contained" color="primary" onClick={(e) => this.handleName(e)} className={classes.button}>
               OK
             </Button>
-          </Grid>
-          <Grid item xs={2}>
-            <Paper className={classes.paper}>traveled</Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper className={classes.paper}>{this.props.employeeTripQuantity} times</Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper className={classes.paper}>Trips</Paper>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper className={classes.paper}>from &nbsp;&nbsp;&nbsp;&nbsp;<TextField
+          </ListItem>
+          <ListItem>
+            
+          </ListItem>
+          <ListItem>
+            Employee travelled {this.props.employeeTripQuantity} times in total.
+          </ListItem>
+          <br/>
+
+
+          <h3>Select a time period</h3>
+          <ListItem>
+            
+          <ListItemText primary={
+          <Grid container spacing={24}>
+            <Grid item xs={6}>
+            <TextField
               id="date1"
-              label="Date"
+              label="From"
               type="date"
               ref="date1"
               onChange={this.inputChange.bind(this)}
@@ -153,33 +147,30 @@ class Test extends React.Component {
               InputLabelProps={{
                 shrink: true,
               }}
-            /></Paper>
-          </Grid>
-          <Grid item xs={4}>
-            <Paper className={classes.paper}>to &nbsp;&nbsp;&nbsp;&nbsp;<TextField
-              id="date2"
-              label="Date"
-              type="date"
-              ref="date2"
-              defaultValue="2019-01-01"
-              onChange={this.inputChange.bind(this)}
-              className={classes.textField}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />      &nbsp;&nbsp;&nbsp;&nbsp;<Button size="large" variant="contained" color="primary" onClick={(e) => this.handleDate(e)} className={classes.button}>
-                OK
-  </Button></Paper>
-          </Grid>
-          <Grid item xs={2}>
-            <Paper className={classes.paper}>{this.props.periodTripQuantity}</Paper>
-          </Grid>
-        </Grid>
-        <Button variant="contained" color="primary"size="large" className={classes.button}>
-        Export as PDF
-      </Button>      <Button variant="contained" color="primary"size="large" className={classes.button}>
-        Export as PNG
+            /></Grid>
+            <Grid item xs={6}><TextField
+            id="date2"
+            label="To"
+            type="date"
+            ref="date2"
+            defaultValue="2019-01-01"
+            onChange={this.inputChange.bind(this)}
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          /></Grid></Grid>} />
+          <Button size="medium" variant="contained" color="primary" onClick={(e) => this.handleDate(e)} className={classes.button}>
+          OK
       </Button>
+          </ListItem>
+          <br/>
+          <ListItem>
+            Travels during selected time period: {this.props.periodTripQuantity}
+          </ListItem>
+      </List>
+      </Grid>
+      </Grid>
       </div>
     );
   }
