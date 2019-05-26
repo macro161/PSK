@@ -47,7 +47,7 @@ class UserManager extends React.Component {
       editSite: true,
     });
   }
-  onSubmit(fullName, city, email, password) {
+  onSubmit(fullName, city, email, password, role) {
     const userExists = () => {
       const { employees } = this.props;
       for (const employee of employees) {
@@ -70,7 +70,7 @@ class UserManager extends React.Component {
       if (userExists()) {
         alert('That employee is already registered');
       } else {
-        this.props.registerUser(fullName, city, email, password);
+        this.props.registerUser(fullName, city, email, password, role);
       }
     }
     this.setState(initialState);
@@ -81,6 +81,8 @@ class UserManager extends React.Component {
 
       <div className='page-frame'>
         <title>User Manager</title>
+        <h2>Manage users</h2>
+        <hr />
         <br />
         {this.state.showRegistration ? <UserRegistrationForm  fullName = {this.state.fullName} city={this.state.city} email={this.state.email} onClose={this.onClose.bind(this)} onSubmit={this.onSubmit.bind(this)} offices={this.props.offices} /> : null}
         <Button disabled={this.state.showRegistration} onClick={this.registerUser.bind(this)} className="register-user-button" variant="contained" color="secondary">

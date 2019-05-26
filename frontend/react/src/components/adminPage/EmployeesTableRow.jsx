@@ -28,6 +28,7 @@ export default class EmployeesTableRow extends React.Component {
         <td className="name">{this.props.fullName}</td>
         <td className="cityEmp">{officeCity}</td>
         <td className="email">{this.props.email}</td>
+        <td classNme="role">{this.props.role}</td>
         <td className="actions">
         <IconButton aria-label="Edit" color="primary" onClick = {this.editThis.bind(this)} disabled = {this.props.disableButtons}>
         <EditIcon />
@@ -49,6 +50,7 @@ EmployeesTableRow.propTypes = {
   email: PropTypes.string.isRequired,
   editEmployee: PropTypes.func.isRequired,
   removeUser: PropTypes.func.isRequired,
+  role: PropTypes.any,
   offices: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
     city: PropTypes.string,
