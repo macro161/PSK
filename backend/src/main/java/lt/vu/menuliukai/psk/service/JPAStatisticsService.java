@@ -103,13 +103,12 @@ public class JPAStatisticsService implements StatisticsDao {
 
         if(employeeTrips.size() != 0){
             for(EmployeeTrip et : employeeTrips){
-
-                if(et.getFlight().getId() == flight.getId() && !toBreak){
+                if(et.getFlight() != null && et.getFlight().getId() == flight.getId() && !toBreak ){
                     statistics.setMostExpensiveTripOrigin(et.getTrip().getFromOffice().getCity());
                     statistics.setMostExpensiveTripDestination(et.getTrip().getToOffice().getCity());
                     toBreak = true;
                 }
-                if(et.getFlight().getId() == flight2.getId() && !toBreak2){
+                if(et.getFlight() != null && et.getFlight().getId() == flight2.getId() && !toBreak2){
                     statistics.setCheapestTripOrigin(et.getTrip().getFromOffice().getCity());
                     statistics.setCheapestTripDestination(et.getTrip().getToOffice().getCity());
                     toBreak2 = true;
