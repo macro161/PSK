@@ -37,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     UserDetailsService userDetailsService;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    public void configureGlobal(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -69,8 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     private AuthenticationSuccessHandler successHandler() {
         return (httpServletRequest, httpServletResponse, authentication) -> {
-            User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Object role = user.getAuthorities().toArray()[0];
+            String role = PskApplication.getUserRole();
 
             String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
             String responseJson = String.format("{ \"JSESSIONID\": \"%s\", \"role\": \"%s\" }", sessionId, role);
