@@ -27,7 +27,7 @@ class FlightForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seatNumber: 0,
+      booking: '',
       airport: '',
       loading: true,
       date: "2019-06-30T12:00",
@@ -46,7 +46,7 @@ class FlightForm extends React.Component {
       })
     } else if (props.employeeTrip.id.tripId == props.id.tripId && props.employeeTrip.id.employeeId) {
       this.setState({
-        seatNumber: props.employeeTrip.flight.seatNumber,
+        booking: props.employeeTrip.flight.booking,
         airport:props.employeeTrip.flight.airport,
         date: props.employeeTrip.flight.date.substring(0, 16),
         price: props.employeeTrip.flight.price,
@@ -66,7 +66,7 @@ class FlightForm extends React.Component {
   })
 }
   onSubmit() {
-    this.props.onSubmit(this.props.id, { airport : this.state.airport, date : this.state.date, price: this.state.price, seatNumber:this.state.seatNumber });
+    this.props.onSubmit(this.props.id, { airport : this.state.airport, date : this.state.date, price: this.state.price, booking:this.state.booking });
   }
 
   render() {
@@ -97,11 +97,10 @@ class FlightForm extends React.Component {
                showTodayButton/>
             </MuiPickersUtilsProvider>
           <TextField
-          id="seatNumber"
-          label="Seat number"
-          value={this.state.seatNumber}
+          id="booking"
+          label="Booking"
+          value={this.state.booking}
           onChange={this.inputChange.bind(this)}
-          type="number"
           className={classes.textField}
           InputLabelProps={{
             shrink: true,
