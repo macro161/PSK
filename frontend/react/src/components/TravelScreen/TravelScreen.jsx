@@ -44,7 +44,8 @@ class TravelScreen extends React.Component {
   }
 
   onEditSave(id, fullName, departure, accommodation, city, approved) {
-    this.props.editTravel(id, fullName, departure, accommodation, city, approved);
+    const trip = Array.isArray(this.props.trips) && this.props.trips.find(t => t.id == id);
+    this.props.editTravel(id, fullName, departure, accommodation, city, approved, trip.version);
     this.setState(initialState)
   }
 
@@ -173,7 +174,8 @@ TravelScreen.propTypes = {
   offices: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,
     city: PropTypes.string,
-    address: PropTypes.string
+    address: PropTypes.string,
+    version: PropTypes.number
   })),
   employees: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.any,

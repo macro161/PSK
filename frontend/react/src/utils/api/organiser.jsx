@@ -50,9 +50,9 @@ export function deleteTripHttp(tripId) {
             };
         });
 }
-export function editTripHttp(tripId, departureDate, returnDate) {
+export function editTripHttp(tripId, departureDate, returnDate, version) {
     let responseCode;
-    return post(tripUrl + "change/" + tripId + "/" + departureDate + "/" + returnDate)
+    return post(tripUrl + "change/" + tripId + "/" + departureDate + "/" + returnDate + "/" + version)
         .then(function (response) {
             responseCode = response.status;
             if (responseCode === 200) {
