@@ -69,23 +69,8 @@ public class EmployeeTripController {
     @RequestMapping(value = "/{employeeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeTripPageDto> get(@PathVariable Long employeeId) {
         List<EmployeeTrip> etList = employeeTripDao.findByIdEmployeeId(employeeId);
-        List<EmployeeTripPageDto> list =
-                etList.stream().map(et ->
-                        new EmployeeTripPageDto(
-                                et.getId(), et.getEmployee().getFullName(),
-                                et.getApartmentRoom(),
-                                et.getTrip().getLeavingDate().toString(),
-                                et.getTrip().getReturningDate().toString(),
-                                et.getTrip().getToOffice().getAptAddress(),
-                                et.getTrip().getFromOffice().getCity(),
-                                et.getTrip().getToOffice().getCity(),
-                                et.getTrip().getToOffice().getAddress(),
-                                et.getCarRent(),
-                                et.getFlight(),
-                                et.getTripChecklist(),
-                                et.getApproved()))
-                        .collect(Collectors.toList());
-        return list;
+        return etList.stream().map(EmployeeTripPageDto::from)
+            .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/{employeeId}/{tripId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

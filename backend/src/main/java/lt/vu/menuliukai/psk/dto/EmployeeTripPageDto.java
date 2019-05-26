@@ -39,4 +39,20 @@ public class EmployeeTripPageDto {
 
     boolean approved;
 
+    public static EmployeeTripPageDto from(EmployeeTrip et) {
+        return new EmployeeTripPageDto(
+            et.getId(),
+            et.getEmployee().getFullName(),
+            et.getApartmentRoom(),
+            et.getTrip().getLeavingDate().toString(),
+            et.getTrip().getReturningDate().toString(),
+            et.getTrip().getToOffice().getAptAddress(),
+            et.getTrip().getFromOffice().getCity(),
+            et.getTrip().getToOffice().getCity(),
+            et.getTrip().getToOffice().getAddress(),
+            et.getCarRent(),
+            et.getFlight(),
+            et.getTripChecklist(),
+            et.getApproved());
+    }
 }
