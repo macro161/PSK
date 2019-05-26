@@ -16,6 +16,7 @@ public class PskApplication {
 
     public static String getUserRole() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (String)user.getAuthorities().toArray()[0];
+        Collection<GrantedAuthority> roles = user.getAuthorities();
+        return String.valueOf(roles.iterator().next());
     }
 }
