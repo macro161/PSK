@@ -47,7 +47,7 @@ EmployeesDataTable.propTypes = {
     fullName: PropTypes.any,
     office: PropTypes.string,
     email: PropTypes.string,
-    role: PropTypes.any,
+    role: PropTypes.string,
   })),
   editEmployee: PropTypes.func.isRequired,
   removeUser: PropTypes.func.isRequired,
