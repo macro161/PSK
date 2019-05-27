@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SimpleEventService implements EventService {
+public class EventServiceImpl implements EventService {
 
     @Autowired
     EventDao eventDao;

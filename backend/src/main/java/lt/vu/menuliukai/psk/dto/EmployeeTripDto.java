@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lt.vu.menuliukai.psk.entities.EmployeeTrip;
 import lt.vu.menuliukai.psk.entities.TripChecklist;
 
 @Getter
@@ -19,4 +20,12 @@ public class EmployeeTripDto {
     TripChecklist tripChecklist;
 
     boolean approved;
+
+    public static EmployeeTripDto from(EmployeeTrip et) {
+        return new EmployeeTripDto(
+                et.getEmployee().getId(),
+                et.getEmployee().getFullName(),
+                et.getTripChecklist(),
+                et.getApproved());
+    }
 }

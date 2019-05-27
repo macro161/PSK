@@ -33,4 +33,19 @@ public class EmployeeTripCsvDto {
     Integer apartmentStatus;
 
     boolean approved;
+
+    public static EmployeeTripCsvDto from(EmployeeTrip et) {
+        return new EmployeeTripCsvDto(
+            et.getId().getEmployeeId(),
+            et.getId().getTripId(),
+            et.getEmployee().getFullName(),
+            et.getTrip().getLeavingDate().toString(),
+            et.getTrip().getReturningDate().toString(),
+            et.getTrip().getFromOffice().getCity(),
+            et.getTrip().getToOffice().getCity(),
+            et.getTripChecklist().getPlainTickets(),
+            et.getTripChecklist().getCar(),
+            et.getTripChecklist().getApartments(),
+            et.getApproved());
+    }
 }
