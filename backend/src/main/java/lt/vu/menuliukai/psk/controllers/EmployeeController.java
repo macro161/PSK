@@ -87,7 +87,6 @@ public class EmployeeController {
         Employee baseEmployee = Converter.convert(employeeDao, objectName, id);
 
         change(employee::getFullName, baseEmployee::setFullName);
-        change(employee::getId, baseEmployee::setId);
         change(employee::getEmail, baseEmployee::setEmail);
         change(employee::getPassword, baseEmployee::setPassword);
         change(employee::getRole, baseEmployee::setRole);
