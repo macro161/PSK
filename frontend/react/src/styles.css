@@ -52,14 +52,17 @@ table .name {
   width: 15%;
 }
 table .cityEmp {
-  width: 15%;
+  width: 13%;
 }
 table .email {
-  width: 20%;
+  width: 27%;
 }
 table .actions {
-  width: 20%;
+  width: 15%;
   
+}
+table .role {
+  width: 10%
 }
 .page-frame{
   margin: 2vh 4vw 0 4vw;

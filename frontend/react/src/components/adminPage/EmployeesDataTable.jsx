@@ -17,6 +17,7 @@ export default class EmployeesDataTable extends React.Component {
             <th className="name">Full name</th>
             <th className="cityEmp">City</th>
             <th className="email">Email</th>
+            <th className="role">Role</th>
             <th className="actions">Actions</th>
           </tr>
           {employees.map(employee => {
@@ -27,6 +28,7 @@ export default class EmployeesDataTable extends React.Component {
                 fullName = {employee.fullName}
                 email={employee.email}
                 city={employee.office}
+                role={employee.role.toLowerCase()}
                 disableButtons={this.props.disableButtons}
                 editEmployee={this.props.editEmployee}
                 removeUser={this.props.removeUser}
@@ -45,6 +47,7 @@ EmployeesDataTable.propTypes = {
     fullName: PropTypes.any,
     office: PropTypes.string,
     email: PropTypes.string,
+    role: PropTypes.string,
   })),
   editEmployee: PropTypes.func.isRequired,
   removeUser: PropTypes.func.isRequired,

@@ -6,6 +6,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import NativeSelect from '@material-ui/core/NativeSelect';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,6 +26,9 @@ const styles = theme => ({
     '&$checked': {
       color: green[500],
     },
+  },
+  formControl: {
+    minWidth: 200,
   },
   checked: {},
   input: {
@@ -190,6 +198,7 @@ class UserRegistrationForm extends React.Component {
       password2: "",
       onClose: this.props.onClose,
       error: false,
+      role: "USER"
     };
     
   }
@@ -199,11 +208,15 @@ class UserRegistrationForm extends React.Component {
       [e.target.id]: e.target.value,
     });
   }
-
+  handleChangeRole(e) {
+    this.setState({
+      role: e.target.value,
+    });
+  }
   onSubmit() {
     this.setState({ error: false });
     this.state.password1 == this.state.password2 ?
-      this.props.onSubmit(this.state.fullName,  this.state.destinationOffice,  this.state.email, this.state.password1)
+      this.props.onSubmit(this.state.fullName,  this.state.destinationOffice,  this.state.email, this.state.password1, this.state.role)
       : this.setState({ error: true });
   }
 
@@ -244,6 +257,7 @@ class UserRegistrationForm extends React.Component {
         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Register new employee</DialogTitle>
         <DialogContent>
+        <form style={{ display: 'flex' }}>
             <TextField
               id="fullName"
               label="Full name"
@@ -251,8 +265,17 @@ class UserRegistrationForm extends React.Component {
               type="text"
               margin="normal"
               onChange={this.inputChange.bind(this)}
-            />
-            &nbsp;&nbsp;&nbsp;
+          />
+          &nbsp;&nbsp;&nbsp;&nbsp;
+           <FormControl className={classes.formControl}>
+        <InputLabel htmlFor="role-native-simple">Role</InputLabel>
+        <NativeSelect onChange={this.handleChangeRole.bind(this)} defaultValue={"USER"} input={<Input  name="name" id="role-native-simple" />}>
+          <option value={"USER"}>User</option>
+          <option value={"ORGANISER"}>Organiser</option>
+          <option value={"ADMIN"}>Admin</option>
+        </NativeSelect>
+          </FormControl>
+          </form>
             <Select
               classes={classes}
               styles={selectStyles}
