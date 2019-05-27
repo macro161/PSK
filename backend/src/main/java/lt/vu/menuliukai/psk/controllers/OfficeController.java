@@ -69,7 +69,6 @@ public class OfficeController {
         change(office::getCity, baseOffice::setCity);
         change(office::getAptAddress, baseOffice::setAptAddress);
         change(office::getAptSize, baseOffice::setAptSize);
-        change(office::getVersion, baseOffice::setVersion);
 
         return officeDao.save(baseOffice);
     }
