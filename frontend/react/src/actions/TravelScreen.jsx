@@ -13,7 +13,6 @@ export const editTravel = (trip, departureDate, returnDate) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
     utils.editTripHttp(trip.tripId, departureDate, returnDate, trip.version)
         .then(function (response) {
-            console.log(response);
             if (response.responseValue == 500) {
                 alert("The trip has been changed by other user.")
             }
