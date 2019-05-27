@@ -232,10 +232,11 @@ public class EmployeeTripController {
     @RequestMapping(value = "/trips", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<TripsDto> getTrips(){
         Iterable<Trip> trips = tripDao.findAll();
-        return StreamSupport.stream(trips.spliterator(), false).map(trip ->
-                new TripsDto(trip.getId(), trip.getOrganiser().getId(),trip.getLeavingDate(), trip.getReturningDate(), trip.getFromOffice().getCity(), trip.getToOffice().getCity(),
-                        employeeTripDao.findByIdTripId(trip.getId()).stream()
-                                .map(et -> new EmployeeTripDto(et.getEmployee().getId(), et.getEmployee().getFullName(),
-                                        et.getTripChecklist(), et.getApproved())).collect(Collectors.toList()))).collect(Collectors.toList());
+        return StreamSupport.stream(trips.spliterator(), false).map(trip -> {
+            List<EmployeeTripDto> eployeeTrips = employeeTripDao.findByIdTripId(trip.getId()).stream()
+                    .map(EmployeeTripDto::from).collect(Collectors.toList());
+            return TripsDto.from(trip, eployeeTrips);
+
+        }).collect(Collectors.toList());
     }
 }
