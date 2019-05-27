@@ -15,6 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8081")
@@ -68,6 +71,28 @@ public class EmployeeController {
         }
 
         return employeeDao.save(employee);
+    }
+
+    private <T> void change(Supplier<T> getter, Consumer<T> setter) {
+        try {
+            T value = getter.get();
+            if (value != null) {
+                setter.accept(value);
+            }
+        } catch (Exception ignored) { }
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Employee edit(@RequestBody Employee employee, @PathVariable long id) {
+        Employee baseEmployee = Converter.convert(employeeDao, objectName, id);
+
+        change(employee::getFullName, baseEmployee::setFullName);
+        change(employee::getEmail, baseEmployee::setEmail);
+        change(employee::getPassword, baseEmployee::setPassword);
+        change(employee::getRole, baseEmployee::setRole);
+        change(employee::getOffice, baseEmployee::setOffice);
+
+        return employeeDao.save(baseEmployee);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
