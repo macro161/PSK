@@ -44,7 +44,7 @@ public class TripController {
         return tripDao.save(trip);
     }
     @RequestMapping(value="change/{tripId}/{startDate}/{endDate}/{version}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public boolean change(@PathVariable Long tripId, @PathVariable Date startDate, @PathVariable Date endDate, Long version){
+    public boolean change(@PathVariable Long tripId, @PathVariable Date startDate, @PathVariable Date endDate, @PathVariable Long version){
         Trip trip = tripDao.findById(tripId).orElse(null);
         if (trip != null){
             if (trip.getVersion() != version){
