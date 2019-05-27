@@ -6,6 +6,7 @@ import lt.vu.menuliukai.psk.dao.OfficeDao;
 import lt.vu.menuliukai.psk.entities.Office;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,6 +60,10 @@ public class OfficeController {
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Office edit(@RequestBody Office office , @PathVariable long id) {
         Office baseOffice = Converter.convert(officeDao, objectName, id);
+
+        if(baseOffice.getVersion() != office.getVersion()){
+            throw new OptimisticLockingFailureException(Long.toString(baseOffice.getId()));
+        }
 
         change(office::getAddress, baseOffice::setAddress);
         change(office::getCity, baseOffice::setCity);

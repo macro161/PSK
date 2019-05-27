@@ -1,21 +1,14 @@
 package lt.vu.menuliukai.psk.entities;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import lt.vu.menuliukai.psk.converters.*;
 
 @Getter @Setter
 @Entity
@@ -26,6 +19,9 @@ public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
+
+    @Version
+    Long version;
 
     String city;
 

@@ -11,15 +11,18 @@ export const removeTrip = (id) => dispatch => {
 
 export const editTravel = (trip, departureDate, returnDate) => dispatch => {
     dispatch({ type: 'SET_LOADING', value: true });
-    utils.editTripHttp(trip.tripId, departureDate, returnDate)
+    utils.editTripHttp(trip.tripId, departureDate, returnDate, trip.version)
         .then(function (response) {
-        console.log(response);
-            if (response.responseValue == true) {
+            if (response.responseValue == 500) {
+                alert("The trip has been changed by other user.")
+            }
+            else if (response.responseValue == true) {
                 var edited = trip;
+                edited.version = version;
                 edited.returningDate = returnDate;
                 edited.leavingDate = departureDate;
                 dispatch({ type: "EDIT_TRAVEL", trip: edited });
-        }
+            }
         dispatch({ type: 'SET_LOADING', value: false });
     })
    
