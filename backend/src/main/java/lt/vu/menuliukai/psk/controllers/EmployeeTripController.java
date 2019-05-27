@@ -48,22 +48,8 @@ public class EmployeeTripController {
     @RequestMapping(value = "/getcsv", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EmployeeTripCsvDto> get() {
         Iterable<EmployeeTrip> etList = employeeTripDao.findAll();
-        List<EmployeeTripCsvDto> list =
-                StreamSupport.stream(etList.spliterator(), false).map(et ->
-                        new EmployeeTripCsvDto(
-                                et.getId().getEmployeeId(),
-                                et.getId().getTripId(),
-                                et.getEmployee().getFullName(),
-                                et.getTrip().getLeavingDate().toString(),
-                                et.getTrip().getReturningDate().toString(),
-                                et.getTrip().getFromOffice().getCity(),
-                                et.getTrip().getToOffice().getCity(),
-                                et.getTripChecklist().getPlainTickets(),
-                                et.getTripChecklist().getCar(),
-                                et.getTripChecklist().getApartments(),
-                                et.getApproved()))
-                        .collect(Collectors.toList());
-        return list;
+        return StreamSupport.stream(etList.spliterator(), false).map(EmployeeTripCsvDto::from)
+            .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/{employeeId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
