@@ -146,13 +146,17 @@ public class EmployeeTripController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public TripsDto add(@RequestBody EmployeeTrip employeeTrip) {
+
         employeeTrip.setId(new EmployeeTripId(employeeTrip.getEmployee().getId(), employeeTrip.getTrip().getId()));
         eventService.addEvent(employeeTrip.getEmployee().getEmail(), employeeTrip.getTrip().getLeavingDate(), employeeTrip.getTrip().getReturningDate(), "Trip");
+
         EmployeeTrip empTrip = employeeTripDao.save(employeeTrip);
-        return new TripsDto(empTrip.getTrip().getId(), empTrip.getTrip().getOrganiser().getId(), empTrip.getTrip().getLeavingDate(), empTrip.getTrip().getReturningDate(), empTrip.getTrip().getFromOffice().getCity(), empTrip.getTrip().getToOffice().getCity(),
-                employeeTripDao.findByIdTripId(empTrip.getTrip().getId()).stream()
-                        .map(et -> new EmployeeTripDto(et.getEmployee().getId(), et.getEmployee().getFullName(),
-                                et.getTripChecklist(), et.getApproved())).collect(Collectors.toList()));
+        Trip trip = empTrip.getTrip();
+
+        List<EmployeeTripDto> employeeTrips = employeeTripDao.findByIdTripId(trip.getId()).stream()
+            .map(EmployeeTripDto::from).collect(Collectors.toList());
+
+        return TripsDto.from(trip, employeeTrips);
     }
 
     @RequestMapping(value = "/delete/{employeeId}/{tripId}", method = RequestMethod.DELETE)
