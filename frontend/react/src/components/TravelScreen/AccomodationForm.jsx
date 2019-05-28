@@ -47,10 +47,10 @@ class AccomodationForm extends React.Component {
       this.setState({
         loading: false,
       })
-    } else if (props.employeeTrip.apartmentRoom != null) {
+    } else if (props.employeeTrip.apartments_room != null) {
       this.setState({
         officeApartments: true,
-        roomNo: props.employeeTrip.apartmentRoom.roomNo,
+        roomNo: props.employeeTrip.apartments_room.roomNo,
         loading: false,
       });
     }
@@ -75,6 +75,7 @@ class AccomodationForm extends React.Component {
   }
 
   render() {
+    console.log(this.state)
     const { classes } = this.props;
     return (
 

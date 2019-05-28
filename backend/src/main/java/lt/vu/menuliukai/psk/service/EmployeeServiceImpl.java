@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final String objectName = "employee";
@@ -70,4 +73,24 @@ public class EmployeeServiceImpl implements EmployeeService {
             Converter.throwException(objectName, id);
         }
     }
+
+    public Employee edit(long id, Employee employee){
+        Employee baseEmployee = Converter.convert(employeeDao, objectName, id);
+        change(employee::getFullName, baseEmployee::setFullName);
+        change(employee::getEmail, baseEmployee::setEmail);
+        change(employee::getPassword, baseEmployee::setPassword);
+        change(employee::getRole, baseEmployee::setRole);
+        change(employee::getOffice, baseEmployee::setOffice);
+
+        return employeeDao.save(baseEmployee);
+    }
+    private <T> void change(Supplier<T> getter, Consumer<T> setter) {
+        try {
+            T value = getter.get();
+            if (value != null) {
+                setter.accept(value);
+            }
+        } catch (Exception ignored) { }
+    }
+
 }

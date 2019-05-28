@@ -123,6 +123,7 @@ public class EmployeeTripServiceImpl implements EmployeeTripService {
             }
 
         approvedTrip.setApartmentRoom(availableRoom);
+        approvedTrip.getTripChecklist().setApartments(2);
 
         return employeeTripDao.save(approvedTrip);
 
