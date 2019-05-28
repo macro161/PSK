@@ -350,7 +350,7 @@ class TravelDataTable extends React.Component {
       addHotel: false,
       editHotel: false,
       editCar: false,
-      editHotel: false,
+      editFlight: false,
     })
   }
   
@@ -381,6 +381,7 @@ class TravelDataTable extends React.Component {
     });
   }
   onEditAccomodation = (id) => {
+    console.log(id)
     this.props.getEmployeeTrip(id.tripId, id.employeeId);
     this.setState({
       addId: id,
@@ -502,7 +503,7 @@ class TravelDataTable extends React.Component {
                 </IconButton>
               </Tooltip>
               <Tooltip title="Accomodation info">
-                <IconButton onClick={event => tripChecklist.car == 1 ? this.addHotel(id) : this.onEditAccomodation(id)} aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
+                <IconButton onClick={event => tripChecklist.apartments == 1 ? this.addHotel(id) : this.onEditAccomodation(id)} aria-label="accomodation info" disabled={tripChecklist.apartments == 0 ? true : false}>
                   {tripChecklist.apartments == 0 ? <HotelIcon fontSize="small" disabled /> : tripChecklist.apartments == 1 ?
                     <Badge color="secondary" variant="dot">
                       <HotelIcon fontSize="small" />

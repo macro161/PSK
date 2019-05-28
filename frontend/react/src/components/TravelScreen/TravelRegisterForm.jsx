@@ -269,9 +269,9 @@ class TravelRegisterForm extends React.Component {
   dateCheck(from,to,check) {
 
     var fDate,lDate,cDate;
-    fDate = Date.parse(from);
-    lDate = Date.parse(to);
-    cDate = Date.parse(check);
+    fDate = (new Date(Date.parse(from))).setHours(0);
+    lDate = (new Date(Date.parse(to))).setHours(0);
+    cDate = (new Date(Date.parse(check))).setHours(0);
 
     if((cDate <= lDate && cDate >= fDate)) {
         return true;
