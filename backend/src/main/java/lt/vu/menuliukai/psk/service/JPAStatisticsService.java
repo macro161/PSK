@@ -126,7 +126,7 @@ public class JPAStatisticsService implements StatisticsDao {
     public long getEmployeeTripQuantity(String fullName) {
         argument = 0;
         for (EmployeeTrip et : employeeTripDao.findAll()) {
-            if (et.getEmployee().getFullName().equals(fullName.replace('_', ' '))) {
+            if (et.getEmployee().getFullName() != null && et.getEmployee().getFullName().equals(fullName.replace('_', ' '))) {
                 argument++;
             }
         }
@@ -139,7 +139,7 @@ public class JPAStatisticsService implements StatisticsDao {
         argument = 0;
         try{
             for(Trip t : tripDao.findAll()){
-                if(t.getLeavingDate().compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(leavingDate)) > 0 &&
+                if(t.getLeavingDate() != null && t.getLeavingDate().compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(leavingDate)) > 0 &&
                         t.getReturningDate().compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(returningDate)) < 0){
                     argument++;
                 }
