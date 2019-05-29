@@ -87,31 +87,6 @@ Formalūs testai nebuvo vykdomi, tik patikrinama, ar kodas veikia iš pirmo žvi
 \section{Aptarimas}
 Aptarimas būna vykdomas neformaliai kiekvieną savaitę planavimo metu. Pasikalbama, kas buvo gerai ar negerai, pasižadama daugiau nebedaryti blogų dalykų ir dirbti, nors vistiek nedirbant sekantį ciklą.
 
-\pagebreak
-
-\section{Techninė ataskaita}
-\subsection{Sistemos struktūra}
-Sistema yra sukurta naudojant trijų sluoksnių Model View Controller(MVC) architektūriniu šablonu. Sluoksniams sudaryti buvo naudojamos šios techologijos:
-\begin{itemize}
-	\item{Model(Data Access) -  Java Spring}
-	\item{Controller(Business Logic) - Java String}
-	\item{View(Presentation) - React.js, Redux}
-\end{itemize}  
-
-Grafinę vartotojo sąsaja kuria Javascript biblioteka React. React taip pat užtikrina ir resursų taupymą savo life-cycle metodais. Duomenų prieeiga aplikacijoje užtikrina Redux karkasa, vartotojui atlikus kažkokš reiksmą yra siunčiama REST užklausa į serverį gauti ar įrašyti duomenis. Kol vartotojas laukia atsakymo yra rodomas spinneris kuris suteikia vartotojui informaciją, kad užklausa vykdoma. Saugumui užtikrinti yra naudojamas Spring Security. Yra trys vartotojų tipai: Paprastas darbuotojas, Organizatorius ir Admin. Vartotojai jungiasi su savo prisijungimo duomenimis ir po sėkmingo duomenų validavimo būna nukreipiami į sau atitinkama puslapį.
-\subsection{Kokybiniai reikalavimaio}
-\begin{itemize}
-	\item{Concurrency - PSK/frontend/react/src/App.js 44 eiluiė}
-	\item{Security - PSK/backend/src/main/resources/application.properties  5 eilutė. Hybernate suteikia apsauga nuo SQL injection atakų }
-	\item{Data Access - PSK/backend/src/main/java/lt/vu/menuliukai/psk/dao/EmployeeDao.java 7 eilutė ir PSK/backend/src/main/java/lt/vu/menuliukai/psk/mappers/StatisticsMapper.java 16 eilutė }
-	\item{Data consistency; Optimistic locking - /PSK/backend/src/main/java/lt/vu/menuliukai/psk/controllers/OfficeController.java 65 eilutė}
-	\item{Memory management - PSK/frontend/react/src/components/statisticsPage/StatisticsScreen.jsx 21 eilutė Life-cycle metodai užtikrina atminties taupymą}
-	\item{Reactive programming; Asynchronous/non-blocking communication - PSK/frontend/react/src/actions/Login.jsx 19 eilutė.}
-	\item{Cross-cutting functionality/Interceptors - PSK/backend/src/main/java/lt/vu/menuliukai/psk/AuditAspect.java 22 eilutė}
-	\item{Extensibility/Glass-box extensibility - }
-\end{itemize}
-
-
 
 
 \end{document}
