@@ -30,28 +30,29 @@
 
 \section{Techninė ataskaita}
 \subsection{Sistemos struktūra}
-Sistema yra sukurta naudojant trijų sluoksnių Model View Controller(MVC) architektūriniu šablonu. Sluoksniams sudaryti buvo naudojamos šios techologijos:
+Sistema yra sukurta naudojantis trijų sluoksnių Model View Controller(MVC) architektūriniu šablonu. Sluoksniams sudaryti buvo naudojamos šios techologijos:
 \begin{itemize}
 	\item{Model(Data Access) -  Java Spring}
 	\item{Controller(Business Logic) - Java String}
 	\item{View(Presentation) - React.js, Redux}
 \end{itemize}  
-
-Grafinę vartotojo sąsaja kuria Javascript biblioteka React. React taip pat užtikrina ir resursų taupymą savo life-cycle metodais. Duomenų prieeiga aplikacijoje užtikrina Redux karkasa, vartotojui atlikus veiksmą yra siunčiama REST užklausa į serverį gauti ar įrašyti duomenis. Kol vartotojas laukia atsakymo yra rodomas spinneris kuris suteikia vartotojui informaciją, kad užklausa vykdoma. Naudojamas Spring Security framework, kuris tvarko authentication ir authorization. Yra trys vartotojų tipai: Paprastas darbuotojas, Organizatorius ir Admin. Vartotojai jungiasi su savo prisijungimo duomenimis ir po sėkmingo duomenų validavimo būna nukreipiami į sau atitinkama puslapį.
-\subsection{Kokybiniai reikalavimaio}
+\begin{flushleft}
+Grafinė vartotojo sąsaja kuriama su Javascript biblioteka React. React taip pat užtikrina ir resursų taupymą savo life-cycle metodais. Duomenų prieigą aplikacijoje užtikrina Redux karkasas, vartotojui atlikus veiksmą yra siunčiama REST užklausa į serverį gauti ar įrašyti duomenis. Kol vartotojas laukia atsakymo yra rodomas spinneris, kuris suteikia vartotojui informaciją, kad užklausa vykdoma. Naudojamas Spring Security framework, kuris tvarko authentication ir authorization. Yra trys vartotojų tipai: Paprastas darbuotojas, Organizatorius ir Admin. Vartotojai jungiasi su savo prisijungimo duomenimis ir po sėkmingo duomenų validavimo būna nukreipiami į atitinkamą puslapį.
+\subsection{Kokybiniai reikalavimai}
 \begin{itemize}
-	\item{Concurrency -  Kadangi naudojamas Spring security, tai vartotojas gali dirbti iš kelių langų, su kiekviena vartotojo užklausa kartu siunčiamas cookie, pagal kurį atpažįstama, koks vartotojas siunčia užklausą.  PSK/backend/src/main/java/lt/vu/menuliukai/psk/SecurityConfig}
+	\item{Concurrency -  Kadangi naudojamas Spring security, tai vartotojas gali dirbti iš kelių langų. Su kiekviena vartotojo užklausa kartu siunčiamas cookie, pagal kurį atpažįstama, koks vartotojas siunčia užklausą.  PSK/backend/src/main/java/lt/vu/menuliukai/psk/SecurityConfig}
 	\item{Security - PSK/backend/src/main/resources/application.properties. Sistemoje naudojamas hibernate, bet nenaudojami nei JPA sakiniai su parametrais, nei JDBC paruošti sakiniai, todėl sistema apsaugota nuo sql injections. }
   \item{Data Access - pvz: PSK/backend/src/main/java/lt/vu/menuliukai/psk/dao/EmployeeDao.java 7 eilutė ir PSK/backend/src/main/java/lt/vu/menuliukai/psk/mappers/StatisticsMapper.java 16 eilutė.
-  Kaip ORM naudojama Hibernate framework ir DAO interfaces, kurie paveldi iš CRUDRepository. Data Mapper naudojamas statistikos skaičiavimui, nes ten reikia konkrečių sudėtingesnių sql užklausų.}
-  \item{Data consistency;
+  Kaip ORM naudojama Hibernate framework ir DAO interfeisai, kurie paveldi iš CRUDRepository. Data Mapper naudojamas statistikos skaičiavimui, nes ten reikia konkrečių sudėtingesnių sql užklausų.}
+  \item{Data consistency; \linebreak
   pvz: /PSK/backend/src/main/java/lt/vu/menuliukai/psk/controllers/OfficeController.java 65 eilutė}
-	\item{Memory management - React su savo kompenentų life cycles užtikrina atminties taupymą, BE niekur nenaudojami session scope komponentai use-cases įgyvendinimui. pvz: PSK/frontend/react/src/components/statisticsPage/StatisticsScreen.jsx 21 vienas iš react komponentų life cycle}
+	\item{Memory management - React su savo kompenentų gyvavimo ciklais užtikrina atminties taupymą, BE niekur nenaudojami session scope komponentai use-cases įgyvendinimui. pvz: PSK/frontend/react/src/components/statisticsPage/StatisticsScreen.jsx 21 vienas iš react komponentų gyvavimo ciklas.}
 	\item{Reactive programming; Asynchronous/non-blocking communication - PSK/frontend/react/src/actions/Login.jsx 19 eilutė.}
-	\item{Cross-cutting functionality/Interceptors - PSK/backend/src/main/java/lt/vu/menuliukai/psk/AuditAspect.java, Dalykinis funkcionalumas iškeltas į lt.vu.menuliukai.psk.service paketą, kiekvieną kartą kviečiant kažkurį iš šių metodų yra įrašomas įrašas į log'ą.}
-	\item{Extensibility/Glass-box extensibility - Pilnai veikiantis strategy implementuotas su StatisticsDao interface bei JPAStatisticsService ir MyBatisStatisticsService šio interface implementacijos, kurį naudosime nustatome application.properties faile. Bet visos lt.vu.menuliukai.psk.service pakete esančios klasės turi savo interfaces, todėl užtikrinamas kodo plečiamumas nekeičiant esamo kodo.}
+	\item{Cross-cutting functionality / Interceptors -
+	 \linebreak PSK/backend/src/main/java/lt/vu/menuliukai/psk/AuditAspect.java, Dalykinis funkcionalumas iškeltas į lt.vu.menuliukai.psk.service paketą, kiekvieną kartą kviečiant kažkurį iš šių metodų įrašomas įrašas į log'ą.}
+	\item{Extensibility/Glass-box extensibility - Pilnai veikiantis strategy implementuotas su StatisticsDao interfeisu bei JPAStatisticsService ir MyBatisStatisticsService - šio interfeiso implementacijų, kurį iš  servisų naudosime nustatome application.properties faile. Visos lt.vu.menuliukai.psk.service pakete esančios klasės turi savo interfeisus, todėl užtikrinamas kodo plečiamumas nekeičiant esamo kodo.}
 \end{itemize}
-
+\end{flushleft}
 
 
 
