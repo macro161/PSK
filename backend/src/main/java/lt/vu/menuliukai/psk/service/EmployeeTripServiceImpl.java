@@ -107,24 +107,26 @@ public class EmployeeTripServiceImpl implements EmployeeTripService {
 
         ApartmentRoom availableRoom = null;
 
-        if (wantsAccommodation == 1)
-            for (ApartmentRoom room:approvedTrip.getTrip().getToOffice().getApartmentRooms()) {
+        if (wantsAccommodation == 1 && approvedTrip.getApartmentRoom() == null) {
+            for (ApartmentRoom room : approvedTrip.getTrip().getToOffice().getApartmentRooms()) {
                 Set<EmployeeTrip> trips = room.getEmployeeTrips();
                 int tripCount = trips.size();
                 int count = 0;
-                for (EmployeeTrip trip: trips) {
-                    if(trip.getTrip().getLeavingDate().compareTo(approvedTrip.getTrip().getReturningDate()) > 0
-                            || trip.getTrip().getReturningDate().compareTo(approvedTrip.getTrip().getLeavingDate()) < 0){
+                for (EmployeeTrip trip : trips) {
+                    if (trip.getTrip().getLeavingDate().compareTo(approvedTrip.getTrip().getReturningDate()) > 0
+                            || trip.getTrip().getReturningDate().compareTo(approvedTrip.getTrip().getLeavingDate()) < 0) {
                         count++;
                     }
                 }
                 if (count == tripCount)
                     availableRoom = room;
             }
-
-        approvedTrip.setApartmentRoom(availableRoom);
-        approvedTrip.getTripChecklist().setApartments(2);
-
+                approvedTrip.setApartmentRoom(availableRoom);
+                approvedTrip.getTripChecklist().setApartments(2);
+            }
+        if (approvedTrip.getApartmentRoom() != null){
+            approvedTrip.getTripChecklist().setApartments(2);
+        }
         return employeeTripDao.save(approvedTrip);
 
     }

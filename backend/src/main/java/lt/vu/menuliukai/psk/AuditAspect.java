@@ -17,9 +17,9 @@ import java.util.regex.Pattern;
 public class AuditAspect {
 
     private void println(String string) {
-        Path path = Paths.get(URI.create("file:///~Documents/db_log.txt"));
+        Path path = Paths.get(URI.create("file:///C:/Users/tvari/Desktop/Uni/log.txt"));
         try {
-            java.nio.file.Files.write(path, string.getBytes("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            java.nio.file.Files.write(path, (string + System.lineSeparator()).getBytes("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (Exception exception) {
         }
     }
