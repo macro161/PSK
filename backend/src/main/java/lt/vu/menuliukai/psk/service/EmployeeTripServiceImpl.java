@@ -121,8 +121,10 @@ public class EmployeeTripServiceImpl implements EmployeeTripService {
                 if (count == tripCount)
                     availableRoom = room;
             }
+            if (availableRoom != null) {
                 approvedTrip.setApartmentRoom(availableRoom);
                 approvedTrip.getTripChecklist().setApartments(2);
+            }
             }
         if (approvedTrip.getApartmentRoom() != null){
             approvedTrip.getTripChecklist().setApartments(2);
