@@ -27,7 +27,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException
     {
         Employee curruser = employeeDao.findByEmail(email);
-
+        if (curruser == null){
+            throw new UsernameNotFoundException("Email " + email +" not found");
+        }
         UserDetails user = new org.springframework.security.core.userdetails.User(email, curruser.getPassword(), true,
         		true, true, true, AuthorityUtils.createAuthorityList(curruser.getRole()));
         

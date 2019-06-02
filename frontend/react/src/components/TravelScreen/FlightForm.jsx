@@ -91,7 +91,6 @@ class FlightForm extends React.Component {
             <DateTimePicker
               className={classes.textField}
               value={this.state.date}
-              disablePast
               onChange={this.handleChangeDate.bind(this)}
               label="Flight time"
                showTodayButton/>

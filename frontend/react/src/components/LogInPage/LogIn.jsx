@@ -29,7 +29,7 @@ class Login extends React.Component {
         if (!this.props.errorCode) {
             return;
         }
-        const errorMessage = this.props.errorCode === 401 ? 'Wrong password' : 'We are not sure how, but you managed to break our server!';
+        const errorMessage = this.props.errorCode === 401 ? 'Wrong password or email' : 'We are not sure how, but you managed to break our server!';
 
         return <div className="errorHolder">
             <span>
