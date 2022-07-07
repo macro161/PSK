@@ -18,7 +18,7 @@
     "bootstrap": "^4.3.1",
     "date-fns": "2.0.0-alpha.27",
     "material-ui-icons": "^1.0.0-beta.36",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "npm": "^6.13.4",
     "react": "16.8.4",
     "react-bootstrap": "^1.0.0-beta.5",
